@@ -5,7 +5,22 @@
             30
         </session-timeout>
     </session-config>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
+    <servlet>
+        <servlet-name>controller</servlet-name>
+        <servlet-class>controllers.controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>controller</servlet-name>
+        <url-pattern>/controller</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>gui/login.jsp</welcome-file>
+        <welcome-file>/gui/login.jsp </welcome-file>
     </welcome-file-list>
+
 </web-app>

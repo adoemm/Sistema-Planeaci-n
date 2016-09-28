@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Log in SDPC</h1>
-        <form action="gui/menuPrincipal.jsp">
+        <form  method="post"action="/SPIC/controller">
             <div>
                 <button type="submit">Enviar</button>
             </div>
