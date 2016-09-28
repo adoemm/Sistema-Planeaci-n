@@ -1,0 +1,167 @@
+/* 
+    Document   : EstiloForms
+    Created on : Jul 27, 2012, 10:01:22 AM
+    Author     : Administrator
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* General styles */
+
+h2 { margin: 0px; padding: 10px; font-family: Georgia, "Times New Roman", Times, serif; font-size: 200%; font-weight: normal; color: #FFF; background-color: #CCC; border-bottom: #BBB 2px solid; }
+p#copyright { margin: 20px 10px; font-size: 90%; color: #999; }
+
+/* Form styles */
+div.form-container {
+    padding: 5px;
+    background-color: #FFF;
+    border: #EEE 1px solid;
+    margin-left: 0%;
+    margin-right: 0%;
+    text-align: left;
+}
+
+p.legend { margin-bottom: 1em; }
+p.legend em { color: #C00; font-style: normal; }
+
+div.errors {
+    margin: 0 0 10px 0;
+    padding: 5px 10px;
+    border: #FC6 1px solid;
+    background-color: #BCDC83;
+}
+div.errors p { margin: 0; }
+div.errors p em { color: #DA001B; font-style: normal; font-weight: bold; }
+
+div.form-container form p { margin: 0; }
+div.form-container form p.note { margin-left: 170px; font-size: 90%; color: #333; }
+div.form-container form fieldset { margin: 10px 0; padding: 10px; border: #DDD 1px solid;}
+div.form-container form legend {
+    font-weight: bold;
+    color: #0C1A22;
+}
+div.form-container form fieldset div { padding: 5px 0; }
+div.form-container labelTag, 
+div.form-container span.label { margin-right: 10px; padding-right: 10px; width: 250px; display: block; float: left; text-align: right; position: relative; }
+div.form-container label.error, 
+div.form-container span.error { color: #000; }
+div.form-container label em, 
+div.form-container span.label em {
+    position: absolute;
+    right: -248px;
+    font-size: 120%;
+    font-style: normal;
+    color: #C00;
+    top: -293px;
+    width: 393px;
+    height: 82px;
+}
+div.form-container input.error { border-color: #C00; background-color: #FEF; }
+div.form-container input:focus,
+div.form-container input.error:focus, 
+div.form-container textarea:focus {
+    background-color: #D9EFB4;
+    border-color: #DA001B;
+}
+div.form-container div.controlset label, 
+div.form-container div.controlset input { display: inline; float: none; }
+div.form-container div.controlset div { margin-left: 170px; }
+div.form-container div.buttonrow { margin-left: 180px; }
+div.msginfo {
+    margin: 0 0 10px 0;
+    padding: 5px 10px;
+    border: #BCDC83 1px solid;
+    background-color: #feffc9;
+    border-radius: 10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+}
+div.msginfo p { margin: 0; }
+div.msginfo p em { color: #DA001B; font-style: normal; font-weight: bold; }
+
+progress.progressBarThin {
+
+    /* Turns off styling - not usually needed, but good to know. */
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    /* gets rid of default border in Firefox and Opera. */
+    border: solid #cccccc 0px;
+    border-radius: 0px;
+    /* Dimensions */
+    width: 100%;
+    height: 8px;
+
+}
+
+/* Polyfill */
+progress.progressBarThin[role]:after {
+
+    /*                background-image: url('layout/rsc/img/icons/info.png');*/
+}
+
+/*
+ * Background of the progress bar background
+ */
+
+/* Firefox and Polyfill */
+progress.progressBarThin {
+    background: #cccccc !important; /* !important only needed in polyfill */
+}
+
+/* Chrome */
+progress.progressBarThin::-webkit-progress-bar {
+    background: #cccccc;
+}
+
+/*
+ * Background of the progress bar value
+ */
+
+/* Firefox */
+progress.progressBarThin::-moz-progress-bar {
+    border-radius: 0px;
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(188,220,131) 37%,
+        rgb(84,240,84) 69%
+        );
+}
+
+/* Chrome */
+progress.progressBarThin::-webkit-progress-value {
+    border-radius: 0px;
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, rgb(188,220,131)),
+        color-stop(1, rgb(84,240,84))
+        );
+    background-image: -webkit-linear-gradient(
+        center bottom,
+        rgb(188,220,131) 37%,
+        rgb(84,240,84) 69%
+        );
+}
+
+/* Polyfill */
+progress.progressBarThin[aria-valuenow]:before {
+    border-radius: 5px;
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(188,220,131) 37%,
+        rgb(84,240,84) 69%
+        );
+    background-image: -ms-linear-gradient(
+        center bottom,
+        rgb(188,220,131) 37%,
+        rgb(84,240,84) 69%
+        );
+    background-image: -o-linear-gradient(
+        center bottom,
+        rgb(188,220,131) 37%,
+        rgb(84,240,84) 69%
+        );
+
+}

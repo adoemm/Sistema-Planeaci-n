@@ -1,0 +1,35 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="jquery.msgbox.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="jquery.msgbox.css" />        
+    </head>
+    <!--<body onload="load2()">-->
+    <body onload="load()">
+        <div>TODO write content</div>
+        <SCRIPT type="text/javascript" LANGUAGE="JavaScript">
+            //windows.onload().msgbox("jQuery is a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development.", {type: "info"});
+            //$(document).ready.msgbox("jQuery is a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development.", {type: "info"});
+            
+            function load()
+            {
+                alert("Page is loaded");
+                window.history.back();
+                $.msgbox("Mensaje de texto de error.", {type: "error"});
+                //  //this.msgbox("jQuery is a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development.", {type: "info"});
+            }
+            function load2(component){
+                load(component);
+            }
+        </script>
+        <button onclick='$.msgbox("jQuery is a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development.", {type: "info"});'>Example 3</button>
+        <input type="text" name="lalala" value="" onclick='load2(this)'/>
+    </body>
+</html>

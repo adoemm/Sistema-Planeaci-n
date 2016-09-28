@@ -1,0 +1,44 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <link rel="stylesheet" type="text/css" href="jquery.msgbox.css" />  
+    </head>
+    <body>
+        <SCRIPT type="text/javascript" LANGUAGE="JavaScript">
+            window.onload = function () { 
+                //     $.msgbox("Mensaje de texto de error.", {type: "error"});
+                //alert("It's loaded!") 
+                //     var millisecondsToWait = 5000;
+                //     setTimeout(function() {
+                // Whatever you want to do after the wait
+                //         window.history.back();
+                //     }, millisecondsToWait);
+           
+           
+                $.msgbox("Are you sure that you want to permanently delete the selected element?", {
+                    type: "error",
+                    buttons : [
+                        {type: "submit", value: "OK"},      
+                    ]
+                }, function(result) {
+                    //$("#result2").text(result);
+                    window.history.back();
+                });
+            }
+            //alert("Page is loaded");
+            //$.msgbox("Mensaje de texto de error.", {type: "error"});
+            
+        </SCRIPT>
+
+        <SCRIPT type="text/javascript" LANGUAGE="JavaScript">
+                        
+        </SCRIPT>
+    </body>
+</html>

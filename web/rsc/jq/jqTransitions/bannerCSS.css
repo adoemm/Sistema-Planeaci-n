@@ -1,0 +1,36 @@
+/* 
+    Document   : bannerCSS
+    Created on : Aug 2, 2012, 7:18:34 PM
+    Author     : Administrator
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+a
+{
+    color: #F0F0F0;
+    outline: none;
+    text-decoration: underline;
+}
+a:visited
+{
+    color: #F0F0F0;
+}
+a:active
+{
+    color: #F0F0F0;
+}
+a:hover
+{
+    color: #715D5D;
+    text-decoration: underline;
+}
+
+.ft-prev, .ft-next { 
+    background-color: #000; 
+    padding: 0 10px; 
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 7px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+}

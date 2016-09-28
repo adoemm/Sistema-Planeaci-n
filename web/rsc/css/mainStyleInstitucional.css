@@ -1,0 +1,437 @@
+/* 
+    Document   : MainStyle
+    Created on : Sep 21, 2012, 10:53:39 AM
+    Author     : JeanPaul
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+#wrapper {
+    width: 1240px;
+    /*
+    Cuando se cambie este valor recuerda qye hay que actualizar
+    la informacion el logo y en el footer, en parte de los div
+    en parametro de width:900px;
+    */
+    /*width: 100%;*/
+    margin: 0 auto;
+    padding: 0;
+}
+
+#divBody {
+    background-color: #FFFFFF;
+}
+
+body {
+    /*background-color: #CBCAC6;*/
+    background-color: #CCC;
+    padding:0;
+    margin:0;
+    font:80%/1.5 gotham book,Verdana;
+    color: #143C38;
+    width: 100%;
+}
+
+hPageTitle { /*Estilo Titulo principal para Contenido Color Rojo*/
+    font-size:17px;font-weight: bold;color: #db001b; margin-top:0px; margin-bottom:0px;
+}
+hPageSubTitle { /*Estilo Subtitulo para Contenido Color Verde*/
+    font-size:15px;font-weight: bold;color: #8CB809;margin-top:0px; margin-bottom:0px;
+}
+
+a.NVL {font-size: 12px;color: #000000;}
+a.NVL:link {color: #000000;}
+a.NVL:visited {color: #000000;}
+a.NVL:hover {color: #db001b;}
+a.NVL:active {color: #000000;}
+
+
+/*header frame*/
+#imgLogo
+{
+    border: 0px #000000 solid;
+}
+#headerFrame
+{
+    background-image: url(../img/headerg.png);
+    background-repeat: repeat-x;
+    background-position: center center;
+}
+#HeaderLayer
+{
+    background-color: transparent;
+}
+#organizacion_empresa 
+{
+    background-color: transparent;
+    border: 0px #000000 solid;
+    padding: 0;
+}
+#organizacion_empresa div
+{
+    text-align: left;
+}
+#nombreSistema 
+{
+    background-color: transparent;
+    border: 0px #000000 solid;
+    padding: 0;
+}
+#nombreSistema div
+{
+    text-align: left;
+}
+#LogoGov
+{
+    border: 0px #000000 solid;
+}
+
+
+/*CSS Footer*/
+/*CSS Footer*/
+a.footer
+{
+    color: #F0F0F0;
+    outline: none;
+    text-decoration: underline;
+}
+a.footer:visited
+{
+    color: #F0F0F0;
+}
+a.footer:active
+{
+    color: #F0F0F0;
+}
+a.footer:hover
+{
+    color: #FFFFF;
+    text-decoration: underline;
+}
+a.Normal:link
+{
+    color: #282828;
+    text-decoration: none;
+}
+a.Normal:visited
+{
+    color: #282828;
+    text-decoration: none;
+}
+a.Normal:active
+{
+    color: #282828;
+    text-decoration: none;
+}
+a.Normal:hover
+{
+    color: #DA001B;
+    text-decoration: none;
+}
+#logo_GOB
+{
+    border: 0px #000000 solid;
+}
+#pleca
+{
+    background-image: url(../img/plecaFooter.png);
+    background-repeat: repeat-x;
+    background-position: center center;
+}
+#subFooterLink 
+{
+    background-color: transparent;
+    border: 0px #000000 solid;
+    padding: 0;
+}
+#subFooterLink div
+{
+    text-align: center;
+}
+#footerLinksLeft 
+{
+    background-color: transparent;
+    border: 0px #000000 solid;
+    padding: 0;
+}
+#footerLinksLeft div
+{
+    text-align: left;
+}
+#grisFooter 
+{
+    background-color: transparent;
+    border: 0px #000000 solid;
+    padding: 0;
+}
+#grisFooter div
+{
+    text-align: left;
+}
+#footerLinksRigth 
+{
+    background-color: transparent;
+    border: 0px #000000 solid;
+    padding: 0;
+}
+#footerLinksRigth div
+{
+    text-align: left;
+}
+
+
+/*Caja de texto para realizar busquedas*/
+.suggestionsBox {
+    position: relative;
+    left: 260px;
+    margin: 0px 0px 0px 0px;
+    width: 50%;
+    background-color: #FFF;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border: 2px solid #000;
+    color: #000;
+    font-size: 10px;
+}
+.suggestionList {
+    margin: 0px;
+    padding: 0px;
+}
+.suggestionList li {
+    margin: 0px 0px 3px 0px;
+    padding: 3px;
+    cursor: pointer;
+}
+.suggestionList li:hover {
+    background-color: #BCDC83;
+}
+
+.bloque{
+    background: rgb(240, 240, 240);
+    background: -moz-linear-gradient(top, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(226,226,226,1)), color-stop(50%,rgba(219,219,219,1)), color-stop(51%,rgba(209,209,209,1)), color-stop(100%,rgba(254,254,254,1))); 
+    color:  rgb(50, 50, 50);
+    text-shadow: 0 0 2px rgb(255, 255, 255);
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+    box-shadow: 0 8px 6px -6px black;
+    /*                display: inline;
+                    display: inline-block;*/
+    display: block;
+    min-width: 1em;
+    padding: .2em .3em;
+    text-align: center;
+    text-decoration: none;
+    -moz-border-radius: .3em;
+    -webkit-border-radius: .3em;
+    border-radius: .3em;
+    border: none;
+    cursor: default;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    vertical-align: central;
+    font-size: 11px;
+    height: 152px;
+    /*                width: 158px;*/
+}
+.bloque:hover{
+    box-shadow: inset 0 0 10px rgb(188, 220, 131), inset 0 0 .4em rgb(188, 220, 131), 0 .1em 0 rgb(188, 220, 131), 0 .11em 0 rgba(0, 0, 0, .4), 0 .1em .11em rgba(0, 0, 0, .9);
+}
+.deleteBar {
+    text-align: right;
+    height: 16px;
+}
+.deleteBar img{
+    display: none;
+}
+.deleteBar img:hover{
+    cursor:pointer;
+    position: relative;
+    bottom: 2px;
+
+}
+.deleteBar img:active{
+    cursor:pointer;
+    position: relative;
+    top: 1px;
+}
+.tool{
+    text-align: right;
+    margin: 10px;
+}
+
+.divControlHelp{
+    position: relative;
+}
+.div4HelpButton{
+    text-align: right;
+    display: none;
+    margin: 0px;
+    padding: 10px;
+    position: absolute; right: 0%;top: 0px;
+}
+.div4HelpInfo{
+    display: block;
+    width: 30%;
+    position: absolute; right: 0%;top:0px;
+}
+.div4HelpInfoCloseButton{
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+    position: absolute; left: 96%;
+}
+.div4HelpCloseButton{
+    margin: -3px 0px 0px -3px;
+    padding: 0px;
+}
+
+.labelAction{
+    cursor: pointer;
+    height: 19px;
+}
+.labelAction:hover{
+    color: #FFFFFF;
+    font-size: 0px;
+    background: url('/vento/rsc/img/icons/gtk-refresh.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 19px 19px;
+}
+.etiqueta{
+    width: 66mm;
+    height: 25mm;
+    float: left;
+    margin-top: 0mm;
+    margin-left: 4mm;
+    text-align: center;
+    border: 1px solid;
+    border-color: #FFFFFF;
+}
+.etiqueta .titulo{
+    width: 100%;
+    height: 7mm;
+    text-align: center;
+    float: left;
+    overflow: hidden;
+    font-size: 8px;
+    font-weight: bold;
+    line-height:10px;
+}
+.etiqueta .barcode{
+    float: none;
+    width: 90%;
+    height: 11mm;
+    margin: auto;
+    background: #FFFFFF;
+    vertical-align: middle;
+}
+.floatBox{
+    display: none;
+    position: fixed;
+    text-align: center;
+    width: 400px;
+    min-width: 400px;
+    max-width: 400px;
+    height: auto;
+    min-height: 470px;
+    margin:0 auto 0% calc(50%/1.75);
+    padding-top:  0px;
+    padding-left:  5px;
+    padding-right: 5px;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -webkit-box-shadow: 13px 17px 21px -2px rgba(0,0,0,0.66);
+    -moz-box-shadow: 13px 17px 21px -2px rgba(0,0,0,0.66);
+    box-shadow: 13px 17px 21px -2px rgba(0,0,0,0.66);
+    background-color:#F7F7F7; /* Old browsers */
+    border: 0px solid;
+    border-color: #FFFFFF;
+    overflow: hidden;
+    z-index: 1002;
+    top: 0;
+
+}
+.overlay{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130%;
+    height: 150%;
+    background: #000;
+    z-index:1001;
+    opacity:.75;
+    -moz-opacity: 0.75;
+    filter: alpha(opacity=75);
+}
+
+.closeButton2{
+    border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0px 0px 10px 10px;
+    border: 0px solid #000000;
+    width: 35px;
+    height: 15px;
+    background-color: #DA001B;
+    margin-top: 0px;
+    margin-right: 5px;
+    padding-top: 0px;
+    z-index: 1003;
+    float: right;
+    background: #DA001B; /* Old browsers */
+    background-color: #DA001B;
+
+}
+.closeButton2:hover{
+    background: #f3c5bd; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f3c5bd 0%, #e86c57 50%, #ea2803 51%, #ff6600 75%, #c72200 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f3c5bd), color-stop(50%,#e86c57), color-stop(51%,#ea2803), color-stop(75%,#ff6600), color-stop(100%,#c72200)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f3c5bd 0%,#e86c57 50%,#ea2803 51%,#ff6600 75%,#c72200 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f3c5bd 0%,#e86c57 50%,#ea2803 51%,#ff6600 75%,#c72200 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f3c5bd 0%,#e86c57 50%,#ea2803 51%,#ff6600 75%,#c72200 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f3c5bd 0%,#e86c57 50%,#ea2803 51%,#ff6600 75%,#c72200 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3c5bd', endColorstr='#c72200',GradientType=0 ); /* IE6-9 */
+    cursor:pointer;
+
+}
+
+.puntuacionButton{
+     border-radius: 35px 35px 35px 35px;
+    -moz-border-radius: 35px 35px 35px 35px;
+    -webkit-border-radius: 35px 35px 35px 35px;
+    border: 0px solid #000000;
+    width: 35px;
+    height: 35px;
+    background-color: #CCCCCC;
+    margin-top: 0px;
+    margin-right: 50px;
+    padding-top: 0px;
+    z-index: 1003;
+    float: right;
+    background: #CCCCCC; /* Old browsers */
+    
+}
+.puntuacionButton:hover{
+   cursor: pointer; 
+}
+.tablaPuntuacion{
+    width: 100%; 
+    alignment-adjust: middle; 
+/*    table-layout: fixed;*/
+    overflow-wrap: break-word;
+    border-collapse: collapse;
+}
+.tablaPuntuacion td{
+    word-wrap:break-word;
+    border-bottom: 1px solid #97BF0D;
+}
+.divOculto{
+    display: none;
+}

@@ -1,0 +1,59 @@
+/* CSS Document */
+ <style type="text/css">
+html, body
+{
+   height: 100%;
+}
+div#space
+{
+   width: 1px;
+   height: 50%;
+   margin-bottom: -595px;
+   float:left
+}
+
+DIV.pageBreak { page-break-before: always; }
+
+div#page
+{
+   width: 994px;
+   height: 1191px;
+   margin: 0 auto;
+   position: relative;
+   clear: left;
+}
+body
+{
+   margin: 0;
+   padding: 0;
+   background-color: #FFFFFF;
+   color: #000000;
+}
+</style>
+<style type="text/css">
+a
+{
+   color: #F0F0F0;
+   outline: none;
+   text-decoration: underline;
+}
+a:visited
+{
+   color: #F0F0F0;
+}
+a:active
+{
+   color: #F0F0F0;
+}
+a:hover
+{
+   color: #715D5D;
+   text-decoration: underline;
+}
+</style>
+<style type="text/css">
+#Image1
+{
+   border: 0px #000000 solid;
+}
+</style>

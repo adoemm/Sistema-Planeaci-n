@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>Conforming HTML 4.01 Transitional Template</title>
+        <script src="Scripts/jquery-1.8.0.min.js" type="text/javascript"></script>
+        <script src="Scripts/jquery.msgBox.js" type="text/javascript"></script>
+        <link href="Styles/msgBoxLight.css" rel="stylesheet" type="text/css">
+
+        <script type="text/javascript">
+            function example1() {
+                alert("Hola mundo");
+                $.msgBox({
+                    title: "Selam / Hello",
+                    content: "Que hay fidel!",
+                    type: "info",
+                    opacity: 0.9
+                });
+                alert("Final");
+            }
+        </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <input type="button" value="Example 1" onclick="example1();">
+    </body>
+</html>

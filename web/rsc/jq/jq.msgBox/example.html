@@ -1,0 +1,89 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script language="javascript" type="text/javascript" src="Scripts/jquery-1.8.0.min.js"></script>
+        <script language="javascript" type="text/javascript" src="Scripts/jquery.msgBox.js"></script>
+        <link href="Styles/msgBoxLight.css" rel="stylesheet" type="text/css" media="screen">
+        
+        <script type="text/javascript">
+        $(function () {
+            $(window).scroll(function () {
+                var top = $(window).scrollTop();
+                $("div.social").css({ position: (top > 260 ? "fixed" : "absolute"), top: top > 260 ? 10 : 260 });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        function setCodeView(mainCode) {
+            var code = mainCode.split('');
+            var temp = "";
+            var spanRed = "<span style=\"color:red;\">";
+            var spanGreen = "<span style=\"color:green;\">";
+            var spanClose = "</span>";
+            var isOpen = false;
+            var lastIndex = 0;
+            for (var i = 0; i < code.length; i++) {
+                if (code[i] == '"' || code[i] == '\'') {
+                    temp += (isOpen ? code[i] + spanClose : spanRed + code[i]);
+                    lastIndex = i;
+                    isOpen = !isOpen;
+                }
+                else if (code[i] == ',' || code[i] == ':' || code[i] == '{' || code[i] == '}') {
+                    temp += spanGreen + code[i] + spanClose;
+                }
+                else if (code[i] == '<') {
+                    temp += "&#060";
+                }
+                else if (code[i] == '>') {
+                    temp += "&#062";
+                }
+                else if (code[i] == '\n') {
+                    temp += i == 0 ? "" : (i == code.length - 1 ? "" : "<br/>");
+                }
+                else if (code[i] == ' ') {
+                    temp += ' ';
+                }
+                else {
+                    temp += code[i];
+                }
+            }
+            return temp;
+        }
+
+        function SetCodeBlocks() {
+            $("div.codeBlock>code").each(function (index, domEle) {
+                var code = setCodeView($(this).html());
+                $(this).html(code);
+            });
+        }
+        $(function () {
+            SetCodeBlocks();
+        });
+    </script>
+
+        
+        <script type="text/javascript">
+            function example1() {
+                alert("Hola mundo");
+                $.msgBox({
+                    title: "Selam / Hello",
+                    content: "Que hay fidel!",
+                    type:"info",
+                    opacity:0.9
+                });
+                alert("Final");
+            }
+        </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <input type="button" value="Example 1" onclick="example1();">
+    </body>
+</html>
