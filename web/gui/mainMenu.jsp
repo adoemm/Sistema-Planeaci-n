@@ -12,8 +12,8 @@
 <%    try {
         if (fine) {
             //if (request.getParameter(WebUtil.encode(session, "imix")) == null) {
-            LinkedList<String> access4ThisPage = new LinkedList();
-            access4ThisPage.add("LoggedUser");
+            
+            String access4ThisPage="accessMain";
 
             LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
             if (UserUtil.isAValidUser(access4ThisPage, userAccess)) {
@@ -62,9 +62,8 @@
                     <table width="200" border="0" align="center">
                         <tr></tr>
                         <tr>
-                            <td><a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/mainPlanteles.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>">Planteles</a></td>
-                            <td>Reportes</td>
-                            
+                            <td><a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/plantelSelect.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>">Ficha Técnica</a></td>
+                         
                         </tr>
                         
                     </table>

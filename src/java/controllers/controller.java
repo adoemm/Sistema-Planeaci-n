@@ -60,16 +60,16 @@ public final class controller extends HttpServlet {
                     response.sendRedirect(PageParameters.getParameter("SiteOnMaintenanceURL").toString());
                 } else // <editor-fold defaultstate="collapsed" desc="Realizando LogIn de usuario">
                 //si proviene de la página  de login aqui se detectara y se validara al usuario
-                {
-                    if (request.getParameter("LogInPage") != null) {
+                 if (request.getParameter("LogInPage") != null) {
                         //aqui consulta el usuario en Base de Datos.
-                        if (request.getParameter("captcha").equals(session.getAttribute("captcha")) && request.getParameter("captcha").equalsIgnoreCase("") == false) {
+//                        if (request.getParameter("captcha").equals(session.getAttribute("captcha")) && request.getParameter("captcha").equalsIgnoreCase("") == false) {
+                        if (true) {
                             if (request.getParameter("user").equalsIgnoreCase("") == false && request.getParameter("pass").equalsIgnoreCase("") == false) {
 
                                 LinkedList infoUser = null;
                                 LinkedList<String> accessos = null;
 
-                                infoUser = quid.select_idUsuario(request.getParameter("user"), request.getParameter("pass"), "ACTIVO");
+                                infoUser = quid.selectIdUsuario(request.getParameter("user"), request.getParameter("pass"), "ACTIVO");
 
                                 if (infoUser != null) {
                                     session.removeAttribute("captcha");
@@ -81,9 +81,9 @@ public final class controller extends HttpServlet {
                                     session.setAttribute("FK_ID_Plantel", infoUser.get(2));
                                     //asignacion de permisos
                                     //LinkedList<String> accessos = new LinkedList();
-                                    accessos = quid.select_permisosPorUsuarios(infoUser.get(0).toString());
+                                    accessos = quid.selectPermisosUsuarios(infoUser.get(0).toString());
                                     session.setMaxInactiveInterval(3 * 60 * 60); // 2hrs * 60 min * 60 seg
-                                    accessos.add("LoggedUser");
+                                    
                                     //accesos del usaurio y parametros del mismo
                                     session.setAttribute("userAccess", accessos);
                                     SessionUtil.addIfNotExistSession(session);
@@ -109,8 +109,7 @@ public final class controller extends HttpServlet {
                         response.sendRedirect("/" + PageParameters.getParameter("appName") + PageParameters.getParameter("LogInPage"));
                         // </editor-fold> 
                     } else // <editor-fold defaultstate="collapsed" desc="Cerrando sesion">
-                    {
-                        if (request.getParameter("exit") != null) {
+                     if (request.getParameter("exit") != null) {
                             //session.invalidate();
                             this.clearNCloseSession(session, request, response, quid, out);
                             //quid.insertLog("SysLogOut", "exit", "", "", "", "");
@@ -118,8 +117,6 @@ public final class controller extends HttpServlet {
                             // </editor-fold>
                             // <editor-fold defaultstate="collapsed" desc="Revisando de que form viene">
                         }
-                    }
-                }
 
             } catch (Exception ex) {
                 Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);

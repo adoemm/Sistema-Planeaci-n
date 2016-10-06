@@ -25,4 +25,19 @@ public final class UserUtil {
         }
         return valid;
     }
+    
+    public static boolean isAValidUser(String permiso, LinkedList<String> userAccess) {
+        boolean valid = false;
+        if (userAccess != null) {
+            
+            Iterator<String> it = userAccess.iterator();
+            b:
+            while (it.hasNext()) {
+                if (permiso.equals(it.next())) {
+                    return true;
+                }
+            }
+        }
+        return valid;
+    }
 }

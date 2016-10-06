@@ -163,7 +163,8 @@ public final class QUID {
 
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="QUERY">
-    public final LinkedList select_idUsuario(String usuario, String password, String status) {
+//Metodo que retorna el usuario, nombre completo, idPlantel y rol
+    public final LinkedList selectIdUsuario(String usuario, String password, String status) {
         LinkedList listToSend = null;
         JSpreadConnectionPool jscp = null;
         Connection conn = null;
@@ -214,8 +215,9 @@ public final class QUID {
         }
         return listToSend;
     }
-    
-    public final LinkedList select_permisosPorUsuarios(String ID_Usuario) {
+
+    //Metodo que retorna los permisos de un Usuario.
+    public final LinkedList selectPermisosUsuarios(String ID_Usuario) {
         LinkedList listToSend = null;
         JSpreadConnectionPool jscp = null;
         Connection conn = null;
@@ -258,24 +260,25 @@ public final class QUID {
         }
         return listToSend;
     }
-    
-    
-     public final LinkedList getSelectPlantel() {
+
+    //retorna el idPlantel y nombrePlantel de la Tabla Plantel
+    public final LinkedList getSelectPlantel() {
         LinkedList listToSend = null;
+        LinkedList listAux = null;
         JSpreadConnectionPool jscp = null;
         Connection conn = null;
         String SQLSentence = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        LinkedList llaux = null;
 
         try {
             SQLSentence = ""
                     + " SELECT"
-                    + " P.nombre"
+                    + " P.ID_Plantel"
+                    + " ,P.nombre"
                     + " FROM PLANTEL P"
-                    +" ORDER BY nombre";
-                    
+                    + " ORDER BY nombre";
+
             jscp = JSpreadConnectionPool.getSingleInstance();
             conn = jscp.getConnectionFromPool();
             pstmt = conn.prepareStatement(SQLSentence);
@@ -283,7 +286,10 @@ public final class QUID {
             rs = pstmt.executeQuery();
             listToSend = new LinkedList();
             while (rs.next()) {
-                listToSend.add(rs.getString(1));
+                listAux = new LinkedList();
+                listAux.add(rs.getString(1));
+                listAux.add(rs.getString(2));
+                listToSend.add(listAux);
             }
 
             endConnection(jscp, conn, pstmt, rs);
@@ -293,6 +299,50 @@ public final class QUID {
             Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listToSend;
+    }
+
+    //Metodo que verifica si existe ficha Técnica de un plantel
+    public final boolean getFichaTecnica(int idPlantel) {
+        boolean existe = false;
+
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            SQLSentence = ""
+                    + "SELECT P.nombre "
+                    + " FROM PLANTEL P, "
+                    + " ACADEMICO A, "
+                    + " ETAPA E, "
+                    + " INFRAESTRUCTURA I"
+                    + " WHERE P.ID_Plantel=A.FK_ID_Plantel"
+                    + " AND P.ID_Plantel=E.FK_ID_Plantel"
+                    + " AND P.ID_Plantel=I.FK_ID_Plantel"
+                    + " AND P.ID_Plantel=?";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idPlantel);
+            rs = pstmt.executeQuery();
+
+            if (rs.getRow() == 0) {
+                existe=false;
+            } else {
+                existe=true;
+            }
+
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+            
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return existe;
     }
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
