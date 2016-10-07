@@ -21,8 +21,7 @@
                     String redirectURL = "" + PageParameters.getParameter("mainController") + "?exit=1";
                     response.sendRedirect(redirectURL);
                 } else {
-                    Iterator it = null;
-                    LinkedList listAux = null;
+                    
 %>
 <!DOCTYPE html>
 <html lang="<%=PageParameters.getParameter("Content-Language")%>">
@@ -88,6 +87,7 @@
     }
 } catch (Exception ex) {
     Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+    //Mensaje de Error para los errores en servidor.
 %>
 <%@ include file="/gui/pageComponents/handleUnExpectedError.jsp"%>
 </body>

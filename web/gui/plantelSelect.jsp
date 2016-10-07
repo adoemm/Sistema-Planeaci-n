@@ -8,7 +8,7 @@
 
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
-<jsp:useBean id="QUIDAux" scope="page" class="jspread.core.db.QUID"/>
+
 
 
 
@@ -22,8 +22,7 @@
                         String redirectURL = "" + PageParameters.getParameter("mainController") + "?exit=1";
                         response.sendRedirect(redirectURL);
                     } else {
-                        Iterator it = null;
-                        LinkedList listAux = null;
+                        
 %>
 <!DOCTYPE html>
 <html lang="<%=PageParameters.getParameter("Content-Language")%>">
@@ -39,19 +38,25 @@
 
             function addButtonDataSheet(idPlantel)
             {
-                 if (idPlantel !== null) {
+                if (idPlantel !== null) {
                     $.ajax({type: 'POST'
                         , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
                         , cache: false
                         , async: false
                         , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFuntions")%>/compruebaFichaTecnica.jsp"
                         , data: '<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=' + idPlantel
-                        , success: function(response) {
+                        , success: function (response) {
                             $('#wrapper').find('#divBody').find('#bodySelectPlantel').find('#selectPlantel').find('#divDataSheet').html(response);
                         }});
                 }
 
             }
+            function enviarInfotoAgregaFichaTecnica(form) {
+                    
+                    form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaFichaTecnica.jsp';
+                    form.submit();
+            }
+            
         </script>
     </head>
 
@@ -65,8 +70,9 @@
                 <p></p>
                 <table width="100%" height="25px" border="0" align="center" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td width="64%" height="50" align="left" valign="top">
-                            Menú Principal
+                        <td width="64%" height="25" align="left" valign="top">
+                            <a class="NVL" href="<%=PageParameters.getParameter("mainMenu")%>?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>"> Menú Principal</a>
+                            > Ficha Técnica
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>
@@ -76,10 +82,10 @@
                 <br>
                 <br>
                 <div id="bodySelectPlantel">
-                    <form name="selectPlantel" method="post" enctype="application/x-www-form-urlencoded">
+                    <form name="selectPlantel" id="selectPlantel" method="post" enctype="application/x-www-form-urlencoded">
                         <input type="hidden" name="<%=WebUtil.encode(session, "imix")%>" value="<%=WebUtil.encode(session, UTime.getTimeMilis())%>"/>
 
-                        <fieldset id="selectPlantel"style="width: 50%; align-items: center;  margin-left: 25%; margin-bottom: 5%; ">
+                        <fieldset id="fieldselectPlantel" style="width: 50%; align-items: center;  margin-left: 25%; margin-bottom: 5%; ">
                             <legend align="center">Seleccione el Plantel</legend>
                             <br>
                             <div style="margin-left: 30%">
@@ -91,15 +97,11 @@
                             <div id="divDataSheet"></div>
 
                         </fieldset>
-
-
-
                     </form>
-                    <div id="divFoot">
-                        <jsp:include page='<%=(PageParameters.getParameter("footer"))%>' />
-                    </div> 
-
-                </div>            
+                </div>
+                <div id="divFoot">
+                    <jsp:include page='<%=(PageParameters.getParameter("footer"))%>' />
+                </div> 
             </div>
         </div>
     </body>
@@ -108,19 +110,21 @@
 <<%
     }
 } else {
-    //System.out.println("Usuario No valido para esta pagina");
+    //Mensaje de Error para permisos de acceso a la pagina.
 %>                
 <%@ include file="/gui/pageComponents/invalidUser.jsp"%>
 <%    }
 } else {
-    //System.out.println("No se ha encontrado a imix");
+    //Mensaje de Error para sesiones caducadas 
 %>
 <%@ include file="/gui/pageComponents/invalidParameter.jsp"%>
 <%        }
     }
 } catch (Exception ex) {
     Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+    //Mensaje de Error para los errores en servidor.
 %>
+
 <%@ include file="/gui/pageComponents/handleUnExpectedError.jsp"%>
 </body>
 </html>

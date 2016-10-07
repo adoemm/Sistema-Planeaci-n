@@ -139,7 +139,7 @@ public final class SystemSettings {
 //            //PageParameters.addParameter("uploadArchivo", PageParameters.getParameter("mainContext") + "/uploadArchivo");
 //            //PageParameters.addParameter("leerArchivo", PageParameters.getParameter("mainContext") + "/leerArchivo");
 //            //styleFormCorrections URL
-//            PageParameters.addParameter("styleFormCorrections", PageParameters.getParameter("pageComponents") + "/styleFormCorrections.jsp");
+            PageParameters.addParameter("styleFormCorrections", PageParameters.getParameter("pageComponents") + "/styleFormCorrections.jsp");
 //            //dataTablesFullFunctionParameters URL
 //            PageParameters.addParameter("dataTablesFullFunctionParameters", PageParameters.getParameter("pageComponents") + "/dataTablesFullFunctionParameters.jsp");
 //            //dataTablesBasicFunctionParameters URL
