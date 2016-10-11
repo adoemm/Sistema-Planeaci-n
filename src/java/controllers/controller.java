@@ -20,6 +20,7 @@ import jspread.core.db.QUID;
 import jspread.core.util.PageParameters;
 import jspread.core.util.SessionUtil;
 import jspread.core.util.UTime;
+import jspread.core.util.UserUtil;
 import jspread.core.util.WebUtil;
 import systemSettings.SystemSettings;
 
@@ -83,7 +84,7 @@ public final class controller extends HttpServlet {
                                     //LinkedList<String> accessos = new LinkedList();
                                     accessos = quid.selectPermisosUsuarios(infoUser.get(0).toString());
                                     session.setMaxInactiveInterval(3 * 60 * 60); // 2hrs * 60 min * 60 seg
-                                    
+
                                     //accesos del usaurio y parametros del mismo
                                     session.setAttribute("userAccess", accessos);
                                     SessionUtil.addIfNotExistSession(session);
@@ -116,6 +117,15 @@ public final class controller extends HttpServlet {
                             response.sendRedirect(PageParameters.getParameter("mainContext") + PageParameters.getParameter("LogInPage").toString());
                             // </editor-fold>
                             // <editor-fold defaultstate="collapsed" desc="Revisando de que form viene">
+                        } else if (request.getParameter("FormForm") != null) {
+                            switch (request.getParameter("FormForm")) {
+                                case "agregaFichaTecnica":
+                                    this.insertaFichaTecnica(session, request, response, quid, out);
+                                    break;
+                            }
+                            // </editor-fold>
+                        } else {
+                            out.println("UPS.... Algo malo ha pasado");
                         }
 
             } catch (Exception ex) {
@@ -138,6 +148,150 @@ public final class controller extends HttpServlet {
         }
         session.invalidate();
         session = null;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Metodos del Sistema.">  
+
+    private void insertaFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "addDataSheett";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+            if (this.validaFormFichaTecnica(session, request, response, quid, out)) {
+                System.out.println("Validado");
+            }
+        } else {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted NO cuenta con el permiso para realizar esta acción.");
+        }
+    }
+
+    private boolean validaFormFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        boolean valido = false;
+        if (request.getParameter("valueNombrePlantel").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Nombre de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueDireccion").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Dirección.").forward(request, response);
+        } else if (request.getParameter("valueMunicipio").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Municipio.").forward(request, response);
+        } else if (request.getParameter("valueEstado").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Estado.").forward(request, response);
+        } else if (request.getParameter("valueCCT").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Clave de Trabajo C.C.T.").forward(request, response);
+        } else if (request.getParameter("valueAnioCreacion").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Año de Creación.").forward(request, response);
+        } else if (request.getParameter("valueTelefono").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Teléfono.").forward(request, response);
+        } else if (request.getParameter("valueCorreo").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Correo.").forward(request, response);
+        } else if (request.getParameter("valueLatitud").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Latitud.").forward(request, response);
+        } else if (request.getParameter("valueLongitud").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Longitud.").forward(request, response);
+        } else if (request.getParameter("valueDirector").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el nombre de Director de Plantel.").forward(request, response);
+        } else if (request.getParameter("valuePersonalAdmin").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Personal Administrativo.").forward(request, response);
+        } else if (request.getParameter("valueDocentes").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Docentes de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueMatricula").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Matrícula de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueTurno").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el Turno o Turnos de Plantel.").forward(request, response);
+        } else if (request.getParameter("valuePeriodoEscolar").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Periodo Escolar.").forward(request, response);
+        } else if (request.getParameter("valueCarrerasVigentes").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba las carreras vigentes de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueCarrerasLiquidadas").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba las carreras en Liquidación de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueSuperficiePredio").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba la Superficie Predio de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueSuperficieConstruida").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba la Superficie Construida de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueAulasDidacticas").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Aulas Didácticas de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueLaboratorios").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Laboratorios de Plantel.").forward(request, response);
+        } else if (request.getParameter("valueBiblioteca").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Biblioteca.").forward(request, response);
+        } else if (request.getParameter("valueTalleresComputo").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Talleres de Cómputo.").forward(request, response);
+        } else if (request.getParameter("valueAreaAdministrativa").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Área Administrativa.").forward(request, response);
+        } else if (request.getParameter("valueCafeteria").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Cafetería.").forward(request, response);
+        } else if (request.getParameter("valueSalaMedios").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Sala de Medios o Sala AudioVisual.").forward(request, response);
+        } else if (request.getParameter("valueCaseta").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Caseta de Vigilancia.").forward(request, response);
+        } else if (request.getParameter("valueBardaPerimetral").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Barda Perimetral.").forward(request, response);
+        } else if (request.getParameter("valueAreasDeportivas").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Areas Deportivas del Plantel.").forward(request, response);
+        } else {
+            valido = true;
+        }
+        return valido;
     }
 
     // </editor-fold>

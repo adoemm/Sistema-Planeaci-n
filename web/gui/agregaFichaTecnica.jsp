@@ -22,7 +22,9 @@
                         String redirectURL = "" + PageParameters.getParameter("mainController") + "?exit=1";
                         response.sendRedirect(redirectURL);
                     } else {
-                        
+                        LinkedList dataPlantel= null;
+                        int plantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
+                              dataPlantel= QUID.selectDataPlantel(plantel);
 %>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -36,7 +38,55 @@
             function noBack() {
                 window.history.forward();
             }
+             function enviarInfo() {
+                $.ajax({type: 'POST'
+                    , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
+                    , cache: false
+                    , async: false
+                    , url: '<%=PageParameters.getParameter("mainController")%>'
+                    , data: $('#agregaFichaTecnica').serialize()
+                    , success: function (response) {
+                        $('#wrapper').find('#divResult').html(response);
+                    }});
+            }
+            function resetForm() {
+                document.getElementById("valueNombrePlantel").value = '';
+                document.getElementById("valueDireccion").value = '';
+                document.getElementById("valueMunicipio").value = '';
+                document.getElementById("valueEstado").value = '';
+                document.getElementById("valueCCT").value = '';
+                document.getElementById("valueAnioCreacion").value = '';
+                document.getElementById("valueTelefono").value = '';
+                document.getElementById("valueCorreo").value = '';
+                document.getElementById("valueLatitud").value = '';
+                document.getElementById("valueLongitud").value = '';
+                document.getElementById("valueDirector").value = '';
+                document.getElementById("valuePersonalAdmin").value = '';
+                document.getElementById("valueDocentes").value = '';
+                document.getElementById("valueMatricula").value = '';
+                document.getElementById("valueTurno").value = '';
+                document.getElementById("valueCarrerasVigentes").value = '';
+                document.getElementById("valuePeriodoEscolar").value = '';
+                document.getElementById("valueCarrerasLiquidadas").value = '';
+                document.getElementById("valueSuperficiePredio").value = '';
+                document.getElementById("valueSuperficieConstruida").value = '';
+                document.getElementById("valueAulasDidacticas").value = '';
+                document.getElementById("valueLaboratorios").value = '';
+                document.getElementById("valueBiblioteca").value = '';
+                document.getElementById("valueTalleresComputo").value = '';
+                document.getElementById("valueOtrosTalleres").value = '';
+                document.getElementById("valueAreaAdministrativa").value = '';
+                document.getElementById("valueCafeteria").value = '';
+                document.getElementById("valueSalaMedios").value = '';
+                document.getElementById("valueCaseta").value = '';
+                document.getElementById("valueBardaPerimetral").value = '';
+                document.getElementById("valueAreasDeportivas").value = '';
+            }
+            
+            
         </script>
+        
+        
         <link href="../rsc/css/styleDataSheet.css" rel="stylesheet" type="text/css" /> 
     </head>
     <body>
@@ -64,18 +114,20 @@
                 <br>
                 <div id="bodyagregaFichaTecnica">
                     <form id="agregaFichaTecnica" name="agregaFichaTecnica">
-                        <fieldset  style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
-                            <legend align="center">Datos Generales</legend>
+                       <input type="hidden" name="FormForm" value="agregaFichaTecnica"/>
+                       <input type="hidden" name="parametro 2" value="Parametro 2 papi"/>
+                       <fieldset id="fieldDatosGenerales" name="fieldDatosGenerales"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
+                           <legend  id="tituloDatosGenerales"  align="center">Datos Generales</legend>
                         <div id="divDatosGenerales" name="divDatosGenerales">
                             <table>
                                 <tr>
                                     <td> 
                                         <label id="labelNombrePlantel"class="firstLabelDataSheet">Nombre del Plantel  </label>
-                                        <input id="valueNombrePlantel" class="form-control, InputDataSheet">                              
+                                        <input id="valueNombrePlantel" name="valueNombrePlantel"class="form-control, InputDataSheet" value="<%=dataPlantel.size()>0 ? dataPlantel.get(0).toString(): "" %>" title="Nombre de Plantel">                              
                                     </td>
                                     <td> 
                                         <label id="labelDireccion" class="labelSecondColumnDatosGenerales">Dirección</label>
-                                        <input id="valueDireccion" class="form-control, InputDataSheet">                              
+                                        <input id="valueDireccion" name="valueDireccion" class="form-control, InputDataSheet" value="<%=dataPlantel.size()>0 ? dataPlantel.get(1).toString(): "" %>" title="Dirección">                        
                                     </td>
                                    
                                 </tr>
@@ -83,11 +135,11 @@
                                     
                                     <td> 
                                         <label id="laberMunicipio"class="firstLabelDataSheet">Municipio</label>
-                                        <input id="valueMunicipio" class="form-control, InputDataSheet">                              
+                                        <input id="valueMunicipio" name="valueMunicipio" class="form-control, InputDataSheet" value="<%=dataPlantel.size()>0 ? dataPlantel.get(2).toString(): "" %>" title="Municipio">                       
                                     </td>
                                     <td> 
                                         <label id="labelEstado" class="labelSecondColumnDatosGenerales">Estado</label>
-                                        <input id="valueEstado" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales">                              
+                                        <input id="valueEstado" name="valueEstado" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales" value="<%=dataPlantel.size()>0 ? dataPlantel.get(3).toString(): "" %>" title="Estado">                            
                                     </td>
                                      
                                 </tr>
@@ -95,32 +147,32 @@
                                    
                                     <td> 
                                         <label id="labelCCT"class="firstLabelDataSheet">C.C.T</label>
-                                        <input id="valueCCT" class="form-control, InputDataSheet">                              
+                                        <input id="valueCCT"  name="valueCCT" class="form-control, InputDataSheet" value="<%=dataPlantel.size()>0 ? dataPlantel.get(5).toString(): "" %>" title="Clave de Centro de Trabajo">                          
                                     </td>
                                     <td> 
                                         <label id="labelAnioCreacion" class="labelSecondColumnDatosAcademicos">Año de Creación</label>
-                                        <input id="valueAnioCreacion" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales">                              
+                                        <input id="valueAnioCreacion"  name="valueAnioCreacion" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales" value="<%=dataPlantel.size()>0 ? dataPlantel.get(4).toString(): "" %>" title="Año de Creación">                     
                                     </td>
                                 </tr>
                                 <tr>
                                    <td> 
                                        <label id="labelTelefono" class="firstLabelDataSheet">Teléfono</label>
-                                       <input id="valueTelefono" class="form-control, InputDataSheet">                              
+                                       <input id="valueTelefono"  name="valueTelefono" class="form-control, InputDataSheet" value="<%=dataPlantel.size()>0 ? dataPlantel.get(6).toString(): "" %>" title="Teléfono">                         
                                     </td>
                                     <td> 
                                         <label id="labelCorreo" class="labelSecondColumnDatosGenerales">Correo</label>
-                                        <input id="valueCorreo" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales">                              
+                                        <input id="valueCorreo"  name="valueCorreo"class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales" value="<%=dataPlantel.size()>0 ? dataPlantel.get(7).toString(): "" %>" title="Correo">                            
                                     </td>
                                 </tr>
                                 
                                 <tr>
                                     <td> 
                                         <label  id="labelLatitud"class="firstLabelDataSheet">Latitud</label>
-                                        <input id="valueLatitud" class="form-control, InputDataSheet">                              
+                                        <input id="valueLatitud"  name="valueLatitud" class="form-control, InputDataSheet" value="<%=dataPlantel.size()>0 ? dataPlantel.get(8).toString(): "" %>" title="Latitud en Grados">                         
                                     </td>
                                     <td> 
                                         <label id="labelLongitud" class="labelSecondColumnDatosGenerales">Longitud</label>
-                                        <input id="valueLongitud" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales">                              
+                                        <input id="valueLongitud"  name="valueLongitud" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales" value="<%=dataPlantel.size()>0 ? dataPlantel.get(9).toString(): "" %>" title="Longitud en Grados">                              
                                     </td>
                                    
                                 </tr>
@@ -136,45 +188,45 @@
                                 <tr>
                                     <td> 
                                         <label id="labelDirector" class="firstLabelDataSheet">Director</label>
-                                        <input id="valueDirector" class="form-control, InputDataSheet">                              
+                                        <input id="valueDirector"  name="valueDirector" class="form-control, InputDataSheet" value="<%=dataPlantel.size()>0 ? dataPlantel.get(10).toString(): "" %>" title="Nombre del Director">                              
                                     </td>
                                    <td> 
                                         <label id="labelPersonalAdmin" class="labelSecondColumnDatosAcademicos">Personal Administrativo</label>
-                                        <input id="valuePersonalAdmin" class="form-control, InputDataSheet">                              
+                                        <input id="valuePersonalAdmin" name="valuePersonalAdmin" class="form-control, InputDataSheet" title="Número de Personal Administrativo">                              
                                     </td>
                                     <td> 
                                         <label id="labelDocentes" class="">Docentes</label>
-                                        <input id="valueDocentes" class="form-control, InputDataSheet">                              
+                                        <input id="valueDocentes" name="valueDocentes" class="form-control, InputDataSheet" title="Número de Docentes">                              
                                     </td>
                                 </tr>
                                 <tr>
                                     
                                     
                                     <td> 
-                                        <label id="labelMatricula" class="firstLabelDataSheet">Matricula</label>
-                                        <input id="valueMatricula" class="form-control, InputDataSheet">                              
+                                        <label id="labelMatricula" class="firstLabelDataSheet">Matrícula</label>
+                                        <input id="valueMatricula" name="valueMatricula" class="form-control, InputDataSheet" title="Cantidad de Alumnos">                              
                                     </td>
                                      <td> 
                                         <label id="labelTurno" class="labelSecondColumnDatosAcademicos">Turno</label>
-                                        <input id="valueTurno" class="form-control, InputDataSheet">                              
+                                        <input id="valueTurno"  name="valueTurno" class="form-control, InputDataSheet" title="Nombrar Turnos del Plantel">                              
                                     </td>
-                                    
-                                </tr>
-                                <tr>
-                                    <td> 
-                                        <label id="labelCarrerasVigentes" class="firstLabelDataSheet">Carreras Vigentes</label>
-                                        <input id="valueCarrerasVigentes" class="form-control, InputDataSheet">                              
-                                    </td>
-                                    
                                     <td> 
                                         <label id="labelPeriodoEscolar" class="labelSecondColumnDatosAcademicos">Periodo Escolar</label>
-                                        <input id="valuePeriodoEscolar" class="form-control, InputDataSheet">                              
-                                    </td>                              
+                                        <input id="valuePeriodoEscolar"  name="valuePeriodoEscolar" class="form-control, InputDataSheet" title="Periodo Escolar">                              
+                                    </td>        
                                 </tr>
                                 <tr>
-                                    <td> 
+                                    <td  colspan="2"> 
+                                        <label id="labelCarrerasVigentes" class="firstLabelDataSheet">Carreras Vigentes</label>
+                                        <input id="valueCarrerasVigentes" name="valueCarrerasVigentes" class="form-control, InputDataSheet" title="Describir Carreras del Plantel">                              
+                                    </td>
+                                    
+                                                          
+                                </tr>
+                                <tr>
+                                    <td  colspan="2"> 
                                         <label id="labelCarrerasLiquidadas" class="firstLabelDataSheet">Carreras Liquidadas</label>
-                                        <input id="valueCarrerasLiquidadas" class="form-control, InputDataSheet">                              
+                                        <input id="valueCarrerasLiquidadas" name="valueCarrerasLiquidadas" class="form-control, InputDataSheet" title="Describir Carreras en Liquidación">                              
                                     </td>
                                 </tr>
                                
@@ -189,15 +241,15 @@
                                  <tr style="height: 40px">
                                     <td> 
                                         <label id="labelSuperficiePredio" class="firstLabelDataSheet">Superficie del Predio </label>
-                                        <input id="valueSuperficiePredio" class="form-control, InputDataSheet, valueFirstColumnInfraestructura">                              
+                                        <input id="valueSuperficiePredio" name="valueSuperficiePredio" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Cantidad de Superficie">                              
                                     </td>
                                    <td> 
                                         <label id="labelSuperficieConstruida" class="labelInfraestructura">Superficie Construida </label>
-                                        <input id="valueSuperficieConstruida" class="form-control, InputDataSheet, valueSecondColumnInfraestructura">                              
+                                        <input id="valueSuperficieConstruida" name="valueSuperficieConstruida" class="form-control, InputDataSheet, valueSecondColumnInfraestructura" title="Cantidad de Superficie Construida">                              
                                     </td>
                                     <td> 
                                         <label id="labelAulasDidacticas" class="labelInfraestructura, labelthirdColumnInfraestructura">Aulas Didacticas</label>
-                                        <input id="valueAulasDidacticas" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2">                              
+                                        <input id="valueAulasDidacticas"  name="valueAulasDidacticas" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2" title="Número de Aulas Didacticas">                              
                                     </td>
                                     
                                 </tr>
@@ -205,30 +257,30 @@
                                     
                                     <td> 
                                         <label id="labelLaboratorios" class="firstLabelDataSheet">Laboratorios </label>
-                                        <input id="valueLaboratorios" class="form-control, InputDataSheet, valueFirstColumnInfraestructura">                              
+                                        <input id="valueLaboratorios"  name="valueLaboratorios" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Número de Laboratorios">                              
                                     </td>
                                      <td> 
                                         <label id="labelBiblioteca" class="labelInfraestructura">Biblioteca </label>
-                                        <input id="valueBiblioteca" class="form-control, InputDataSheet, valueSecondColumnInfraestructura">                              
+                                        <input id="valueBiblioteca"  name="valueBiblioteca" class="form-control, InputDataSheet, valueSecondColumnInfraestructura" title="¿Cuenta con Biblioteca? SI/NO">                              
                                     </td>
                                     <td> 
-                                        <label id="labelTalleresComputo" class="labelInfraestructura, labelthirdColumnInfraestructura">Talleres de Computo</label>
-                                        <input id="valueTalleresComputo" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2">                              
+                                        <label id="labelTalleresComputo" class="labelInfraestructura, labelthirdColumnInfraestructura">Talleres de Cómputo</label>
+                                        <input id="valueTalleresComputo"  name="valueTalleresComputo" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2" title="Número de Talleres de Cómputo">                              
                                     </td>
                                 </tr>
                                  <tr style="height: 40px">
                                     
                                     <td> 
                                         <label id="labelOtrosTalleres" class="firstLabelDataSheet">Otros Talleres</label>
-                                        <input id="valueOtrosTalleres" class="form-control, InputDataSheet, valueFirstColumnInfraestructura">                              
+                                        <input id="valueOtrosTalleres"  name="valueOtrosTalleres" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Describir si hay mas Talleres">                              
                                     </td>
                                     <td> 
                                         <label id="labelAreaAdministrativa" class="labelInfraestructura">Area Administrativa</label>
-                                        <input id="valueAreaAdministrativa" class="form-control, InputDataSheet, valueSecondColumnInfraestructura">                              
+                                        <input id="valueAreaAdministrativa"  name="valueAreaAdministrativa" class="form-control, InputDataSheet, valueSecondColumnInfraestructura" title="¿Cuenta con Area Administrativa?">                              
                                     </td>
                                     <td> 
-                                        <label id="labelCafeteria" class="labelInfraestructura, labelthirdColumnInfraestructura">Cafeteria</label>
-                                        <input id="valueCafeteria" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2">                              
+                                        <label id="labelCafeteria" class="labelInfraestructura, labelthirdColumnInfraestructura">Cafetería</label>
+                                        <input id="valueCafeteria"  name="valueCafeteria" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2" title="¿Cuenta con Cafetería?">                              
                                     </td>
                                     
                                 </tr>
@@ -236,15 +288,15 @@
                                 <tr>
                                     <td> 
                                         <label id="labelSalaMedios" class="firstLabelDataSheet">Sala de Medios o AudioVisual</label>
-                                        <input id="valueSalaMedios" class="form-control, InputDataSheet, valueFirstColumnInfraestructura">                              
+                                        <input id="valueSalaMedios"  name="valueSalaMedios" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="¿Cuenta Con Sala de Medios?">                              
                                     </td>
                                     <td> 
                                         <label id="labelCaseta" class="labelInfraestructura">Caseta de Vigilancia</label>
-                                        <input id="valueCaseta" class="form-control, InputDataSheet valueSecondColumnInfraestructura">                              
+                                        <input id="valueCaseta"  name="valueCaseta" class="form-control, InputDataSheet valueSecondColumnInfraestructura" title="¿Cuenta con Caseta de Vigilancia?">                              
                                     </td> 
                                      <td> 
                                         <label id="labelBardaPerimetral" class="labelInfraestructura, labelthirdColumnInfraestructura">Barda Perimetral</label>
-                                        <input id="valueBardaPerimetral" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2">                              
+                                        <input id="valueBardaPerimetral"  name="valueBardaPerimetral" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2" title="¿Cuenta con Barda Perimetral?">                              
                                     </td>
                                 </tr>
                                  <tr style="height: 40px">
@@ -253,7 +305,7 @@
                                    
                                     <td >
                                         <label id="labelAreasDeportivas" class="firstLabelDataSheet">Areas Deportivas</label>
-                                        <input id="valueAreasDeportivas" class="form-control, InputDataSheet, valueFirstColumnInfraestructura">
+                                        <input id="valueAreasDeportivas"  name="valueAreasDeportivas" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Numero de Áreas">
                                     </td>
                                 </tr>
                                 <tr>
@@ -263,10 +315,15 @@
                             
                         </div>
                         </fieldset>
-                        <div id="" name=""></div>
-                        <div id="" name=""></div>
+                       <div id="botonEnviarDiv"  >
+                           <input id="addDataSheet" type="button" class="btn btn-default" value="Guardar Ficha Técnica" name="addDataSheet" onclick="enviarInfo();">
+                           <input id="addEtapasDesarrollo" type="button" class="btn btn-default" value="Agregar Etapas de Desarrollo" name="addEtapasDesarrollo" onclick="enviarInfo();">
+                           <input id="cleanDataSheet" type="button" class="btn btn-default" value="Limpiar Ficha Técnica" name="cleanDataSheet" onclick="resetForm();">
+                            </div> 
+                       
                     </form>
-                    
+                   <div id="divResult"> 
+                    </div>  
                 </div>
                 <div id="divFoot">
                     <jsp:include page='<%=(PageParameters.getParameter("footer"))%>' />
@@ -277,7 +334,9 @@
 
 </html>
 <%
+  
     }
+        
 } else {
     //Mensaje de Error para permisos de acceso a la pagina.
 %>                

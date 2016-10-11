@@ -331,20 +331,139 @@ public final class QUID {
             rs = pstmt.executeQuery();
 
             if (rs.getRow() == 0) {
-                existe=false;
+                existe = false;
             } else {
-                existe=true;
+                existe = true;
             }
 
             endConnection(jscp, conn, pstmt, rs);
         } catch (Exception ex) {
-            
+
             endConnection(jscp, conn, pstmt, rs);
             Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
         }
         return existe;
     }
-    //</editor-fold> 
-    //<editor-fold defaultstate="collapsed" desc="INSERT">
-    //</editor-fold>
-}
+
+    public final LinkedList selectDataPlantel(int idPlantel) {
+
+        LinkedList listToSend = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            SQLSentence = ""
+                    + "SELECT P.nombre"
+                    + " , P.direccion"
+                    + " , M.municipio"
+                    + " , E.estado"
+                    + " , P.anioCreacion"
+                    + " , P.claveCentroTrabajo"
+                    + " , P.telefono"
+                    + " , P.correo"
+                    + " , P.latitud"
+                    + " , P.longitud"
+                    + " , P.nombreCompletoDirector"
+                    + " FROM PLANTEL P"
+                    + " , MUNICIPIO M"
+                    + " , ESTADO E"
+                    + " WHERE P.FK_ID_Estado=E.ID_Estado"
+                    + " AND P.FK_ID_Municipio=M.ID_Municipio"
+                    + " AND P.ID_Plantel=?";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idPlantel);
+            rs = pstmt.executeQuery();
+            listToSend = new LinkedList();
+            while (rs.next()) {
+                listToSend.add(rs.getString(1));
+                listToSend.add(rs.getString(2));
+                listToSend.add(rs.getString(3));
+                listToSend.add(rs.getString(4));
+                listToSend.add(rs.getString(5));
+                listToSend.add(rs.getString(6));
+                listToSend.add(rs.getString(7));
+                listToSend.add(rs.getString(8));
+                listToSend.add(rs.getString(9));
+                listToSend.add(rs.getString(10));
+                listToSend.add(rs.getString(11));
+            }
+
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+
+    }
+
+    public final LinkedList selectDataPlantel(String nombrePlantel) {
+
+        LinkedList listToSend = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            SQLSentence = ""
+                    + "SELECT P.nombre"
+                    + " , P.direccion"
+                    + " , M.municipio"
+                    + " , E.estado"
+                    + " , P.anioCreacion"
+                    + " , P.claveCentroTrabajo"
+                    + " , P.telefono"
+                    + " , P.correo"
+                    + " , P.latitud"
+                    + " , P.longitud"
+                    + " , P.nombreCompletoDirector"
+                    + " FROM PLANTEL P"
+                    + " , MUNICIPIO M"
+                    + " , ESTADO E"
+                    + " WHERE P.FK_ID_Estado=E.ID_Estado"
+                    + " AND P.FK_ID_Municipio=M.ID_Municipio"
+                    + " AND P.nombre=?";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, nombrePlantel);
+            rs = pstmt.executeQuery();
+            listToSend = new LinkedList();
+            while (rs.next()) {
+                listToSend.add(rs.getString(1));
+                listToSend.add(rs.getString(2));
+                listToSend.add(rs.getString(3));
+                listToSend.add(rs.getString(4));
+                listToSend.add(rs.getString(5));
+                listToSend.add(rs.getString(6));
+                listToSend.add(rs.getString(7));
+                listToSend.add(rs.getString(8));
+                listToSend.add(rs.getString(9));
+                listToSend.add(rs.getString(10));
+                listToSend.add(rs.getString(11));
+            }
+
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+    }
+        //</editor-fold> 
+        //<editor-fold defaultstate="collapsed" desc="INSERT">
+        //</editor-fold>
+    }

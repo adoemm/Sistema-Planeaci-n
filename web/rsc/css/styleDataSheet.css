@@ -163,3 +163,26 @@ and open the template in the editor.
 {
     width: 200px;
 }
+
+#valueCarrerasVigentes
+{
+    width: 70%;
+}
+
+#valueCarrerasLiquidadas
+{
+    width: 70%;
+}
+
+#addDataSheet
+{
+    margin-left: 10%;
+}
+#addEtapasDesarrollo
+{
+    margin-left: 16%;
+}
+#cleanDataSheet
+{
+    margin-left: 12%;
+}
