@@ -8,6 +8,7 @@
 <%@page import="jspread.core.util.WebUtil"%>
 <%@page import="jspread.core.util.UserUtil"%>
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
+<link href="../rsc/css/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> 
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
 <%    try {
         if (fine) {
@@ -48,7 +49,7 @@
                 <table width="100%" height="25px" border="0" align="center" cellpadding="0" cellspacing="0">
                     <tr>
                         <td width="64%" height="50" align="left" valign="top">
-                            Menú Principal
+                            <a>Menú Principal</a>
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>

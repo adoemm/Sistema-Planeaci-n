@@ -7,6 +7,7 @@
 
 
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
+<link href="../rsc/css/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> 
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
 
 
@@ -58,6 +59,7 @@
             }
             
         </script>
+        
     </head>
 
     <body>
@@ -72,7 +74,7 @@
                     <tr>
                         <td width="64%" height="25" align="left" valign="top">
                             <a class="NVL" href="<%=PageParameters.getParameter("mainMenu")%>?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>"> Menú Principal</a>
-                            > Ficha Técnica
+                            <a>> Ficha Técnica</a>
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>
@@ -85,10 +87,10 @@
                     <form name="selectPlantel" id="selectPlantel" method="post" enctype="application/x-www-form-urlencoded">
                         <input type="hidden" name="<%=WebUtil.encode(session, "imix")%>" value="<%=WebUtil.encode(session, UTime.getTimeMilis())%>"/>
 
-                        <fieldset id="fieldselectPlantel" style="width: 50%; align-items: center;  margin-left: 25%; margin-bottom: 5%; ">
+                        <fieldset id="fieldselectPlantel">
                             <legend align="center">Seleccione el Plantel</legend>
                             <br>
-                            <div style="margin-left: 30%">
+                            <div>
                                 <jsp:include page='<%=PageParameters.getParameter("ajaxFuntions") + "/getPlanteles.jsp"%>' flush = 'true'>
                                     <jsp:param name='onChange' value='addButtonDataSheet(this.value)' />
                                 </jsp:include> 
@@ -107,7 +109,7 @@
     </body>
 
 </html>
-<<%
+<%
     }
 } else {
     //Mensaje de Error para permisos de acceso a la pagina.

@@ -53,7 +53,7 @@ public final class SystemSettings {
                 //logo URL
                 PageParameters.addParameter("logo", PageParameters.getParameter("pageComponents") + "/logoInstitucional.jsp");
                 //barMenu URL
-                PageParameters.addParameter("barMenu", PageParameters.getParameter("pageComponents") + "/barMenu.jsp"); 
+                PageParameters.addParameter("barMenu", PageParameters.getParameter("pageComponents") + "/barMenu.jsp");
                 //footer URL
                 PageParameters.addParameter("footer", PageParameters.getParameter("pageComponents") + "/footerInstitucional.jsp");
 
@@ -66,16 +66,16 @@ public final class SystemSettings {
                 PageParameters.addParameter("gui", "/gui");
 //            PageParameters.addParameter("scanedFiles", PageParameters.getParameter("mainContext") + "/scanedFiles");
 //            //MainMenu URL
-            PageParameters.addParameter("mainMenu", PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/mainMenu.jsp");
+                PageParameters.addParameter("mainMenu", PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/mainMenu.jsp");
 //            //MainMenu ServLet
-            PageParameters.addParameter("mainMenuServLet", PageParameters.getParameter("gui") + "/mainMenu.jsp");
+                PageParameters.addParameter("mainMenuServLet", PageParameters.getParameter("gui") + "/mainMenu.jsp");
 //            //acceso ilegal URL
 //            PageParameters.addParameter("illegalAttempt", PageParameters.getParameter("mainContext") + "/JSpread/JSPTemplates/BlankSpreadTemplateUserIllegalAttempt.jsp");
 //            //error URL
 //            //PageParameters.addParameter("errorURL", PageParameters.getParameter("mainContext") + "http://www.google.com/ncr");
                 PageParameters.addParameter("errorURL", "http://cecytem.edomex.gob.mx/");
-            //LogInPage URL
-            PageParameters.addParameter("LogInPage", PageParameters.getParameter("gui") + "/login.jsp");
+                //LogInPage URL
+                PageParameters.addParameter("LogInPage", PageParameters.getParameter("gui") + "/login.jsp");
 //            //index URL
 //            PageParameters.addParameter("index", PageParameters.getParameter("mainContext") + "/index.jsp");
 //            //AJAXFunctions URL
@@ -123,7 +123,9 @@ public final class SystemSettings {
 //            //jqMsgBox - requiere licencia
 //            PageParameters.addParameter("jqMsgBox", PageParameters.getParameter("mainContext") + "/JSpread/JS/jqMsgBox");
 //            PageParameters.addParameter("jqAlerts", PageParameters.getParameter("mainContext") + "/JSpread/JS/jqAlerts");
-//            //google bar
+                //resources Bootstrap URL
+                PageParameters.addParameter("bootstrap", PageParameters.getParameter("cssRsc") + "/bootstrap-3.3.7-dist");
+                //google bar
                 PageParameters.addParameter("googleBarScript", PageParameters.getParameter("cssRsc") + "/google_bar/jquery.google_menu.js");
                 PageParameters.addParameter("googleBarCSS", PageParameters.getParameter("cssRsc") + "/google_bar/google_menu.css");
 //            //jqDataTables URL
@@ -139,7 +141,7 @@ public final class SystemSettings {
 //            //PageParameters.addParameter("uploadArchivo", PageParameters.getParameter("mainContext") + "/uploadArchivo");
 //            //PageParameters.addParameter("leerArchivo", PageParameters.getParameter("mainContext") + "/leerArchivo");
 //            //styleFormCorrections URL
-            PageParameters.addParameter("styleFormCorrections", PageParameters.getParameter("pageComponents") + "/styleFormCorrections.jsp");
+                PageParameters.addParameter("styleFormCorrections", PageParameters.getParameter("pageComponents") + "/styleFormCorrections.jsp");
 //            //dataTablesFullFunctionParameters URL
 //            PageParameters.addParameter("dataTablesFullFunctionParameters", PageParameters.getParameter("pageComponents") + "/dataTablesFullFunctionParameters.jsp");
 //            //dataTablesBasicFunctionParameters URL

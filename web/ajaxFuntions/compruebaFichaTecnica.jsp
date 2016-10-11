@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
+
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
 
 <%    try {
@@ -16,12 +17,12 @@
                 existeFicha = QUID.getFichaTecnica(idPlantel);
                 if (existeFicha != true) {
 %>
-<button type="button" onclick="enviarInfotoAgregaFichaTecnica(document.getElementById('selectPlantel'))" style="margin-left: 40%">Agregar Ficha Técnica</button>
+<button type="button" onclick="enviarInfotoAgregaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-left: 44%; margin-top: 2%;">Agregar Ficha Técnica</button>
 <%
 } else {
 %>
-<button type="button"style="margin-left: 20%">Modificar Ficha Técnica</button>
-<button type="button"style="margin-left:  0%">Imprimir Ficha Técnica</button>
+<button type="button" class="btn btn-default" style="margin-top: 2%; margin-left: 37%; margin-right: 2%;">Modificar Ficha Técnica</button>
+<button type="button" class="btn btn-default" style="margin-top: 2%;">Imprimir Ficha Técnica</button>
 
 <%
     }

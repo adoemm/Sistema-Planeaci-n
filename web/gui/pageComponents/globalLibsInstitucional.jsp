@@ -47,5 +47,6 @@
 <link href="<%out.print(PageParameters.getParameter("cssRsc").toString());%>/mainStyleInstitucional.css" rel="stylesheet" type="text/css" /> 
 <link href="<%out.print(PageParameters.getParameter("cssRsc").toString());%>/EstiloFormInstitucional.css" rel="stylesheet" type="text/css"/> 
 <link href="<%out.print(PageParameters.getParameter("cssRsc").toString());%>/prints.css" rel="stylesheet" type="text/css" /> 
+<!--<link href="<%out.print(PageParameters.getParameter("bootstrap").toString());%>/css/styleDataSheet.css" rel="stylesheet" type="text/css" /> -->
 
 <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////-->

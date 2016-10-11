@@ -1,0 +1,165 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 10, 2016, 12:38:38 PM
+    Author     : emmanuel
+*/
+
+
+/*
+    CSS Clases de la Ficha Técnica
+*/
+.InputDataSheet
+{
+    margin-left: 270px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    height: 25px;
+}
+
+.firstLabelDataSheet
+{
+    margin: 10px;
+    margin-right: 50px;
+}
+
+.labelSecondColumnDatosGenerales
+{
+    width: 120px;
+    margin-top: 10px;
+
+}
+
+.valuesSecondColumnDatosGenerales
+{
+    margin-left: 160px;
+    height: 25px;
+}
+.labelSecondColumnDatosAcademicos
+{
+    width: 195px;
+    margin: 10px;
+
+}
+.valuesSecondColumnDatosAcademincos
+{
+    margin-left: 230px;
+}
+
+.labelInfraestructura
+{
+    margin: 10px;
+}
+.valueFirstColumnInfraestructura, .valueSecondColumnInfraestructura, valueThirdColumnInfraestructura
+{
+    width: 100px;
+    margin-left: 270px;
+    margin-top: 5px;
+    height: 25px;
+}
+
+.valueThirdColumnInfraestructura2
+{
+    width: 100px;
+    margin-left: 200px;
+    margin-top: 5px;
+}
+.labelthirdColumnInfraestructura
+{
+    width: 166px;
+    margin-top: 10px;
+}
+
+
+
+
+/*
+    CSS de ID de la Ficha Técnica
+*/
+
+#valueNombrePlantel
+{
+    width: 300px;
+}
+
+
+
+#valueDireccion
+{
+    width: 400px;
+    margin-left: 160px;
+
+}
+#labelAnioCreacion
+{
+    width: 134px;
+    margin-left: 0px;
+    margin-top: 10px;
+}
+
+#valueDirector
+{
+    width: 300px;
+
+}
+
+#valueMatricula
+{
+    width: 100px;
+}
+
+#valueCarrerasLiquidadas
+{
+    width: 300px;
+}
+
+#valuePersonalAdmin
+{
+    width: 100px;
+    margin-left: 230px;
+
+}
+#valueTurno
+{
+    margin-left: 80px;
+    width: 250px;
+}
+#labelTurno
+{
+    width: 50px;
+}
+#labelPeriodoEscolar
+{
+    width: 126px;
+
+}
+
+#valuePeriodoEscolar
+{
+    margin-left: 160px;
+    width: 100px;
+}
+
+#labelDocentes
+{
+    margin: 10px;
+    width: 20px;
+}
+#valueDocentes
+{
+    width: 100px;
+    margin-left: 110px;
+}
+
+#labelSalaMedios
+{
+    width: 235px;
+}
+
+#valueOtrosTalleres
+{
+    width: 200px;
+}

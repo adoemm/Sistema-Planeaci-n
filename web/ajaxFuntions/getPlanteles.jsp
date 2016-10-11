@@ -6,8 +6,10 @@
 
 
 
+
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
 <jsp:useBean id="QUIDAux" scope="page" class="jspread.core.db.QUID"/>
+
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
 <%
 
@@ -23,9 +25,9 @@
     }
 %>
 
-<div>
-    <label for="idPlantel">*Plantel</label>
-    <select name="idPlantel" id="idPlantel" onChange="<%=onChange%>">
+<div style="width: 50%; margin-left: 39%">
+    <label  style="font-size: 21px;"for="idPlantel">Plantel</label>
+    <select  name="idPlantel" id="idPlantel" style="height: 25px; margin-left: 20px; font-size: 15px" onChange="<%=onChange%>">
         <option selected=""/>
         <%
             Iterator itI = null;
@@ -38,8 +40,8 @@
                 listAuxI = (LinkedList) itI.next();
               
         %>
-        <option value="<%=WebUtil.encode(session, listAuxI.get(0))%>"><%=listAuxI.get(1)%></option>
-x|        <%
+        <option value="<%=WebUtil.encode(session, listAuxI.get(0))%>" style="font-size: 15px;"><%=listAuxI.get(1)%></option>
+        <%
             }
         %>
 
