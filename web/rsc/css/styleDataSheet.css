@@ -186,3 +186,8 @@ and open the template in the editor.
 {
     margin-left: 12%;
 }
+
+#valueCafeteria, #valueBardaPerimetral
+{
+    margin-left: 199px;
+}

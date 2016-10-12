@@ -8,6 +8,7 @@ package jspread.core.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -463,7 +464,88 @@ public final class QUID {
         }
         return listToSend;
     }
-        //</editor-fold> 
-        //<editor-fold defaultstate="collapsed" desc="INSERT">
+    //</editor-fold> 
+    //<editor-fold defaultstate="collapsed" desc="INSERT">
+
+    public final Long trans_insert_Puntuacion(String FK_ID_Plantel, String FK_ID_Rubro, String puntuacion, String observaciones, String fechaRegistro,String estatus,String FK_ID_Usuario) {
+        Long idInserted = new Long(-1);
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+
+            SQLSentence = ""
+                    + " UPDATE PUNTUACION SET"
+                    + " estatus = ?"
+                    + " WHERE FK_ID_Rubro = ?"
+                    + " AND FK_ID_Plantel = ?";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            conn.setAutoCommit(false);
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, "0");
+            pstmt.setString(2, FK_ID_Rubro);
+            pstmt.setString(3, FK_ID_Plantel);
+            int rowCount = pstmt.executeUpdate();
+
+            SQLSentence = ""
+                    + " INSERT INTO PUNTUACION"
+                    + " ("
+                    + "  FK_ID_Plantel"
+                    + " , FK_ID_Rubro"
+                    + " , puntuacion"
+                    + " , observaciones"
+                    + " , fechaRegistro"
+                    + " , estatus"
+                    + " , FK_ID_Usuario"
+                    + ")"
+                    + " VALUES "
+                    + " ( ? "
+                    + " , ? "
+                    + " , ? "
+                    + " , ? "
+                    + " , ? "
+                    + " , ? "
+                    + " , ? "
+                    + ")";
+
+            pstmt = conn.prepareStatement(SQLSentence, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, FK_ID_Plantel);
+            pstmt.setString(2, FK_ID_Rubro);
+            pstmt.setString(3, puntuacion);
+            pstmt.setString(4, observaciones);
+            pstmt.setString(5, fechaRegistro);
+            pstmt.setString(6, estatus);
+            pstmt.setString(7, FK_ID_Usuario);
+
+            rowCount = pstmt.executeUpdate();
+
+            rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                idInserted = rs.getLong(1);
+            }
+            conn.commit();
+            conn.setAutoCommit(true);
+            endConnection(jscp, conn, pstmt);
+        } catch (Exception ex) {
+            idInserted = new Long(-1);
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return idInserted;
+    }
+
         //</editor-fold>
     }
+    

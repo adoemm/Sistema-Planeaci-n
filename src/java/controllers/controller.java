@@ -7,6 +7,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Parameter;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -61,7 +62,8 @@ public final class controller extends HttpServlet {
                     response.sendRedirect(PageParameters.getParameter("SiteOnMaintenanceURL").toString());
                 } else // <editor-fold defaultstate="collapsed" desc="Realizando LogIn de usuario">
                 //si proviene de la página  de login aqui se detectara y se validara al usuario
-                 if (request.getParameter("LogInPage") != null) {
+                {
+                    if (request.getParameter("LogInPage") != null) {
                         //aqui consulta el usuario en Base de Datos.
 //                        if (request.getParameter("captcha").equals(session.getAttribute("captcha")) && request.getParameter("captcha").equalsIgnoreCase("") == false) {
                         if (true) {
@@ -110,7 +112,8 @@ public final class controller extends HttpServlet {
                         response.sendRedirect("/" + PageParameters.getParameter("appName") + PageParameters.getParameter("LogInPage"));
                         // </editor-fold> 
                     } else // <editor-fold defaultstate="collapsed" desc="Cerrando sesion">
-                     if (request.getParameter("exit") != null) {
+                    {
+                        if (request.getParameter("exit") != null) {
                             //session.invalidate();
                             this.clearNCloseSession(session, request, response, quid, out);
                             //quid.insertLog("SysLogOut", "exit", "", "", "", "");
@@ -120,13 +123,15 @@ public final class controller extends HttpServlet {
                         } else if (request.getParameter("FormForm") != null) {
                             switch (request.getParameter("FormForm")) {
                                 case "agregaFichaTecnica":
-                                    this.insertaFichaTecnica(session, request, response, quid, out);
+                                    this.agregaFichaTecnica(session, request, response, quid, out);
                                     break;
                             }
                             // </editor-fold>
                         } else {
                             out.println("UPS.... Algo malo ha pasado");
                         }
+                    }
+                }
 
             } catch (Exception ex) {
                 Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,67 +157,30 @@ public final class controller extends HttpServlet {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Metodos del Sistema.">  
 
-    private void insertaFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
-        String access4Insert = "addDataSheett";
+    private void agregaFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "addDataSheet";
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
-            if (this.validaFormFichaTecnica(session, request, response, quid, out)) {
-                System.out.println("Validado");
+            if (this.validaFormFichaTecnica(session, request, response, quid, out)) 
+            {
+                
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msgNRedirectFull.jsp?title=Ficha Técnica&type=info&msg=Se ha Agregado Ficha Técnica de Plantel.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
             }
         } else {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
-                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted NO cuenta con el permiso para realizar esta acción.");
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
+
         }
     }
 
     private boolean validaFormFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
         boolean valido = false;
-        if (request.getParameter("valueNombrePlantel").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Nombre de Plantel.").forward(request, response);
-        } else if (request.getParameter("valueDireccion").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Dirección.").forward(request, response);
-        } else if (request.getParameter("valueMunicipio").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Municipio.").forward(request, response);
-        } else if (request.getParameter("valueEstado").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Estado.").forward(request, response);
-        } else if (request.getParameter("valueCCT").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Clave de Trabajo C.C.T.").forward(request, response);
-        } else if (request.getParameter("valueAnioCreacion").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Año de Creación.").forward(request, response);
-        } else if (request.getParameter("valueTelefono").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Teléfono.").forward(request, response);
-        } else if (request.getParameter("valueCorreo").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba un Correo.").forward(request, response);
-        } else if (request.getParameter("valueLatitud").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Latitud.").forward(request, response);
-        } else if (request.getParameter("valueLongitud").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba una Longitud.").forward(request, response);
-        } else if (request.getParameter("valueDirector").equals("")) {
-            this.getServletConfig().getServletContext().getRequestDispatcher(
-                    "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el nombre de Director de Plantel.").forward(request, response);
-        } else if (request.getParameter("valuePersonalAdmin").equals("")) {
+        
+        System.out.println(request.getParameter("valueBiblioteca"));
+        if (request.getParameter("valuePersonalAdmin").equals("")) {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
                     + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Personal Administrativo.").forward(request, response);
@@ -256,7 +224,7 @@ public final class controller extends HttpServlet {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
                     + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Laboratorios de Plantel.").forward(request, response);
-        } else if (request.getParameter("valueBiblioteca").equals("")) {
+        } else if (request.getParameter("valueBiblioteca").equals(" ")) {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
                     + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Biblioteca.").forward(request, response);
