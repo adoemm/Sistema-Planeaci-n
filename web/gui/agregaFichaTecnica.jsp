@@ -105,7 +105,7 @@
                 <div id="bodyagregaFichaTecnica">
                     <form id="agregaFichaTecnica" name="agregaFichaTecnica">
                        <input type="hidden" name="FormForm" value="agregaFichaTecnica"/>
-                       
+                       <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, plantel) %>"/>
                        <fieldset id="fieldDatosGenerales" name="fieldDatosGenerales"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
                            <legend  id="tituloDatosGenerales"  align="center">Datos Generales</legend>
                         <div id="divDatosGenerales" name="divDatosGenerales">
@@ -251,8 +251,8 @@
                                     </td>
                                      <td> 
                                         <label id="labelBiblioteca" class="labelInfraestructura">Biblioteca </label>
-                                        <select id="valueBiblioteca" name="valueBliblioteca" class="form-control, valueFirstColumnInfraestructura">
-                                            <option value=" " selected > </option>
+                                        <select id="valueBiblioteca" name="valueBiblioteca" class="form-control, valueFirstColumnInfraestructura" >
+                                            <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>
@@ -271,7 +271,7 @@
                                     <td> 
                                         <label id="labelAreaAdministrativa" class="labelInfraestructura">Area Administrativa</label>
                                         <select id="valueAreaAdministrativa" name="valueAreaAdministrativa" class="form-control, valueFirstColumnInfraestructura">
-                                            <option value=" " selected > </option>
+                                            <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>
@@ -279,7 +279,7 @@
                                     <td> 
                                         <label id="labelCafeteria" class="labelInfraestructura, labelthirdColumnInfraestructura">Cafetería</label>
                                        <select id="valueCafeteria" name="valueCafeteria" class="form-control, valueFirstColumnInfraestructura">
-                                            <option value=" " selected > </option>
+                                            <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select> 
@@ -291,7 +291,7 @@
                                     <td> 
                                         <label id="labelSalaMedios" class="firstLabelDataSheet">Sala de Medios o AudioVisual</label>
                                           <select id="valueSalaMedios" name="valueSalaMedios" class="form-control, valueFirstColumnInfraestructura">
-                                            <option value=" " selected > </option>
+                                            <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>                                  
@@ -299,7 +299,7 @@
                                     <td> 
                                         <label id="labelCaseta" class="labelInfraestructura">Caseta de Vigilancia</label>
                                         <select id="valueCaseta" name="valueCaseta" class="form-control, valueFirstColumnInfraestructura">
-                                            <option value=" " selected > </option>
+                                            <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>                            
@@ -307,7 +307,7 @@
                                      <td> 
                                         <label id="labelBardaPerimetral" class="labelInfraestructura, labelthirdColumnInfraestructura">Barda Perimetral</label>
                                         <select id="valueBardaPerimetral" name="valueBardaPerimetral" class="form-control, valueFirstColumnInfraestructura">
-                                            <option value=" " selected > </option>
+                                            <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>    

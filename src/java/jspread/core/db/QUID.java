@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import jspread.core.models.Transporter;
 import jspread.core.util.security.JHash;
 
 /**
@@ -467,85 +468,134 @@ public final class QUID {
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
 
-    public final Long trans_insert_Puntuacion(String FK_ID_Plantel, String FK_ID_Rubro, String puntuacion, String observaciones, String fechaRegistro,String estatus,String FK_ID_Usuario) {
-        Long idInserted = new Long(-1);
+    public final Transporter insertFichaTecnica(
+              String personalAdmin
+            , String docentes
+            , String matricula
+            , String turno
+            , String carrerasVigentes
+            , String carrerasLiquidas
+            , String fechaActualizacion
+            , String periodoEscolar
+            , String idPlantel
+            , String superficiePredio
+            , String superficieConstruccion
+            , String aulasDidacticas
+            , String laboratorios
+            , String talleresComputo
+            , String otrosTalleres
+            , String areaAdmin
+            , String biblioteca
+            , String salaAudio
+            , String casetaVigilancia
+            , String cafeteria
+            , String bardaPerimetral
+            , String areasDeportivas) {
+        Transporter tport = null;
         JSpreadConnectionPool jscp = null;
         Connection conn = null;
         String SQLSentence = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
         try {
 
             SQLSentence = ""
-                    + " UPDATE PUNTUACION SET"
-                    + " estatus = ?"
-                    + " WHERE FK_ID_Rubro = ?"
-                    + " AND FK_ID_Plantel = ?";
+                    + " INSERT INTO ACADEMICO ("
+                    + " personalAdmin"
+                    + " ,docentes"
+                    + " ,matricula"
+                    + " ,turno"
+                    + " ,carrerasVigentes"
+                    + " ,carrerasLiquidadas"
+                    + " ,fechaActualizacion"
+                    + " ,periodoEscolar"
+                    + " ,FK_ID_Plantel"
+                    + ")"
+                    + " VALUES ("
+                    + "  ?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " );"
+                    + " INSERT INTO INFRAESTRUCTURA("
+                    + "superficiePredio"
+                    + ",superficieConstruida"
+                    + ",aulasDidacticas"
+                    + ",laboratorios"
+                    + ",talleresComputo"
+                    + ",otrosTalleres"
+                    + ",areasAdmin"
+                    + ",biblioteca"
+                    + " ,salaAudio"
+                    + ",casetaVigilancia"
+                    + ",cafeteria"
+                    + ",bardaPerimetral"
+                    + ",areasDeportivas"
+                    + ",fechaActualizacion"
+                    + ",FK_ID_Plantel"
+                    + ")"
+                    + "VALUES ("
+                    + "?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ",?"
+                    + ");";
 
+       
             jscp = JSpreadConnectionPool.getSingleInstance();
             conn = jscp.getConnectionFromPool();
-            conn.setAutoCommit(false);
             pstmt = conn.prepareStatement(SQLSentence);
             pstmt.setQueryTimeout(statementTimeOut);
-            pstmt.setString(1, "0");
-            pstmt.setString(2, FK_ID_Rubro);
-            pstmt.setString(3, FK_ID_Plantel);
-            int rowCount = pstmt.executeUpdate();
-
-            SQLSentence = ""
-                    + " INSERT INTO PUNTUACION"
-                    + " ("
-                    + "  FK_ID_Plantel"
-                    + " , FK_ID_Rubro"
-                    + " , puntuacion"
-                    + " , observaciones"
-                    + " , fechaRegistro"
-                    + " , estatus"
-                    + " , FK_ID_Usuario"
-                    + ")"
-                    + " VALUES "
-                    + " ( ? "
-                    + " , ? "
-                    + " , ? "
-                    + " , ? "
-                    + " , ? "
-                    + " , ? "
-                    + " , ? "
-                    + ")";
-
-            pstmt = conn.prepareStatement(SQLSentence, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstmt.setQueryTimeout(statementTimeOut);
-            pstmt.setString(1, FK_ID_Plantel);
-            pstmt.setString(2, FK_ID_Rubro);
-            pstmt.setString(3, puntuacion);
-            pstmt.setString(4, observaciones);
-            pstmt.setString(5, fechaRegistro);
-            pstmt.setString(6, estatus);
-            pstmt.setString(7, FK_ID_Usuario);
-
-            rowCount = pstmt.executeUpdate();
-
-            rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                idInserted = rs.getLong(1);
-            }
-            conn.commit();
-            conn.setAutoCommit(true);
+            pstmt.setString(1, personalAdmin);
+            pstmt.setString(2, docentes);
+            pstmt.setString(3, matricula);
+            pstmt.setString(4, turno);
+            pstmt.setString(5, carrerasVigentes);
+            pstmt.setString(6, carrerasLiquidas);
+            pstmt.setString(7, fechaActualizacion);
+            pstmt.setString(8, periodoEscolar);
+            pstmt.setString(9, idPlantel);
+            pstmt.setString(10, superficiePredio);
+            pstmt.setString(11, superficieConstruccion);
+            pstmt.setString(12, aulasDidacticas);
+            pstmt.setString(13, laboratorios);
+            pstmt.setString(14, talleresComputo);
+            pstmt.setString(15, otrosTalleres);
+            pstmt.setString(16, areaAdmin);
+            pstmt.setString(17, biblioteca);
+            pstmt.setString(18, salaAudio);
+            pstmt.setString(19, casetaVigilancia);
+            pstmt.setString(20, cafeteria);
+            pstmt.setString(21, bardaPerimetral);
+            pstmt.setString(22, areasDeportivas);
+            pstmt.setString(23, fechaActualizacion);
+            pstmt.setString(24, idPlantel);
+            pstmt.executeUpdate();
+            tport = new Transporter(0, "El registro se creo correctamente");
             endConnection(jscp, conn, pstmt);
         } catch (Exception ex) {
-            idInserted = new Long(-1);
-            try {
-                conn.rollback();
-                endConnection(jscp, conn, pstmt);
-                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex1) {
-                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+            endConnection(jscp, conn, pstmt);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+            tport = new Transporter(1, "Error inesperado. " + ex.getMessage());
+
         }
-        return idInserted;
+        return tport;
     }
 
-        //</editor-fold>
-    }
-    
+    //</editor-fold>
+}

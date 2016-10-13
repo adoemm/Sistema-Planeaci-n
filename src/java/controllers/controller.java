@@ -8,6 +8,7 @@ package controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Parameter;
+import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import jspread.core.db.QUID;
+import jspread.core.models.Transporter;
 import jspread.core.util.PageParameters;
 import jspread.core.util.SessionUtil;
 import jspread.core.util.UTime;
@@ -161,12 +163,44 @@ public final class controller extends HttpServlet {
         String access4Insert = "addDataSheet";
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
-            if (this.validaFormFichaTecnica(session, request, response, quid, out)) 
-            {
+            if (this.validaFormFichaTecnica(session, request, response, quid, out)) {
                 
-                this.getServletConfig().getServletContext().getRequestDispatcher(
+                Transporter tport = quid.insertFichaTecnica(
+                          request.getParameter("valuePersonalAdmin")
+                        , request.getParameter("valueDocentes")
+                        , request.getParameter("valueMatricula")
+                        , request.getParameter("valueTurno")
+                        , request.getParameter("valueCarrerasVigentes")
+                        , request.getParameter("valueCarrerasLiquidadas")
+                        , UTime.calendar2aaaamd(Calendar.getInstance())
+                        , request.getParameter("valuePeriodoEscolar")
+                        , WebUtil.decode(session, request.getParameter("idPlantel"))
+                        , request.getParameter("valueSuperficiePredio")
+                        , request.getParameter("valueSuperficieConstruida")
+                        , request.getParameter("valueAulasDidacticas")
+                        , request.getParameter("valueLaboratorios")
+                        , request.getParameter("valueTalleresComputo")
+                        , request.getParameter("valueOtrosTalleres")
+                        , request.getParameter("valueAreaAdministrativa")
+                        , request.getParameter("valueBiblioteca")
+                        , request.getParameter("valueSalaMedios")
+                        , request.getParameter("valueCaseta")
+                        , request.getParameter("valueCafeteria")
+                        , request.getParameter("valueBardaPerimetral")
+                        , request.getParameter("valueAreasDeportivas")
+                );
+                              
+               if (tport.getCode() == 0) {
+                     this.getServletConfig().getServletContext().getRequestDispatcher(
                         "" + PageParameters.getParameter("msgUtil")
-                        + "/msgNRedirectFull.jsp?title=Ficha Técnica&type=info&msg=Se ha Agregado Ficha Técnica de Plantel.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
+                       + "/msgNRedirectFull.jsp?title=Ficha Técnica&type=info&msg=Se ha Agregado Ficha Técnica de Plantel.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
+                
+                    
+                } else {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error al actualizar los datos.").forward(request, response);
+                }
             }
         } else {
             this.getServletConfig().getServletContext().getRequestDispatcher(
@@ -178,8 +212,7 @@ public final class controller extends HttpServlet {
 
     private boolean validaFormFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
         boolean valido = false;
-        
-        System.out.println(request.getParameter("valueBiblioteca"));
+
         if (request.getParameter("valuePersonalAdmin").equals("")) {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
@@ -224,7 +257,7 @@ public final class controller extends HttpServlet {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
                     + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Laboratorios de Plantel.").forward(request, response);
-        } else if (request.getParameter("valueBiblioteca").equals(" ")) {
+        } else if (request.getParameter("valueBiblioteca").equals("")) {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
                     + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba si el Plantel tiene o no Biblioteca.").forward(request, response);
