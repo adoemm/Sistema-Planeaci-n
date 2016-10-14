@@ -318,10 +318,8 @@ public final class QUID {
                     + "SELECT P.nombre "
                     + " FROM PLANTEL P, "
                     + " ACADEMICO A, "
-                    + " ETAPA E, "
                     + " INFRAESTRUCTURA I"
                     + " WHERE P.ID_Plantel=A.FK_ID_Plantel"
-                    + " AND P.ID_Plantel=E.FK_ID_Plantel"
                     + " AND P.ID_Plantel=I.FK_ID_Plantel"
                     + " AND P.ID_Plantel=?";
 
@@ -331,11 +329,12 @@ public final class QUID {
             pstmt.setQueryTimeout(statementTimeOut);
             pstmt.setInt(1, idPlantel);
             rs = pstmt.executeQuery();
-
-            if (rs.getRow() == 0) {
-                existe = false;
+            if (rs.next()) {
+                 existe = true;
+                
             } else {
-                existe = true;
+                existe = false;
+                
             }
 
             endConnection(jscp, conn, pstmt, rs);
@@ -469,28 +468,7 @@ public final class QUID {
     //<editor-fold defaultstate="collapsed" desc="INSERT">
 
     public final Transporter insertFichaTecnica(
-              String personalAdmin
-            , String docentes
-            , String matricula
-            , String turno
-            , String carrerasVigentes
-            , String carrerasLiquidas
-            , String fechaActualizacion
-            , String periodoEscolar
-            , String idPlantel
-            , String superficiePredio
-            , String superficieConstruccion
-            , String aulasDidacticas
-            , String laboratorios
-            , String talleresComputo
-            , String otrosTalleres
-            , String areaAdmin
-            , String biblioteca
-            , String salaAudio
-            , String casetaVigilancia
-            , String cafeteria
-            , String bardaPerimetral
-            , String areasDeportivas) {
+            String personalAdmin, String docentes, String matricula, String turno, String carrerasVigentes, String carrerasLiquidas, String fechaActualizacion, String periodoEscolar, String idPlantel, String superficiePredio, String superficieConstruccion, String aulasDidacticas, String laboratorios, String talleresComputo, String otrosTalleres, String areaAdmin, String biblioteca, String salaAudio, String casetaVigilancia, String cafeteria, String bardaPerimetral, String areasDeportivas) {
         Transporter tport = null;
         JSpreadConnectionPool jscp = null;
         Connection conn = null;
@@ -556,7 +534,6 @@ public final class QUID {
                     + ",?"
                     + ");";
 
-       
             jscp = JSpreadConnectionPool.getSingleInstance();
             conn = jscp.getConnectionFromPool();
             pstmt = conn.prepareStatement(SQLSentence);

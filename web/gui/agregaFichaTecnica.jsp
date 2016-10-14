@@ -26,7 +26,7 @@
                         int plantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
                               dataPlantel= QUID.selectDataPlantel(plantel);
 %>
-<!DOCTYPE html>
+
 <!DOCTYPE html>
 <html lang="<%=PageParameters.getParameter("Content-Language")%>">
     <head>
@@ -38,7 +38,7 @@
             function noBack() {
                 window.history.forward();
             }
-             function enviarInfo() {
+             function enviarInfocontroller() {
                 $.ajax({type: 'POST'
                     , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
                     , cache: false
@@ -49,6 +49,13 @@
                         $('#wrapper').find('#divResult').html(response);
                     }});
             }
+            function enviarInfoToAgregaEtapaDesarrollo(form)
+            {
+              
+                        form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaEtapaDesarrollo.jsp';
+                        form.submit();
+            }
+            
             function resetForm() {
                 
                 document.getElementById("valuePersonalAdmin").value = '';
@@ -106,6 +113,7 @@
                     <form id="agregaFichaTecnica" name="agregaFichaTecnica">
                        <input type="hidden" name="FormForm" value="agregaFichaTecnica"/>
                        <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, plantel) %>"/>
+                        <input type="hidden" name="sesion" value="<%=WebUtil.encode(session, "imix") %>"/>
                        <fieldset id="fieldDatosGenerales" name="fieldDatosGenerales"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
                            <legend  id="tituloDatosGenerales"  align="center">Datos Generales</legend>
                         <div id="divDatosGenerales" name="divDatosGenerales">
@@ -330,15 +338,16 @@
                         </div>
                         </fieldset>
                        <div id="botonEnviarDiv"  >
-                           <input id="addDataSheet" type="button" class="btn btn-default" value="Guardar Ficha Técnica" name="addDataSheet" onclick="enviarInfo();">
-                           <input id="addEtapasDesarrollo" type="button" class="btn btn-default" value="Agregar Etapas de Desarrollo" name="addEtapasDesarrollo" onclick="enviarInfo();">
-                           <input id="cleanDataSheet" type="button" class="btn btn-default" value="Limpiar Ficha Técnica" name="cleanDataSheet" onclick="resetForm();">
+                           <input id="addDataSheet" type="button" class="btn btn-default" value="Guardar Ficha Técnica" name="addDataSheet" onclick="enviarInfocontroller();"/>
+                           <input id="addEtapasDesarrollo" type="button" class="btn btn-default" value="Agregar Etapas de Desarrollo" name="addEtapasDesarrollo" onclick="enviarInfoToAgregaEtapaDesarrollo(document.getElementById('agregaFichaTecnica'));"/>
+                           <input id="cleanDataSheet" type="button" class="btn btn-default" value="Limpiar Ficha Técnica" name="cleanDataSheet" onclick="resetForm();"/>
                             </div> 
                        
                     </form>
                    <div id="divResult"> 
                     </div>  
                 </div>
+                                   
                 <div id="divFoot">
                     <jsp:include page='<%=(PageParameters.getParameter("footer"))%>' />
                 </div> 
