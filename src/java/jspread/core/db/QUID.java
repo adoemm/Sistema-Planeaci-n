@@ -330,11 +330,11 @@ public final class QUID {
             pstmt.setInt(1, idPlantel);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                 existe = true;
-                
+                existe = true;
+
             } else {
                 existe = false;
-                
+
             }
 
             endConnection(jscp, conn, pstmt, rs);
@@ -464,9 +464,119 @@ public final class QUID {
         }
         return listToSend;
     }
+
+    public final LinkedList selectDataToDataSheet(int idPlantel) {
+
+        LinkedList listToSend = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            SQLSentence = ""
+                    + "SELECT P.nombre"
+                    + ", P.direccion"
+                    + ", M.municipio"
+                    + ", E.estado"
+                    + ", P.claveCentroTrabajo"
+                    + ", P.anioCreacion"
+                    + ", P.telefono"
+                    + ", P.correo"
+                    + ", P.latitud"
+                    + ", P.longitud"
+                    + ", P.nombreCompletoDirector"
+                    + ", A.personalAdmin"
+                    + ", A.docentes"
+                    + ", A.matricula"
+                    + ", A.turno"
+                    + ", A.periodoEscolar"
+                    + ", A.carrerasVigentes"
+                    + ", A.carrerasLiquidadas"
+                    + ", I.superficiePredio"
+                    + ", I.superficieConstruida"
+                    + ", I.aulasDidacticas"
+                    + ", I.laboratorios"
+                    + ", I.biblioteca"
+                    + ", I.talleresComputo"
+                    + ", I.otrosTalleres"
+                    + ", I.areasAdmin"
+                    + ", I.cafeteria"
+                    + ", I.salaAudio"
+                    + ", I.casetaVigilancia"
+                    + ", I.bardaPerimetral"
+                    + ", I.areasDeportivas"
+                    + ", A.ID_Academico"
+                    + ", I.ID_Infraestructura"
+                    + ", M.ID_Municipio"
+                    + ", E.ID_Estado"
+                    + " from PLANTEL P, ACADEMICO A, INFRAESTRUCTURA I, MUNICIPIO M, ESTADO E"
+                    + " WHERE A.FK_ID_Plantel=P.ID_Plantel"
+                    + " AND I.FK_ID_Plantel=P.ID_Plantel"
+                    + " AND P.FK_ID_Municipio=M.ID_Municipio"
+                    + " AND P.FK_ID_Estado=E.ID_Estado"
+                    + " AND A.fechaActualizacion=I.fechaActualizacion"
+                    + " AND P.ID_Plantel=?"
+                    + " AND A.fechaActualizacion=I.fechaActualizacion";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idPlantel);
+            rs = pstmt.executeQuery();
+            listToSend = new LinkedList();
+            while (rs.next()) {
+                listToSend.add(rs.getString(1));
+                listToSend.add(rs.getString(2));
+                listToSend.add(rs.getString(3));
+                listToSend.add(rs.getString(4));
+                listToSend.add(rs.getString(5));
+                listToSend.add(rs.getString(6));
+                listToSend.add(rs.getString(7));
+                listToSend.add(rs.getString(8));
+                listToSend.add(rs.getString(9));
+                listToSend.add(rs.getString(10));
+                listToSend.add(rs.getString(11));
+                listToSend.add(rs.getString(12));
+                listToSend.add(rs.getString(13));
+                listToSend.add(rs.getString(14));
+                listToSend.add(rs.getString(15));
+                listToSend.add(rs.getString(16));
+                listToSend.add(rs.getString(17));
+                listToSend.add(rs.getString(18));
+                listToSend.add(rs.getString(19));
+                listToSend.add(rs.getString(20));
+                listToSend.add(rs.getString(21));
+                listToSend.add(rs.getString(22));
+                listToSend.add(rs.getString(23));
+                listToSend.add(rs.getString(24));
+                listToSend.add(rs.getString(25));
+                listToSend.add(rs.getString(26));
+                listToSend.add(rs.getString(27));
+                listToSend.add(rs.getString(28));
+                listToSend.add(rs.getString(29));
+                listToSend.add(rs.getString(30));
+                listToSend.add(rs.getString(31));
+                listToSend.add(rs.getString(32));
+                listToSend.add(rs.getString(33));
+                listToSend.add(rs.getString(34));
+                listToSend.add(rs.getString(35));
+
+            }
+
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+    }
+
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
-
     public final Transporter insertFichaTecnica(
             String personalAdmin, String docentes, String matricula, String turno, String carrerasVigentes, String carrerasLiquidas, String fechaActualizacion, String periodoEscolar, String idPlantel, String superficiePredio, String superficieConstruccion, String aulasDidacticas, String laboratorios, String talleresComputo, String otrosTalleres, String areaAdmin, String biblioteca, String salaAudio, String casetaVigilancia, String cafeteria, String bardaPerimetral, String areasDeportivas) {
         Transporter tport = null;
@@ -570,6 +680,104 @@ public final class QUID {
             Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
             tport = new Transporter(1, "Error inesperado. " + ex.getMessage());
 
+        }
+        return tport;
+    }
+
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="UPDATE">
+    public final Transporter updateFichaTecnica(int idPlantel, int idAcademico, int idInfraestructura,String nombrePlantel, String direccion, String claveTrabajo, int anioCreacion, String telefono, String correo, String latitud, String longitud, String director, int personalAministrativo, int docentes, int matricula, String turno, String periodoEscolar, String carrerasVigentes, String carrerasLiquidadas, double superficiePredio, double superficieConstruccion, int aulasDidacticas, int laboratorios, String biblioteca, int talleresComputo, String otrosTalleres, String areaAdministrativa, String cafeteria, String salaAudio, String casetaVigilancia, String bardaPerimetral, int areasDeportivas, String fechaActualizacion
+    ) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        try {
+            SQLSentence = ""
+                    + "UPDATE  PLANTEL SET"
+                    + " nombre = ?"
+                    + ", direccion = ?"
+                    + ", claveCentroTrabajo = ?"
+                    + ", anioCreacion = ?"
+                    + ", telefono = ?"
+                    + ", correo = ?"
+                    + ", latitud = ?"
+                    + ", longitud = ?"
+                    + ", nombreCompletoDirector = ?"
+                    + " WHERE ID_Plantel = ?;"
+                    + " UPDATE ACADEMICO SET"
+                    + " personalAdmin = ?"
+                    + ", docentes = ?"
+                    + ", matricula = ?"
+                    + ", turno = ?"
+                    + ", periodoEscolar = ?"
+                    + ", carrerasVigentes = ?"
+                    + ", carrerasLiquidadas = ?"
+                    + ", fechaActualizacion = ?"
+                    + " WHERE ID_Academico = ?;"
+                    + " UPDATE INFRAESTRUCTURA SET"
+                    + " superficiePredio = ?"
+                    + ", superficieConstruida = ?"
+                    + ", aulasDidacticas = ?"
+                    + ", laboratorios = ?"
+                    + ", biblioteca = ?"
+                    + ", talleresComputo = ?"
+                    + ", otrosTalleres = ?"
+                    + ", areasAdmin = ?"
+                    + ", cafeteria = ?"
+                    + ", salaAudio = ?"
+                    + ", casetaVigilancia = ?"
+                    + ", bardaPerimetral = ?"
+                    + ", areasDeportivas = ?"
+                    + ", fechaActualizacion = ?"
+                    + " WHERE ID_Infraestructura = ?;";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, nombrePlantel);
+            pstmt.setString(2, direccion);
+            pstmt.setString(3, claveTrabajo);
+            pstmt.setInt(4, anioCreacion);
+            pstmt.setString(5, telefono);
+            pstmt.setString(6, correo);
+            pstmt.setString(7, latitud);
+            pstmt.setString(8, longitud);
+            pstmt.setString(9, director);
+            pstmt.setInt(10, idPlantel);
+            pstmt.setInt(11, personalAministrativo);
+            pstmt.setInt(12, docentes);
+            pstmt.setInt(13, matricula);
+            pstmt.setString(14, turno);
+            pstmt.setString(15, periodoEscolar);
+            pstmt.setString(16, carrerasVigentes);
+            pstmt.setString(17, carrerasLiquidadas);
+            pstmt.setString(18, fechaActualizacion);
+            pstmt.setInt(19, idAcademico);
+            pstmt.setDouble(20, superficiePredio);
+            pstmt.setDouble(21, superficieConstruccion);
+            pstmt.setInt(22, aulasDidacticas);
+            pstmt.setInt(23, laboratorios);
+            pstmt.setString(24, biblioteca);
+            pstmt.setInt(25, talleresComputo);
+            pstmt.setString(26, otrosTalleres);
+            pstmt.setString(27, areaAdministrativa);
+            pstmt.setString(28, cafeteria);
+            pstmt.setString(29, salaAudio);
+            pstmt.setString(30, casetaVigilancia);
+            pstmt.setString(31, bardaPerimetral);
+            pstmt.setInt(32, areasDeportivas);
+            pstmt.setString(33, fechaActualizacion);
+            pstmt.setInt(34, idInfraestructura);
+             int rowCount = pstmt.executeUpdate();
+            endConnection(jscp, conn, pstmt);
+            tport = new Transporter(0, "Filas afectadas: " + rowCount);
+            
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+            tport = new Transporter(1, "Error inesperado.");
         }
         return tport;
     }

@@ -17,12 +17,13 @@
                 existeFicha = QUID.getFichaTecnica(idPlantel);
                 if (existeFicha != true) {
 %>
-<button type="button" onclick="enviarInfotoAgregaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-left: 44%; margin-top: 2%;">Agregar Ficha Técnica</button>
+<button type="button" onclick="enviarInfoToAgregaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-left: 45%; margin-top: 10px;">Agregar Ficha Técnica</button>
 <%
 } else {
 %>
-<button type="button" class="btn btn-default" style="margin-top: 2%; margin-left: 37%; margin-right: 2%;">Modificar Ficha Técnica</button>
-<button type="button" class="btn btn-default" style="margin-top: 2%;">Imprimir Ficha Técnica</button>
+<button type="button" onclick="enviarInfoToModificaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-top: 2%; margin-left: 10%; margin-right: 7%;">Modificar Ficha Técnica</button>
+<button type="button" class="btn btn-default" style="margin-top: 2%; margin-left: 10%; margin-right: 7%;">Etapas de Desarrollo</button>
+<button type="button" class="btn btn-default" style="margin-top: 2%; margin-left: 10%;">Imprimir Ficha Técnica</button>
 
 <%
     }

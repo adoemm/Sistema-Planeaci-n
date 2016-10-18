@@ -34,6 +34,14 @@
             function noBack() {
                 window.history.forward();
             }
+            function resetForm() {
+                document.getElementById("valueNombreEtapa").value='';
+                document.getElementById("valueDescripccionEtapa").value='';
+                document.getElementById("valueFechaInicioEtapa").value='';
+                document.getElementById("valueFechaFinEtapa").value='';
+                document.getElementById("valueStatusEtapa").value='';
+                document.getElementById("valueTipoEtapa").value='';
+            }
            </script>
       <link href="../rsc/css/styleDataSheet.css" rel="stylesheet" type="text/css" /> 
     </head>
@@ -51,6 +59,7 @@
                             <a class="NVL" href="<%=PageParameters.getParameter("mainMenu")%>?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>"> Menú Principal</a>
                             >
                             <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/plantelSelect.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>"> Ficha Técnica</a>
+                            >
                             <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaFichaTecnica.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%><%=WebUtil.encode(session, "&idPlantel")%>=<%=idPlantel%>"> Agregar Ficha Técnica</a>
                             <a>> Agregar Etapa de Desarrollo</a>
                         </td>
@@ -89,25 +98,25 @@
                                 <tr>
                                     <td> 
                                         <label id="labelFechaInicioEtapa"class="firstLabelDataSheet">Fecha de Inicio  </label>
-                                        <input id="valueFechaInicioEtapa" name="valueFechaInicioEtapa"class="form-control, InputDataSheet" value="" title="Nombre de la Etapa">                              
+                                        <input id="valueFechaInicioEtapa" name="valueFechaInicioEtapa"class="form-control, InputDataSheet" value="" title="Fecha de Inicio de la Etapa">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
                                         <label id="labelFechaFinEtapa"class="firstLabelDataSheet">Fecha de Fin  </label>
-                                        <input id="valueFechaFinEtapa" name="valueFechaFinEtapa"class="form-control, InputDataSheet" value="" title="Nombre de la Etapa">                              
+                                        <input id="valueFechaFinEtapa" name="valueFechaFinEtapa"class="form-control, InputDataSheet" value="" title="Fecha de Finalización de la Etapa">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
-                                        <label id="labelStatus" class="labelInfraestructura">Status </label>
-                                        <select id="valueStatus" name="valueStatus" class="form-control, valueFirstColumnInfraestructura" >
+                                        <label id="labelStatusEtapa" class="labelInfraestructura">Status </label>
+                                        <select id="valueStatusEtapa" name="valueStatusEtapa" class="form-control, valueFirstColumnInfraestructura" style="margin-bottom: 8px; width: 175px; ">
                                             <option value="" selected > </option>
                                             <option value="Proceso">Proceso</option>
                                             <option value="Completa">Completa</option>
-                                            <option value="Pausada">Pausada</option>
+                                            <option value="Pausada">Cancelada</option>
                                         </select>
                                     </td>
                                    
@@ -115,8 +124,8 @@
                                 <tr>
                                     
                                     <td> 
-                                        <label id="labelTipoEtapa"class="firstLabelDataSheet">Descripcción de la Etapa</label>
-                                        <input id="valueTipoEtapa" name="valueTipoEtapa" class="form-control, InputDataSheet"  value="" title="Descripcción Etapa">                       
+                                        <label id="labelTipoEtapa"class="firstLabelDataSheet">Tipo de Etapa</label>
+                                        <input id="valueTipoEtapa" name="valueTipoEtapa" class="form-control, InputDataSheet"  value="" title="Tipo de Etapa">                       
                                     </td>
                                     
                                      
@@ -126,6 +135,11 @@
                         </div>
                             
                             </fieldset>
+                         <div id="botonEnviarDiv">
+                           <input id="addEtapaDesarrollo" type="button" class="btn btn-default" value="Guardar Ficha Técnica" name="addEtapaDesarrollo" onclick=""/>
+                           <input id="addActividadesDesarrollo" type="button" class="btn btn-default" value="Agregar Actividades de Desarrollo" name="addActividadesDesarrollo" onclick="enviarInfoToAgregaEtapaDesarrollo(document.getElementById('agregaFichaTecnica'));"/>
+                           <input id="cleanEtapaDesarrollo" type="button" class="btn btn-default" value="Limpiar Etapa de Desarrollo" name="cleanDataSheet" onclick="resetForm();"/>
+                        </div> 
                     </form>
                    <div id="divResult"> 
                     

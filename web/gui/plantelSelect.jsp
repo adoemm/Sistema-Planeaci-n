@@ -52,9 +52,15 @@
                 }
 
             }
-            function enviarInfotoAgregaFichaTecnica(form) {
+            function enviarInfoToAgregaFichaTecnica(form) {
                     
                     form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaFichaTecnica.jsp';
+                    form.submit();
+            }
+            
+             function enviarInfoToModificaFichaTecnica(form) {
+                    
+                    form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaFichaTecnica.jsp';
                     form.submit();
             }
             
@@ -96,7 +102,7 @@
                                 </jsp:include> 
                             </div>
                             <br>
-                            <div id="divDataSheet"></div>
+                            <div id="divDataSheet" style="margin-top: 10px"></div>
 
                         </fieldset>
                     </form>

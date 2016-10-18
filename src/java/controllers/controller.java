@@ -64,8 +64,7 @@ public final class controller extends HttpServlet {
                     response.sendRedirect(PageParameters.getParameter("SiteOnMaintenanceURL").toString());
                 } else // <editor-fold defaultstate="collapsed" desc="Realizando LogIn de usuario">
                 //si proviene de la página  de login aqui se detectara y se validara al usuario
-                {
-                    if (request.getParameter("LogInPage") != null) {
+                 if (request.getParameter("LogInPage") != null) {
                         //aqui consulta el usuario en Base de Datos.
 //                        if (request.getParameter("captcha").equals(session.getAttribute("captcha")) && request.getParameter("captcha").equalsIgnoreCase("") == false) {
                         if (true) {
@@ -114,8 +113,7 @@ public final class controller extends HttpServlet {
                         response.sendRedirect("/" + PageParameters.getParameter("appName") + PageParameters.getParameter("LogInPage"));
                         // </editor-fold> 
                     } else // <editor-fold defaultstate="collapsed" desc="Cerrando sesion">
-                    {
-                        if (request.getParameter("exit") != null) {
+                     if (request.getParameter("exit") != null) {
                             //session.invalidate();
                             this.clearNCloseSession(session, request, response, quid, out);
                             //quid.insertLog("SysLogOut", "exit", "", "", "", "");
@@ -127,13 +125,14 @@ public final class controller extends HttpServlet {
                                 case "agregaFichaTecnica":
                                     this.agregaFichaTecnica(session, request, response, quid, out);
                                     break;
+                                case "modificaFichaTecnica":
+                                    this.modificaFichaTecnica(session, request, response, quid, out);
+                                    break;
                             }
                             // </editor-fold>
                         } else {
                             out.println("UPS.... Algo malo ha pasado");
                         }
-                    }
-                }
 
             } catch (Exception ex) {
                 Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -164,38 +163,16 @@ public final class controller extends HttpServlet {
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
             if (this.validaFormFichaTecnica(session, request, response, quid, out)) {
-                
+
                 Transporter tport = quid.insertFichaTecnica(
-                          request.getParameter("valuePersonalAdmin")
-                        , request.getParameter("valueDocentes")
-                        , request.getParameter("valueMatricula")
-                        , request.getParameter("valueTurno")
-                        , request.getParameter("valueCarrerasVigentes")
-                        , request.getParameter("valueCarrerasLiquidadas")
-                        , UTime.calendar2aaaamd(Calendar.getInstance())
-                        , request.getParameter("valuePeriodoEscolar")
-                        , WebUtil.decode(session, request.getParameter("idPlantel"))
-                        , request.getParameter("valueSuperficiePredio")
-                        , request.getParameter("valueSuperficieConstruida")
-                        , request.getParameter("valueAulasDidacticas")
-                        , request.getParameter("valueLaboratorios")
-                        , request.getParameter("valueTalleresComputo")
-                        , request.getParameter("valueOtrosTalleres")
-                        , request.getParameter("valueAreaAdministrativa")
-                        , request.getParameter("valueBiblioteca")
-                        , request.getParameter("valueSalaMedios")
-                        , request.getParameter("valueCaseta")
-                        , request.getParameter("valueCafeteria")
-                        , request.getParameter("valueBardaPerimetral")
-                        , request.getParameter("valueAreasDeportivas")
+                        request.getParameter("valuePersonalAdmin"), request.getParameter("valueDocentes"), request.getParameter("valueMatricula"), request.getParameter("valueTurno"), request.getParameter("valueCarrerasVigentes"), request.getParameter("valueCarrerasLiquidadas"), UTime.calendar2aaaamd(Calendar.getInstance()), request.getParameter("valuePeriodoEscolar"), WebUtil.decode(session, request.getParameter("idPlantel")), request.getParameter("valueSuperficiePredio"), request.getParameter("valueSuperficieConstruida"), request.getParameter("valueAulasDidacticas"), request.getParameter("valueLaboratorios"), request.getParameter("valueTalleresComputo"), request.getParameter("valueOtrosTalleres"), request.getParameter("valueAreaAdministrativa"), request.getParameter("valueBiblioteca"), request.getParameter("valueSalaMedios"), request.getParameter("valueCaseta"), request.getParameter("valueCafeteria"), request.getParameter("valueBardaPerimetral"), request.getParameter("valueAreasDeportivas")
                 );
-                              
-               if (tport.getCode() == 0) {
-                     this.getServletConfig().getServletContext().getRequestDispatcher(
-                        "" + PageParameters.getParameter("msgUtil")
-                       + "/msgNRedirectFull.jsp?title=Ficha Técnica&type=info&msg=Se ha Agregado Ficha Técnica de Plantel.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
-                
-                    
+
+                if (tport.getCode() == 0) {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msgNRedirectFull.jsp?title=Ficha Técnica&type=info&msg=Se ha Agregado Ficha Técnica de Plantel.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
+
                 } else {
                     this.getServletConfig().getServletContext().getRequestDispatcher(
                             "" + PageParameters.getParameter("msgUtil")
@@ -294,6 +271,68 @@ public final class controller extends HttpServlet {
         }
         return valido;
     }
+    private void modificaFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "updateDataSheet";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+            if (this.validaFormFichaTecnica(session, request, response, quid, out)) {
+
+                Transporter tport = quid.updateFichaTecnica(
+                        Integer.parseInt(WebUtil.decode(session,request.getParameter("idPlantel")))
+                        , Integer.parseInt(WebUtil.decode(session,request.getParameter("idAcademico")))
+                        , Integer.parseInt(WebUtil.decode(session,request.getParameter("idInfraestructura")))
+                        , request.getParameter("valueNombrePlantel")
+                        , request.getParameter("valueDireccion")
+                        , request.getParameter("valueCCT")
+                        , Integer.parseInt(request.getParameter("valueAnioCreacion"))
+                        , request.getParameter("valueTelefono")
+                        , request.getParameter("valueCorreo")
+                        , request.getParameter("valueLatitud")
+                        , request.getParameter("valueLongitud")
+                        , request.getParameter("valueDirector")
+                        , Integer.parseInt(request.getParameter("valuePersonalAdmin"))
+                        , Integer.parseInt(request.getParameter("valueDocentes"))
+                        , Integer.parseInt(request.getParameter("valueMatricula"))
+                        , request.getParameter("valueTurno")
+                        , request.getParameter("valuePeriodoEscolar")
+                        , request.getParameter("valueCarrerasVigentes")
+                        , request.getParameter("valueCarrerasLiquidadas")
+                        , Double.parseDouble(request.getParameter("valueSuperficiePredio"))
+                        , Double.parseDouble(request.getParameter("valueSuperficieConstruida"))
+                        , Integer.parseInt(request.getParameter("valueAulasDidacticas"))
+                        , Integer.parseInt(request.getParameter("valueLaboratorios"))
+                        , request.getParameter("valueBiblioteca")
+                        , Integer.parseInt(request.getParameter("valueTalleresComputo"))
+                        , request.getParameter("valueOtrosTalleres")
+                        , request.getParameter("valueAreaAdministrativa")
+                        , request.getParameter("valueCafeteria")
+                        , request.getParameter("valueSalaMedios")
+                        , request.getParameter("valueCaseta")
+                        , request.getParameter("valueBardaPerimetral")
+                        , Integer.parseInt(request.getParameter("valueAreasDeportivas"))
+                        , UTime.calendar2aaaamd(Calendar.getInstance())
+                       
+                );
+
+                if (tport.getCode() == 0) {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msgNRedirectFull.jsp?title=Ficha Técnica&type=info&msg=Se ha Modificado Ficha Técnica de Plantel.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
+
+                } else {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error al actualizar los datos.").forward(request, response);
+                }
+            }
+        } else {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url=" + PageParameters.getParameter("mainMenu")).forward(request, response);
+
+        }
+    }
+    
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods.">
