@@ -575,10 +575,148 @@ public final class QUID {
         return listToSend;
     }
 
+    public final String selectNombrePlantel(int idPlantel) {
+
+        String nombrePlantel = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = ""
+                    + " SELECT P.nombre"
+                    + " FROM PLANTEL P"
+                    + " WHERE P.ID_Plantel=?";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idPlantel);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                nombrePlantel = rs.getString(1);
+            }
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nombrePlantel;
+    }
+
+    public final LinkedList selectEtapasDesarrollo(int idPlantel) {
+
+        LinkedList listToSend = null;
+        LinkedList listAux = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = ""
+                    + " SELECT E.numeroEtapa"
+                    + " , E.fechaFin"
+                    + " , E.nombreEtapa"
+                    + " , E.descripccion"
+                    + " , E.status"
+                    + " , E.avance"
+                    + " FROM ETAPA E"
+                    + " WHERE E.FK_ID_Plantel=?";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idPlantel);
+            rs = pstmt.executeQuery();
+
+            listToSend = new LinkedList();
+
+            while (rs.next()) {
+                listAux = new LinkedList();
+                listAux.add(rs.getString(1));
+                listAux.add(rs.getString(2).toString().substring(0, 4));
+                listAux.add(rs.getString(3));
+                listAux.add(rs.getString(4));
+                listAux.add(rs.getString(5));
+                listAux.add(rs.getString(6));
+                listToSend.add(listAux);
+            }
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+    }
+
+    //Método que Detecta la Etapa mas Reciente de un Plantel.
+    public final int selectNumeroEtapasDesarollo(int idPlantel) {
+
+        int etapas = 0;
+        LinkedList numeroEtapas = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = ""
+                    + " SELECT E.numeroEtapa"
+                    + " FROM ETAPA E"
+                    + " WHERE E.FK_ID_Plantel=?";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idPlantel);
+            rs = pstmt.executeQuery();
+            numeroEtapas = new LinkedList();
+
+            while (rs.next()) {
+                numeroEtapas.add(rs.getString(1));
+
+            }
+            for (int i = 0; i < numeroEtapas.size(); i++) {
+                int numeroEtapa = Integer.parseInt(numeroEtapas.get(i).toString());
+                if (numeroEtapa > etapas) {
+                    etapas = numeroEtapa;
+                }
+            }
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return etapas;
+    }
+
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
     public final Transporter insertFichaTecnica(
-            String personalAdmin, String docentes, String matricula, String turno, String carrerasVigentes, String carrerasLiquidas, String fechaActualizacion, String periodoEscolar, String idPlantel, String superficiePredio, String superficieConstruccion, String aulasDidacticas, String laboratorios, String talleresComputo, String otrosTalleres, String areaAdmin, String biblioteca, String salaAudio, String casetaVigilancia, String cafeteria, String bardaPerimetral, String areasDeportivas) {
+            String personalAdmin,
+            String docentes,
+            String matricula,
+            String turno,
+            String carrerasVigentes,
+            String carrerasLiquidas,
+            String fechaActualizacion,
+            String periodoEscolar,
+            String idPlantel,
+            String superficiePredio,
+            String superficieConstruccion,
+            String aulasDidacticas,
+            String laboratorios,
+            String talleresComputo,
+            String otrosTalleres,
+            String areaAdmin,
+            String biblioteca,
+            String salaAudio,
+            String casetaVigilancia,
+            String cafeteria,
+            String bardaPerimetral,
+            String areasDeportivas) {
         Transporter tport = null;
         JSpreadConnectionPool jscp = null;
         Connection conn = null;
@@ -684,9 +822,82 @@ public final class QUID {
         return tport;
     }
 
+    public final Transporter insertEtapaDesarrollo(int numeroEtapa,
+            String nombreEtapa,
+            String descripccionEtapa,
+            String fechaInicioEtapa,
+            String fechaFinEtapa,
+            String statusEtapa,
+            String fechaActualización,
+            String tipoEtapa,
+            double avanceEtapa,
+            int numeroActividades,
+            int idPlantel) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        try {
+
+            SQLSentence = ""
+                    + " INSERT INTO ETAPA ( "
+                    + " numeroEtapa"
+                    + " , nombreEtapa"
+                    + " , descripccion"
+                    + " , fechaInicio"
+                    + " , fechaFin"
+                    + " , status"
+                    + " , fechaActualizacion"
+                    + " , tipoEtapa"
+                    + " , avance"
+                    + " , numeroActividades"
+                    + " , FK_ID_Plantel"
+                    + ")"
+                    + " VALUES ("
+                    + " ?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " );";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, numeroEtapa);
+            pstmt.setString(2, nombreEtapa);
+            pstmt.setString(3, descripccionEtapa);
+            pstmt.setString(4, fechaInicioEtapa);
+            pstmt.setString(5, fechaFinEtapa);
+            pstmt.setString(6, statusEtapa);
+            pstmt.setString(7, fechaActualización);
+            pstmt.setString(8, tipoEtapa);
+            pstmt.setDouble(9, avanceEtapa);
+            pstmt.setInt(10, numeroActividades);
+            pstmt.setInt(11, idPlantel);
+            pstmt.executeUpdate();
+            tport = new Transporter(0, "El registro se creo correctamente");
+            endConnection(jscp, conn, pstmt);
+
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+            tport = new Transporter(1, "Error inesperado. " + ex.getMessage());
+
+        }
+        return tport;
+    }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="UPDATE">
-    public final Transporter updateFichaTecnica(int idPlantel, int idAcademico, int idInfraestructura,String nombrePlantel, String direccion, String claveTrabajo, int anioCreacion, String telefono, String correo, String latitud, String longitud, String director, int personalAministrativo, int docentes, int matricula, String turno, String periodoEscolar, String carrerasVigentes, String carrerasLiquidadas, double superficiePredio, double superficieConstruccion, int aulasDidacticas, int laboratorios, String biblioteca, int talleresComputo, String otrosTalleres, String areaAdministrativa, String cafeteria, String salaAudio, String casetaVigilancia, String bardaPerimetral, int areasDeportivas, String fechaActualizacion
+    public final Transporter updateFichaTecnica(int idPlantel, int idAcademico, int idInfraestructura, String nombrePlantel, String direccion, String claveTrabajo, int anioCreacion, String telefono, String correo, String latitud, String longitud, String director, int personalAministrativo, int docentes, int matricula, String turno, String periodoEscolar, String carrerasVigentes, String carrerasLiquidadas, double superficiePredio, double superficieConstruccion, int aulasDidacticas, int laboratorios, String biblioteca, int talleresComputo, String otrosTalleres, String areaAdministrativa, String cafeteria, String salaAudio, String casetaVigilancia, String bardaPerimetral, int areasDeportivas, String fechaActualizacion
     ) {
         Transporter tport = null;
         JSpreadConnectionPool jscp = null;
@@ -770,10 +981,10 @@ public final class QUID {
             pstmt.setInt(32, areasDeportivas);
             pstmt.setString(33, fechaActualizacion);
             pstmt.setInt(34, idInfraestructura);
-             int rowCount = pstmt.executeUpdate();
+            int rowCount = pstmt.executeUpdate();
             endConnection(jscp, conn, pstmt);
             tport = new Transporter(0, "Filas afectadas: " + rowCount);
-            
+
         } catch (Exception ex) {
             endConnection(jscp, conn, pstmt);
             Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);

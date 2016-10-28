@@ -58,8 +58,6 @@
             function resetForm() {
                 document.getElementById("valueNombrePlantel").value = '';
                 document.getElementById("valueDireccion").value = '';
-                document.getElementById("valueMunicipio").value = '';
-                document.getElementById("valueEstado").value = '';
                 document.getElementById("valueCCT").value = '';
                 document.getElementById("valueAnioCreacion").value = '';
                 document.getElementById("valueTelefono").value = '';
@@ -128,6 +126,8 @@
                         <input type="hidden" name="idInfraestructura" value="<%=WebUtil.encode(session, idInfraestructura) %>"/>
                         <input type="hidden" name="idMunicipio" value="<%=WebUtil.encode(session, idMunicipio) %>"/>
                         <input type="hidden" name="idEstado" value="<%=WebUtil.encode(session, idEstado) %>"/>
+                        <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
+                        <br>
                        <fieldset id="fieldDatosGenerales" name="fieldDatosGenerales"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
                            <legend  id="tituloDatosGenerales"  align="center">Datos Generales</legend>
                         <div id="divDatosGenerales" name="divDatosGenerales">
@@ -198,35 +198,62 @@
                             <div id="divDatosAcademicos" name="divDatosAcademicos">
                             <table>
                                 <tr>
-                                    <td> 
+                                   <td colspan="3"> 
                                         <label id="labelDirector" class="firstLabelDataSheet">Director</label>
                                         <input id="valueDirector"  name="valueDirector" class="form-control, InputDataSheet"   value="<%=infoDataSheet.size()>0 ? infoDataSheet.get(10).toString(): "" %>" title="Nombre del Director">                              
                                     </td>
-                                   <td> 
-                                        <label id="labelPersonalAdmin" class="labelSecondColumnDatosAcademicos">Personal Administrativo</label>
+                                   
+                                </tr>
+                                <tr>
+                                    
+                                    <td> 
+                                        <label id="labelPersonalAdmin" class="firstLabelDataSheet">Personal Administrativo</label>
                                         <input id="valuePersonalAdmin" name="valuePersonalAdmin" class="form-control, InputDataSheet" value="<%=infoDataSheet.size()>0 ? infoDataSheet.get(11).toString(): "" %>" title="Número de Personal Administrativo">                              
                                     </td>
                                     <td> 
                                         <label id="labelDocentes" class="">Docentes</label>
                                         <input id="valueDocentes" name="valueDocentes" class="form-control, InputDataSheet" value="<%=infoDataSheet.size()>0 ? infoDataSheet.get(12).toString(): "" %>" title="Número de Docentes">                              
                                     </td>
-                                </tr>
-                                <tr>
-                                    
-                                    
                                     <td> 
                                         <label id="labelMatricula" class="firstLabelDataSheet">Matrícula</label>
                                         <input id="valueMatricula" name="valueMatricula" class="form-control, InputDataSheet"  value="<%=infoDataSheet.size()>0 ? infoDataSheet.get(13).toString(): "" %>" title="Cantidad de Alumnos">                              
                                     </td>
+                                 </tr>
+                                <tr>
                                      <td> 
-                                        <label id="labelTurno" class="labelSecondColumnDatosAcademicos">Turno</label>
-                                        <input id="valueTurno"  name="valueTurno" class="form-control, InputDataSheet"  value="<%=infoDataSheet.size()>0 ? infoDataSheet.get(14).toString(): "" %>" title="Nombrar Turnos del Plantel">                              
+                                        <label id="labelTurno" class="firstLabelDataSheet">Turno </label>
+                                        <select id="valueTurno" name="valueTurno" class="form-control, valueFirstColumnInfraestructura">
+                                            <% String value= infoDataSheet.get(14).toString();
+                                                boolean flag1=false;
+                                                 boolean  flag2=false;
+                                                 boolean flag3=false;
+                                                 boolean flag4=false;
+                                                if(value.equals(""))
+                                                {
+                                                    flag1=true;
+                                                }else if(value.equals("Matutino"))
+                                                {
+                                                    flag2=true;
+                                                }else if(value.equals("Vespertino"))
+                                                {
+                                                    flag3=true;
+                                                }else if(value.equals("Matutino y Vespertino"))
+                                                {
+                                                    flag4=true;
+                                                }
+                                            %>
+                                            <option value="" <%if(flag1==true) { %>selected<%}%>> </option>
+                                            <option value="Matutino" <%if(flag2==true) { %>selected<%}%>>Matutino</option>
+                                            <option value="Vespertino" <%if(flag3==true) { %>selected<%}%>>Vespertino</option>
+                                            <option value="Matutino y Vespertino" <%if(flag4==true) { %>selected<%}%>>Matutino y Vespertino</option>
+                                        </select>
                                     </td>
-                                    <td> 
+                                    <td colspan="2"> 
                                         <label id="labelPeriodoEscolar" class="labelSecondColumnDatosAcademicos">Periodo Escolar</label>
                                         <input id="valuePeriodoEscolar"  name="valuePeriodoEscolar" class="form-control, InputDataSheet" value="<%=infoDataSheet.size()>0 ? infoDataSheet.get(15).toString(): "" %>" title="Periodo Escolar">                              
                                     </td>        
                                 </tr>
+                               
                                 <tr>
                                     <td  colspan="2"> 
                                         <label id="labelCarrerasVigentes" class="firstLabelDataSheet">Carreras Vigentes</label>
@@ -274,10 +301,10 @@
                                      <td> 
                                         <label id="labelBiblioteca" class="labelInfraestructura">Biblioteca </label>
                                         <select id="valueBiblioteca" name="valueBiblioteca" class="form-control, valueFirstColumnInfraestructura">
-                                            <% String value= infoDataSheet.get(22).toString();
-                                                boolean flag1=false;
-                                                 boolean  flag2=false;
-                                                 boolean flag3=false;
+                                            <% value= infoDataSheet.get(22).toString();
+                                                 flag1=false;
+                                                   flag2=false;
+                                                 flag3=false;
                                                 if(value.equals(""))
                                                 {
                                                     flag1=true;
@@ -443,8 +470,8 @@
                         </fieldset>
                        <div id="botonEnviarDiv"  >
                            <input id="addDataSheet" type="button" class="btn btn-default" value="Guardar Ficha Técnica" name="addDataSheet" onclick="enviarInfocontroller();"/>
-                          
-                           <input id="cleanDataSheet" type="button" class="btn btn-default" value="Limpiar Ficha Técnica" name="cleanDataSheet" onclick="resetForm();"/>
+                           
+                          <!-- <input id="cleanDataSheet" type="button" class="btn btn-default" value="Limpiar Ficha Técnica" name="cleanDataSheet" onclick="resetForm();"/>-->
                             </div> 
                        
                     </form>

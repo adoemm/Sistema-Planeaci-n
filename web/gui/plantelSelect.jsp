@@ -63,7 +63,11 @@
                     form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaFichaTecnica.jsp';
                     form.submit();
             }
-            
+            function enviarInfoToConsultaEtapaDesarrollo(form) {
+                    
+                    form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaEtapaDesarrollo.jsp';
+                    form.submit();
+            }
         </script>
         
     </head>
@@ -80,7 +84,8 @@
                     <tr>
                         <td width="64%" height="25" align="left" valign="top">
                             <a class="NVL" href="<%=PageParameters.getParameter("mainMenu")%>?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>"> Menú Principal</a>
-                            <a>> Ficha Técnica</a>
+                            >
+                            <a> Ficha Técnica</a>
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>

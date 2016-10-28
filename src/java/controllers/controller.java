@@ -22,6 +22,7 @@ import jspread.core.db.QUID;
 import jspread.core.models.Transporter;
 import jspread.core.util.PageParameters;
 import jspread.core.util.SessionUtil;
+import jspread.core.util.StringUtil;
 import jspread.core.util.UTime;
 import jspread.core.util.UserUtil;
 import jspread.core.util.WebUtil;
@@ -127,6 +128,9 @@ public final class controller extends HttpServlet {
                                     break;
                                 case "modificaFichaTecnica":
                                     this.modificaFichaTecnica(session, request, response, quid, out);
+                                    break;
+                                case "agregaEtapaDesarrollo":
+                                    this.agregaEtapaDesarrollo(session, request, response, quid, out);
                                     break;
                             }
                             // </editor-fold>
@@ -271,6 +275,7 @@ public final class controller extends HttpServlet {
         }
         return valido;
     }
+
     private void modificaFichaTecnica(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
         String access4Insert = "updateDataSheet";
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
@@ -278,40 +283,7 @@ public final class controller extends HttpServlet {
             if (this.validaFormFichaTecnica(session, request, response, quid, out)) {
 
                 Transporter tport = quid.updateFichaTecnica(
-                        Integer.parseInt(WebUtil.decode(session,request.getParameter("idPlantel")))
-                        , Integer.parseInt(WebUtil.decode(session,request.getParameter("idAcademico")))
-                        , Integer.parseInt(WebUtil.decode(session,request.getParameter("idInfraestructura")))
-                        , request.getParameter("valueNombrePlantel")
-                        , request.getParameter("valueDireccion")
-                        , request.getParameter("valueCCT")
-                        , Integer.parseInt(request.getParameter("valueAnioCreacion"))
-                        , request.getParameter("valueTelefono")
-                        , request.getParameter("valueCorreo")
-                        , request.getParameter("valueLatitud")
-                        , request.getParameter("valueLongitud")
-                        , request.getParameter("valueDirector")
-                        , Integer.parseInt(request.getParameter("valuePersonalAdmin"))
-                        , Integer.parseInt(request.getParameter("valueDocentes"))
-                        , Integer.parseInt(request.getParameter("valueMatricula"))
-                        , request.getParameter("valueTurno")
-                        , request.getParameter("valuePeriodoEscolar")
-                        , request.getParameter("valueCarrerasVigentes")
-                        , request.getParameter("valueCarrerasLiquidadas")
-                        , Double.parseDouble(request.getParameter("valueSuperficiePredio"))
-                        , Double.parseDouble(request.getParameter("valueSuperficieConstruida"))
-                        , Integer.parseInt(request.getParameter("valueAulasDidacticas"))
-                        , Integer.parseInt(request.getParameter("valueLaboratorios"))
-                        , request.getParameter("valueBiblioteca")
-                        , Integer.parseInt(request.getParameter("valueTalleresComputo"))
-                        , request.getParameter("valueOtrosTalleres")
-                        , request.getParameter("valueAreaAdministrativa")
-                        , request.getParameter("valueCafeteria")
-                        , request.getParameter("valueSalaMedios")
-                        , request.getParameter("valueCaseta")
-                        , request.getParameter("valueBardaPerimetral")
-                        , Integer.parseInt(request.getParameter("valueAreasDeportivas"))
-                        , UTime.calendar2aaaamd(Calendar.getInstance())
-                       
+                        Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel"))), Integer.parseInt(WebUtil.decode(session, request.getParameter("idAcademico"))), Integer.parseInt(WebUtil.decode(session, request.getParameter("idInfraestructura"))), request.getParameter("valueNombrePlantel"), request.getParameter("valueDireccion"), request.getParameter("valueCCT"), Integer.parseInt(request.getParameter("valueAnioCreacion")), request.getParameter("valueTelefono"), request.getParameter("valueCorreo"), request.getParameter("valueLatitud"), request.getParameter("valueLongitud"), request.getParameter("valueDirector"), Integer.parseInt(request.getParameter("valuePersonalAdmin")), Integer.parseInt(request.getParameter("valueDocentes")), Integer.parseInt(request.getParameter("valueMatricula")), request.getParameter("valueTurno"), request.getParameter("valuePeriodoEscolar"), request.getParameter("valueCarrerasVigentes"), request.getParameter("valueCarrerasLiquidadas"), Double.parseDouble(request.getParameter("valueSuperficiePredio")), Double.parseDouble(request.getParameter("valueSuperficieConstruida")), Integer.parseInt(request.getParameter("valueAulasDidacticas")), Integer.parseInt(request.getParameter("valueLaboratorios")), request.getParameter("valueBiblioteca"), Integer.parseInt(request.getParameter("valueTalleresComputo")), request.getParameter("valueOtrosTalleres"), request.getParameter("valueAreaAdministrativa"), request.getParameter("valueCafeteria"), request.getParameter("valueSalaMedios"), request.getParameter("valueCaseta"), request.getParameter("valueBardaPerimetral"), Integer.parseInt(request.getParameter("valueAreasDeportivas")), UTime.calendar2aaaamd(Calendar.getInstance())
                 );
 
                 if (tport.getCode() == 0) {
@@ -332,7 +304,82 @@ public final class controller extends HttpServlet {
 
         }
     }
-    
+
+    private void agregaEtapaDesarrollo(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "addStage";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+            if (this.validaFormAgregaEtapaDesarrollo(session, request, response, quid, out)) {
+                
+                Transporter tport = quid.insertEtapaDesarrollo(
+                        Integer.parseInt(WebUtil.decode(session, request.getParameter("numeroEtapa"))),
+                        request.getParameter("valueNombreEtapa"),
+                        request.getParameter("valueDescripcionStage"),
+                        request.getParameter("valueFechaInicioEtapa"),
+                        request.getParameter("valueFechaFinEtapa"),
+                        request.getParameter("valueStatusEtapa"),
+                        UTime.calendar2aaaamd(Calendar.getInstance()),
+                        request.getParameter("valueTipoEtapa"),
+                        0.0,
+                        Integer.parseInt(request.getParameter("valueNumeroActividades")),
+                        Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel"))));
+                if (tport.getCode() == 0) {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msgNRedirectFull.jsp?title=Etapas de Desarrollo&type=info&msg=Se ha Agregado una Etapa de Desarrollo al Plantel.&url="
+                            + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaEtapaDesarrollo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel")).forward(request, response);
+
+                } else {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error Agregar Etapa de Desarrollo.").forward(request, response);
+                }
+            }
+        } else {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url="
+                    + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaEtapaDesarrollo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel")).forward(request, response);
+
+        }
+    }
+
+    private boolean validaFormAgregaEtapaDesarrollo(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        boolean valido = false;
+
+        if (request.getParameter("valueNombreEtapa").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor Nombre de la Etapa.").forward(request, response);
+        } else if (request.getParameter("valueDescripcionStage").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor la descripcción de la Etapa.").forward(request, response);
+        } else if (!UTime.validaFecha(request.getParameter("valueFechaInicioEtapa"))) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Correctamente la Fecha de Inicio.").forward(request, response);
+        } else if (!UTime.validaFecha(request.getParameter("valueFechaFinEtapa"))) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Correctamente la Fecha de Finalización.").forward(request, response);
+        } else if (request.getParameter("valueStatusEtapa").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor coloque un Estatus de la Etapa.").forward(request, response);
+        } else if (request.getParameter("valueTipoEtapa").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el Tipo de Etapa.").forward(request, response);
+        } else if (!StringUtil.isValidDouble(request.getParameter("valueNumeroActividades"))) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el número de Actividades para la Etapa.").forward(request, response);
+        } else {
+            valido = true;
+        }
+        return valido;
+    }
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods.">

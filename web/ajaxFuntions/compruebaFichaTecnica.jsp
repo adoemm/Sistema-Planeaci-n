@@ -22,7 +22,7 @@
 } else {
 %>
 <button type="button" onclick="enviarInfoToModificaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-top: 2%; margin-left: 10%; margin-right: 7%;">Modificar Ficha Técnica</button>
-<button type="button" class="btn btn-default" style="margin-top: 2%; margin-left: 10%; margin-right: 7%;">Etapas de Desarrollo</button>
+<button type="button" onclick="enviarInfoToConsultaEtapaDesarrollo(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-top: 2%; margin-left: 10%; margin-right: 7%;">Etapas de Desarrollo</button>
 <button type="button" class="btn btn-default" style="margin-top: 2%; margin-left: 10%;">Imprimir Ficha Técnica</button>
 
 <%

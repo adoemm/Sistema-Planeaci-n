@@ -1,0 +1,72 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 26, 2016, 6:38:03 PM
+    Author     : emmanuel
+*/
+
+#valueNombreEtapa
+{
+    width: 340px;
+    height: 30px;
+    margin-left: 270px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+
+#valueDescripcionStage
+{
+    margin-left: 270px;
+    width: 340px;
+    height: 80px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+#valueFechaInicioEtapa, #valueFechaFinEtapa
+{
+    font-size: 12px;
+    width: 115px;
+    margin-left: 270px;
+    margin-bottom: 15px;
+    height: 30px;
+}
+#valueStatusEtapa
+{
+    margin-bottom: 15px;
+    width: 160px;
+    margin-left: 270px;
+    font-size: 12px;
+    height: 30px;
+}
+#valueTipoEtapa
+{
+    height: 30px;
+    margin-left: 270px;
+    width: 340px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+#addEtapaDesarrollo
+{
+    margin-left: 45%;
+}
+#valueNumeroEtapa
+{
+    width: 50px;
+    height: 30px;
+    margin-left: 270px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+#valueNumeroActividades
+{
+    width: 70px;
+    height: 30px;
+    margin-left: 270px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}

@@ -23,8 +23,8 @@
                         response.sendRedirect(redirectURL);
                     } else {
                         LinkedList dataPlantel= null;
-                        int plantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
-                              dataPlantel= QUID.selectDataPlantel(plantel);
+                        int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
+                              dataPlantel= QUID.selectDataPlantel(idPlantel);
 %>
 
 <!DOCTYPE html>
@@ -112,8 +112,10 @@
                 <div id="bodyagregaFichaTecnica">
                     <form id="agregaFichaTecnica" name="agregaFichaTecnica">
                        <input type="hidden" name="FormForm" value="agregaFichaTecnica"/>
-                       <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, plantel) %>"/>
+                       <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, idPlantel) %>"/>
                         <input type="hidden" name="sesion" value="<%=WebUtil.encode(session, "imix") %>"/>
+                        <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
+                        <br>
                        <fieldset id="fieldDatosGenerales" name="fieldDatosGenerales"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
                            <legend  id="tituloDatosGenerales"  align="center">Datos Generales</legend>
                         <div id="divDatosGenerales" name="divDatosGenerales">
@@ -184,34 +186,43 @@
                             <div id="divDatosAcademicos" name="divDatosAcademicos">
                             <table>
                                 <tr>
-                                    <td> 
+                                    <td colspan="3"> 
                                         <label id="labelDirector" class="firstLabelDataSheet">Director</label>
                                         <input id="valueDirector"  name="valueDirector" class="form-control, InputDataSheet"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(10).toString(): "" %>" title="Nombre del Director">                              
                                     </td>
+                                </tr>
+                                <tr>
                                    <td> 
-                                        <label id="labelPersonalAdmin" class="labelSecondColumnDatosAcademicos">Personal Administrativo</label>
+                                        <label id="labelPersonalAdmin" class="firstLabelDataSheet">Personal Administrativo</label>
                                         <input id="valuePersonalAdmin" name="valuePersonalAdmin" class="form-control, InputDataSheet" title="Número de Personal Administrativo">                              
                                     </td>
                                     <td> 
                                         <label id="labelDocentes" class="">Docentes</label>
                                         <input id="valueDocentes" name="valueDocentes" class="form-control, InputDataSheet" title="Número de Docentes">                              
                                     </td>
+                                     <td> 
+                                        <label id="labelMatricula" class="firstLabelDataSheet">Matrícula</label>
+                                        <input id="valueMatricula" name="valueMatricula" class="form-control, InputDataSheet" title="Cantidad de Alumnos">                              
+                                    </td>
                                 </tr>
                                 <tr>
                                     
                                     
-                                    <td> 
-                                        <label id="labelMatricula" class="firstLabelDataSheet">Matrícula</label>
-                                        <input id="valueMatricula" name="valueMatricula" class="form-control, InputDataSheet" title="Cantidad de Alumnos">                              
-                                    </td>
+                                   
                                      <td> 
-                                        <label id="labelTurno" class="labelSecondColumnDatosAcademicos">Turno</label>
-                                        <input id="valueTurno"  name="valueTurno" class="form-control, InputDataSheet" title="Nombrar Turnos del Plantel">                              
+                                        <label id="labelTurno" class="firstLabelDataSheet">Turno </label>
+                                        <select id="valueTurno" name="valueTurno" class="form-control, valueFirstColumnInfraestructura" >
+                                            <option value="" selected > </option>
+                                            <option value="Matutino">Matutino</option>
+                                            <option value="Vespertino">Vespertino</option>
+                                            <option value="Matutino y Vespertino">Matutino y Vespertino</option>
+                                        </select>
                                     </td>
-                                    <td> 
+                                    <td colspan="2"> 
                                         <label id="labelPeriodoEscolar" class="labelSecondColumnDatosAcademicos">Periodo Escolar</label>
                                         <input id="valuePeriodoEscolar"  name="valuePeriodoEscolar" class="form-control, InputDataSheet" title="Periodo Escolar">                              
-                                    </td>        
+                                    </td>  
+                                    
                                 </tr>
                                 <tr>
                                     <td  colspan="2"> 

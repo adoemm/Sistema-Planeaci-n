@@ -82,33 +82,40 @@ and open the template in the editor.
 
 #valueNombrePlantel
 {
-    width: 300px;
+    width: 210px;
 }
 
 
 
 #valueDireccion
 {
-    width: 400px;
+    width: 500px;
     margin-left: 160px;
 
 }
-#labelAnioCreacion
+#labelAnioCreacion, #labelDireccion, #labelEstado, #labelCorreo, #labelLongitud
 {
-    width: 134px;
+    width: 138px;
     margin-left: 0px;
     margin-top: 10px;
+}
+#valueAnioCreacion, #valueDireccion, #valueEstado, #valueCorreo, #valueLongitud
+{
+    margin: 5px;
+    margin-left: 170px;
 }
 
 #valueDirector
 {
-    width: 300px;
-
+    width: 545px;
+    margin-left: 270px;
 }
 
 #valueMatricula
 {
+
     width: 100px;
+    margin-left: 160px;
 }
 
 #valueCarrerasLiquidadas
@@ -119,44 +126,47 @@ and open the template in the editor.
 #valuePersonalAdmin
 {
     width: 100px;
-    margin-left: 230px;
+    margin-left: 270px;
 
 }
 #valueTurno
 {
-    margin-left: 80px;
-    width: 250px;
+    margin-left: 270px;
+    width: 204px;
 }
 #labelTurno
 {
     width: 50px;
+    margin-left: 190px;
+    margin-top: 10px;
 }
 #labelPeriodoEscolar
 {
-    width: 126px;
-
+    width: 130px;
+    margin-left: 80px;
 }
 
 #valuePeriodoEscolar
 {
-    margin-left: 160px;
     width: 100px;
+    margin-left: 240px;
 }
 
 #labelDocentes
 {
     margin: 10px;
-    width: 20px;
+    margin-left: 130px;
+    width: 75px;
 }
 #valueDocentes
 {
     width: 100px;
-    margin-left: 110px;
+    margin-left: 240px;
 }
 
 #labelSalaMedios
 {
-    width: 235px;
+    width: 242px;
 }
 
 #valueOtrosTalleres
@@ -176,7 +186,7 @@ and open the template in the editor.
 
 #addDataSheet
 {
-    margin-left: 10%;
+    margin-left: 25%;
 }
 #addEtapasDesarrollo
 {
@@ -184,10 +194,30 @@ and open the template in the editor.
 }
 #cleanDataSheet
 {
-    margin-left: 12%;
+    margin-right: 25%;
 }
 
 #valueCafeteria, #valueBardaPerimetral
 {
     margin-left: 199px;
 }
+
+#valueCorreo
+{
+    width:300px; 
+}
+#labelPersonalAdmin
+{
+    width: 230px;
+}
+#labelTalleresComputo
+{
+    width: 172px;
+}
+
+#labelMatricula
+{
+    margin-left: 40px;
+    width: 95px;
+}
+

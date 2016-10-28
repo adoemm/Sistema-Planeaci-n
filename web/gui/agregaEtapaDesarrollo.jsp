@@ -10,17 +10,17 @@
 <%    try {
         if (fine) {
              
-            if (request.getParameter("sesion") != null) {
-                String access4ThisPage = "accessToAddDataSheet";
+            if (request.getParameter(WebUtil.encode(session, "imix")) != null) {
+                String access4ThisPage = "accessToAddStage";
                 LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
                 if (UserUtil.isAValidUser(access4ThisPage, userAccess)) {
                     if (PageParameters.getParameter("SiteOnMaintenance").equals("true")) {
                         String redirectURL = "" + PageParameters.getParameter("mainController") + "?exit=1";
                         response.sendRedirect(redirectURL);
                     } else {
-                        
-                        int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
-                        
+                       
+                        int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter(WebUtil.encode(session, "idPlantel"))));
+                        int numeroEtapa= QUID.selectNumeroEtapasDesarollo(idPlantel)+1;
 %>
 <!DOCTYPE html>
 
@@ -42,8 +42,20 @@
                 document.getElementById("valueStatusEtapa").value='';
                 document.getElementById("valueTipoEtapa").value='';
             }
+            function enviarInfocontroller() {
+                $.ajax({type: 'POST'
+                    , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
+                    , cache: false
+                    , async: false
+                    , url: '<%=PageParameters.getParameter("mainController")%>'
+                    , data: $('#agregaEtapaDesarrollo').serialize()
+                    , success: function (response) {
+                        $('#wrapper').find('#divResult').html(response);
+                    }});
+            }
            </script>
       <link href="../rsc/css/styleDataSheet.css" rel="stylesheet" type="text/css" /> 
+      <link href="../rsc/css/styleAddStage.css" rel="stylesheet" type="text/css" /> 
     </head>
     <body>
          <div id="wrapper">
@@ -60,8 +72,9 @@
                             >
                             <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/plantelSelect.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>"> Ficha Técnica</a>
                             >
-                            <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaFichaTecnica.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%><%=WebUtil.encode(session, "&idPlantel")%>=<%=idPlantel%>"> Agregar Ficha Técnica</a>
-                            <a>> Agregar Etapa de Desarrollo</a>
+                            <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaEtapaDesarrollo.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>">Etapa de Desarrollo</a>
+                            >
+                            <a> Agregar Etapa de Desarrollo</a>
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>
@@ -72,17 +85,31 @@
                 <br>
                 <div id="bodyagregaEtapaDesarrollo">
                     <form id="agregaEtapaDesarrollo" name="agregaEtapaDesarrollo">
-                        <input type="hidden" name="FormForm" value="agregaFichaTecnica"/>
+                        <input type="hidden" name="FormForm" value="agregaEtapaDesarrollo"/>
                        <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, idPlantel) %>"/>
                         <input type="hidden" name="sesion" value="<%=WebUtil.encode(session, "imix") %>"/>
+                         <input type="hidden" name="numeroEtapa" value="<%=WebUtil.encode(session, numeroEtapa) %>"/>
+                        <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
+                        <br>
                         <fieldset id="fieldDatosEtapaDesarrollo" name="fieldDatosEtapaDesarrollo"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
                            <legend  id="tituloEtapaDesarrollo"  align="center">Nueva Etapa de Desarrollo</legend>
+                           <br>
+                          
+                           
                         <div id="divEtapaDesarrollo" name="divEtapaDesarrollo">
                             <table>
+                                
+                                <tr>
+                                    <td> 
+                                        <label id="labelNumeroEtapa"class="firstLabelDataSheet">N° Etapa  </label>
+                                        <input id="valueNumeroEtapa" class="form-control"  name="valueNumeroEtapa"class="form-control, InputDataSheet"  title="Número de la Etapa" disabled value="<%=numeroEtapa%>">                              
+                                    </td>
+                                   
+                                </tr>
                                 <tr>
                                     <td> 
                                         <label id="labelNombreEtapa"class="firstLabelDataSheet">Nombre de la Etapa  </label>
-                                        <input id="valueNombreEtapa" name="valueNombreEtapa"class="form-control, InputDataSheet" value="" title="Nombre de la Etapa">                              
+                                        <input id="valueNombreEtapa" class="form-control"  name="valueNombreEtapa"class="form-control, InputDataSheet" value="" title="Nombre de la Etapa" placeholder="Escriba Nombre de la Etapa">                              
                                     </td>
                                    
                                 </tr>
@@ -90,7 +117,7 @@
                                     
                                     <td> 
                                         <label id="labelDescripccionEtapa"class="firstLabelDataSheet">Descripcción de la Etapa</label>
-                                        <input id="valueDescripccionEtapa" name="valueDescripccionEtapa" class="form-control, InputDataSheet"  value="" title="Descripcción Etapa">                       
+                                        <textarea name="valueDescripcionStage" class="form-control" id="valueDescripcionStage" value="" size="20" placeholder="Descripcción Breve de la Etapa" title="Descripcción"></textarea>                    
                                     </td>
                                     
                                      
@@ -98,21 +125,21 @@
                                 <tr>
                                     <td> 
                                         <label id="labelFechaInicioEtapa"class="firstLabelDataSheet">Fecha de Inicio  </label>
-                                        <input id="valueFechaInicioEtapa" name="valueFechaInicioEtapa"class="form-control, InputDataSheet" value="" title="Fecha de Inicio de la Etapa">                              
+                                        <input id="valueFechaInicioEtapa" class="form-control" name="valueFechaInicioEtapa"class="form-control" value="" title="Fecha de Inicio de la Etapa" placeholder="YYYY-MM-DD">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
                                         <label id="labelFechaFinEtapa"class="firstLabelDataSheet">Fecha de Fin  </label>
-                                        <input id="valueFechaFinEtapa" name="valueFechaFinEtapa"class="form-control, InputDataSheet" value="" title="Fecha de Finalización de la Etapa">                              
+                                        <input id="valueFechaFinEtapa"  name="valueFechaFinEtapa"class="form-control" value="" title="Fecha de Finalización de la Etapa" placeholder="YYYY-MM-DD">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
-                                        <label id="labelStatusEtapa" class="labelInfraestructura">Status </label>
-                                        <select id="valueStatusEtapa" name="valueStatusEtapa" class="form-control, valueFirstColumnInfraestructura" style="margin-bottom: 8px; width: 175px; ">
+                                        <label id="labelStatusEtapa" class="labelInfraestructura">Estatus </label>
+                                        <select id="valueStatusEtapa"  class="form-control" name="valueStatusEtapa" class="form-control, valueFirstColumnInfraestructura"   >
                                             <option value="" selected > </option>
                                             <option value="Proceso">Proceso</option>
                                             <option value="Completa">Completa</option>
@@ -125,10 +152,16 @@
                                     
                                     <td> 
                                         <label id="labelTipoEtapa"class="firstLabelDataSheet">Tipo de Etapa</label>
-                                        <input id="valueTipoEtapa" name="valueTipoEtapa" class="form-control, InputDataSheet"  value="" title="Tipo de Etapa">                       
+                                        <input id="valueTipoEtapa" class="form-control" name="valueTipoEtapa" class="form-control, InputDataSheet"  value="" title="Tipo de Etapa" placeholder="Equipamiento, Contrucción, etc.">                       
                                     </td>
                                     
                                      
+                                </tr>
+                                 <tr>
+                                    <td> 
+                                        <label id="labelNumeroActividades"class="firstLabelDataSheet">N° de Actividades  </label>
+                                        <input id="valueNumeroActividades" class="form-control"  name="valueNumeroActividades"class="form-control, InputDataSheet" value="" title="Número de Actividades" placeholder="N° Act. para la Etapa">                                                                 </td>
+                                   
                                 </tr>
                             </table>
                             
@@ -136,9 +169,8 @@
                             
                             </fieldset>
                          <div id="botonEnviarDiv">
-                           <input id="addEtapaDesarrollo" type="button" class="btn btn-default" value="Guardar Ficha Técnica" name="addEtapaDesarrollo" onclick=""/>
-                           <input id="addActividadesDesarrollo" type="button" class="btn btn-default" value="Agregar Actividades de Desarrollo" name="addActividadesDesarrollo" onclick="enviarInfoToAgregaEtapaDesarrollo(document.getElementById('agregaFichaTecnica'));"/>
-                           <input id="cleanEtapaDesarrollo" type="button" class="btn btn-default" value="Limpiar Etapa de Desarrollo" name="cleanDataSheet" onclick="resetForm();"/>
+                             <input id="addEtapaDesarrollo" type="button" class="btn btn-default" value="Agregar Etapa" name="addEtapaDesarrollo" onclick="enviarInfocontroller()"/>
+                           
                         </div> 
                     </form>
                    <div id="divResult"> 
