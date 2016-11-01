@@ -605,6 +605,7 @@ public final class QUID {
         return nombrePlantel;
     }
 
+    //Metodo que consulta las Etapa de Desarrollo.
     public final LinkedList selectEtapasDesarrollo(int idPlantel) {
 
         LinkedList listToSend = null;
@@ -616,12 +617,13 @@ public final class QUID {
         ResultSet rs = null;
         try {
             SQLSentence = ""
-                    + " SELECT E.numeroEtapa"
+                    + " SELECT E.ID_Etapa"
                     + " , E.fechaFin"
                     + " , E.nombreEtapa"
                     + " , E.descripccion"
                     + " , E.status"
                     + " , E.avance"
+                    + " , E.numeroEtapa"
                     + " FROM ETAPA E"
                     + " WHERE E.FK_ID_Plantel=?";
             jscp = JSpreadConnectionPool.getSingleInstance();
@@ -641,6 +643,7 @@ public final class QUID {
                 listAux.add(rs.getString(4));
                 listAux.add(rs.getString(5));
                 listAux.add(rs.getString(6));
+                listAux.add(rs.getString(7));
                 listToSend.add(listAux);
             }
         } catch (Exception ex) {
@@ -690,6 +693,54 @@ public final class QUID {
             Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
         }
         return etapas;
+    }
+
+    //Método que Consulta las Actividades de una Etapa de Desarrollo
+    public final LinkedList selectActividades(int idEtapa) {
+
+        LinkedList listToSend = null;
+        LinkedList listAux = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = ""
+                    + "SELECT A.nombreActividad"
+                    + " ,A.descripccion"
+                    + " ,A.responsable"
+                    + " ,A.costoOperacion"
+                    + " ,A.porcentajeAvance"
+                    + " FROM ACTIVIDAD A"
+                    + " ,ETAPA E"
+                    + " WHERE A.FK_ID_Etapa=E.ID_Etapa"
+                    +" AND A.FK_ID_Etapa=?";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idEtapa);
+            rs = pstmt.executeQuery();
+
+            listToSend = new LinkedList();
+
+            while (rs.next()) {
+                listAux = new LinkedList();
+                listAux.add(rs.getString(1));
+                listAux.add(rs.getString(2));
+                listAux.add(rs.getString(3));
+                listAux.add(rs.getString(4));
+                listAux.add(rs.getString(5));
+                listToSend.add(listAux);
+            }
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
     }
 
     //</editor-fold> 

@@ -16,7 +16,7 @@
 <%    try {
         if (fine) {
             if (request.getParameter(WebUtil.encode(session, "imix")) != null) {
-                String access4ThisPage = "accessPlantelSelect";
+                String access4ThisPage = "accessDataSheet";
                 LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
                 if (UserUtil.isAValidUser(access4ThisPage, userAccess)) {
                     if (PageParameters.getParameter("SiteOnMaintenance").equals("true")) {

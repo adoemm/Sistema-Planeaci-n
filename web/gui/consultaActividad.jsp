@@ -11,7 +11,7 @@
         if (fine) {
             
             if (request.getParameter(WebUtil.encode(session, "imix")) != null) {
-                String access4ThisPage = "accessToViewActivity";
+                String access4ThisPage = "viewActivity";
                 LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
                 if (UserUtil.isAValidUser(access4ThisPage, userAccess)) {
                     if (PageParameters.getParameter("SiteOnMaintenance").equals("true")) {
@@ -21,7 +21,7 @@
                          Iterator it = null;
                          
                         int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
-                             
+                        int idEtapa= Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa")));
 %>
 
 
@@ -29,27 +29,14 @@
 <html>
     <head>
         
-        <title>Etapas de Desarrollo</title>
+        <title>Actividades</title>
         <jsp:include page='<%=PageParameters.getParameter("globalLibs")%>'/>
         <script type="text/javascript" language="javascript" charset="utf-8">
             window.history.forward();
             function noBack() {
                 window.history.forward();
             }
-            function sendInfoToAgregaEtapaDesarrollo()
-            {
-               
-                    $.ajax({type: 'POST'
-                        , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
-                        , cache: false
-                        , async: false
-                        , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFuntions")%>/compruebaFichaTecnica.jsp"
-                        , data: '<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=' + idPlantel
-                        , success: function (response) {
-                            $('#wrapper').find('#divBody').find('#bodySelectPlantel').find('#selectPlantel').find('#divDataSheet').html(response);
-                        }});
-                
-            }
+          
              
         </script>
         <%@ include file="/gui/pageComponents/dataTablesFullFunctionParameters.jsp"%>
@@ -69,7 +56,9 @@
                             >
                             <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/plantelSelect.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>"> Ficha Técnica</a>
                             >
-                            <a> Consulta Etapas</a>
+                             <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaEtapaDesarrollo.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>">Consulta Etapas </a>
+                            >
+                            <a> Consulta Actividades</a>
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>
@@ -83,17 +72,17 @@
                                <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
                         <br>
                             <fieldset>
-                                <legend align="center">Etapas de Desarrollo</legend>
+                                <legend align="center">Actividades</legend>
                                 <div style="margin-left: 2%; margin-right: 2%; font-size: 12px; ">
                                     <table border="0" width="100%" cellpadding="0" cellspacing="0" style="text-align: left" class="display" id="example">
                                     <thead>
                                         <tr>
-                                            <th style="text-align: center">N° Etapa</th>
-                                            <th style="text-align: center">Año Construcción</th>
-                                            <th style="text-align: center">Nombre Etapa</th>
+                                            <th style="text-align: center">Nombre Act.</th>
                                             <th style="text-align: center">Descripcción</th>
-                                            <th style="text-align: center">Status</th>
+                                            <th style="text-align: center">Responsable</th>
+                                            <th style="text-align: center">Costo $</th>
                                             <th style="text-align: center">Avance %</th>
+                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -109,8 +98,8 @@
                 <br>
                 <div id="botonEnviarDiv"  style="margin-left: 5%">
                           
-                    <a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaEtapaDesarrollo.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&<%=WebUtil.encode(session, "idPlantel") %>=<%=request.getParameter("idPlantel")%>">
-                               <button class="btn btn-default">Agregar Etapa de Desarrollo</button>
+                    <a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&<%=WebUtil.encode(session, "idPlantel") %>=<%=request.getParameter("idPlantel")%>&<%=WebUtil.encode(session, "idEtapa") %>=<%=WebUtil.encode(session ,idEtapa) %>">
+                               <button class="btn btn-default">Agregar Actividad</button>
                            </a>
                           
                             </div> 
@@ -129,7 +118,7 @@
                     <%
                         LinkedList listAux= new LinkedList();
                         int cont = 0;
-                        it = QUID.selectEtapasDesarrollo(idPlantel).iterator();
+                        it = QUID.selectActividades(idEtapa).iterator();
                         while (it.hasNext()) {
                             listAux = (LinkedList) it.next();
                     %>
@@ -139,8 +128,8 @@
             cells[2] = '<%=listAux.get(2).toString()%>';
             cells[3] = '<%=listAux.get(3).toString()%>';
             cells[4] = '<%=listAux.get(4).toString()%>';
-            cells[5] = '<%=listAux.get(5).toString()%>';
-            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
+            cells[5] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Modifica" width="22" height="23" alt="Modifica Actividad"></a>';
+            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Actividad"></a>';
                         data[<%=cont%>] = t.fnAddData(cells, false);
                     <%
                             cont++;

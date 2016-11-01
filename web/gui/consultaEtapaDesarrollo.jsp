@@ -11,7 +11,7 @@
         if (fine) {
             
             if (request.getParameter(WebUtil.encode(session, "imix")) != null) {
-                String access4ThisPage = "accessToViewStage";
+                String access4ThisPage = "viewStage";
                 LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
                 if (UserUtil.isAValidUser(access4ThisPage, userAccess)) {
                     if (PageParameters.getParameter("SiteOnMaintenance").equals("true")) {
@@ -36,20 +36,7 @@
             function noBack() {
                 window.history.forward();
             }
-            function sendInfoToAgregaEtapaDesarrollo()
-            {
-               
-                    $.ajax({type: 'POST'
-                        , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
-                        , cache: false
-                        , async: false
-                        , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFuntions")%>/compruebaFichaTecnica.jsp"
-                        , data: '<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=' + idPlantel
-                        , success: function (response) {
-                            $('#wrapper').find('#divBody').find('#bodySelectPlantel').find('#selectPlantel').find('#divDataSheet').html(response);
-                        }});
-                
-            }
+            
              
         </script>
         <%@ include file="/gui/pageComponents/dataTablesFullFunctionParameters.jsp"%>
@@ -134,13 +121,13 @@
                             listAux = (LinkedList) it.next();
                     %>
             ids[<%=cont%>] = '<%=listAux.get(0)%>';
-            cells[0] = '<%=listAux.get(0).toString()%>';
+            cells[0] = '<%=listAux.get(6).toString()%>';
             cells[1] = '<%=listAux.get(1).toString()%>';
             cells[2] = '<%=listAux.get(2).toString()%>';
             cells[3] = '<%=listAux.get(3).toString()%>';
             cells[4] = '<%=listAux.get(4).toString()%>';
             cells[5] = '<%=listAux.get(5).toString()%>';
-            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
+            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
                         data[<%=cont%>] = t.fnAddData(cells, false);
                     <%
                             cont++;
