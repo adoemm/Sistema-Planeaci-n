@@ -1,0 +1,53 @@
+Pendientes SPIC
+	-Crear Script para creacion de base de datos y el usuario(permisos: insert, update, delete, select).
+	-Crear Script para la insercion del usuario en tabla usuario, insercion en plantel, en roles (rol-root),
+	 rol-permiso(con la relacion de todos los permisos para las paginas), insertar permisos Y TABLA ROL_USUARIO para
+	 asignar al root con el rol. 
+	-Estandarizar las entradas de los datos en la Base de Datos (tipos de dato, longitudes, Mayusculas, Minusculas).
+	-Validar dichas entradas en los formularios del sistema.
+	-LLenado de Formulario de JSP agregaFichaTecnica al hacer back en agregaEtapaDesarrollo.
+	-El campo de turno hacer un select  (Matutino, Vespertino o Matutino y Vespertino).
+
+
+
+Permisos:
+	
+	1.- Acceso a sistema. (accessMain). (Formulario)
+	2.- Acceso a Ficha Técnica. (accessDataSheet). (Formulario)
+	3.- Agregar Ficha Técnica de Plantel. (addDataSheet) (Permiso)
+	4.- Modificar Ficha Técnica de Plantel. (updateDataSheet) (Permiso)
+	5.- Imprimir Ficha Técnica de Plantel. (printDataSheet) (Formulario)
+	6.- Eliminar Ficha Técnica de Plantel. (deleteDataSheet) (Permiso)
+	7.- Ver Etapas de Desarrollo de Plantel. (viewStage) (Formulario)
+	8.- Agregar Etapa de Desarrollo de Plantel. (addStage) (Permiso)
+	9.- Modificar Etapa de Desarrollo de Plantel. (updateStage) (Permiso)
+	10.- Elimina Etapa de Desarrollo de Plantel. (deleteStage) (Permiso)
+	11.- Ver Actividades de Etapa de Desarrollo de Plantel. (viewActivity) (Formulario)
+	12.- Agregar Actividad de Etapa de Desarrollo de Plantel. (addActivity) (Permiso)
+	13.- Modificar Actividad de Etapa de Desarrollo de Plantel. (updateActivity) (Permiso)
+	14.- Eliminar Actividad de Etapa de Desarrollo de Plantel. (deleteActivity) (Permiso)
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
