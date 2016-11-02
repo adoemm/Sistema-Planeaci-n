@@ -1,6 +1,6 @@
 <%-- 
-    Document   : agregaActividad
-    Created on : Oct 28, 2016, 4:40:13 PM
+    Document   : modificaActividad
+    Created on : Nov 1, 2016, 12:53:12 PM
     Author     : emmanuel
 --%>
 
@@ -12,7 +12,7 @@
         if (fine) {
              
             if (request.getParameter(WebUtil.encode(session, "imix")) != null) {
-                String access4ThisPage = "addActivity";
+                String access4ThisPage = "updateActivity";
                 LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
                 if (UserUtil.isAValidUser(access4ThisPage, userAccess)) {
                     if (PageParameters.getParameter("SiteOnMaintenance").equals("true")) {
@@ -20,14 +20,17 @@
                         response.sendRedirect(redirectURL);
                     } else {
                        
-                        int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter(WebUtil.encode(session, "idPlantel"))));
-                         int idEtapa= Integer.parseInt(WebUtil.decode(session,  request.getParameter(WebUtil.encode(session, "idEtapa"))));
+                        int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
+                         int idEtapa= Integer.parseInt(WebUtil.decode(session,  request.getParameter("idEtapa")));
+                         int idActividad= Integer.parseInt(WebUtil.decode(session,  request.getParameter("idActividad")));
+                         LinkedList infoDataActivity= QUID.selectDataToActivity(idActividad);
+                         
 %>
 <!DOCTYPE html>
 
 <html lang="<%=PageParameters.getParameter("Content-Language")%>">
     <head>
-        <title>Actividades</title>
+        <title>Modifica Actividad</title>
         <jsp:include page='<%=PageParameters.getParameter("globalLibs")%>'/>        
         <jsp:include page='<%=PageParameters.getParameter("styleFormCorrections")%>'/>
         <script type="text/javascript" language="javascript" charset="utf-8">
@@ -49,7 +52,7 @@
                     , cache: false
                     , async: false
                     , url: '<%=PageParameters.getParameter("mainController")%>'
-                    , data: $('#agregaActividad').serialize()
+                    , data: $('#modificaActividad').serialize()
                     , success: function (response) {
                         $('#wrapper').find('#divResult').html(response);
                     }});
@@ -77,7 +80,7 @@
                             >
                              <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, idEtapa)%>">Consulta Actividades</a>
                             >
-                            <a> Agregar Actividad</a>
+                            <a> Modifica Actividad</a>
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>
@@ -86,16 +89,16 @@
                 </table>
                 <br>
                 <br>
-                <div id="bodyagregaActividad">
-                    <form id="agregaActividad" name="agregaActividad">
-                        <input type="hidden" name="FormForm" value="agregaActivity"/>
+                <div id="bodymodificaActividad">
+                    <form id="modificaActividad" name="modificaActividad">
+                        <input type="hidden" name="FormForm" value="modificaActivity"/>
                        <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, idPlantel) %>"/>
                         <input type="hidden" name="sesion" value="<%=WebUtil.encode(session, "imix") %>"/>
                          <input type="hidden" name="idEtapa" value="<%=WebUtil.encode(session, idEtapa) %>"/>
                         <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
                         <br>
                         <fieldset id="fieldDatosActividad" name="fieldDatosActividad"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
-                           <legend  id="tituloActividad"  align="center">Nueva Actividad</legend>
+                           <legend  id="tituloActividad"  align="center">Actividad  a Modificar</legend>
                            <br>
                           
                            
@@ -105,14 +108,14 @@
                                 <tr>
                                     <td> 
                                         <label id="labelNombreActividad" class="labelsAddActivity">Nombre</label>
-                                        <input id="valueNombreActividad" class="form-control"  name="valueNombreActividad" title="Nombre de Actividad" placeholder="Nombre de Actividad">                              
+                                        <input id="valueNombreActividad" class="form-control"  name="valueNombreActividad" title="Nombre de Actividad" placeholder="Nombre de Actividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(0).toString(): "" %>">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
                                         <label id="labelDescripccionActividad"class="labelsAddActivity">Descripcción  </label>
-                                        <textarea id="valueDescripccionActividad" class="form-control"  name="valueDescripccionActividad" value="" title="Descripcción de la Etapa" placeholder="Descripccion de la Etapa"></textarea>                              
+                                        <textarea id="valueDescripccionActividad" class="form-control"  name="valueDescripccionActividad"  title="Descripcción de la Etapa" placeholder="Descripccion de la Etapa"><%=infoDataActivity.size()>0 ? infoDataActivity.get(1).toString(): "" %></textarea>                              
                                     </td>
                                    
                                 </tr>
@@ -120,7 +123,7 @@
                                     
                                     <td> 
                                         <label id="labelCantidad"class="labelsAddActivity">Construcción de Espacios</label>
-                                        <input name="valueCantidadActividad" class="form-control" id="valueCantidadActividad" value="" size="20" placeholder="Cantidad de Espacios en Construir" title="Espacios en Construcción">                    
+                                        <input name="valueCantidadActividad" class="form-control" id="valueCantidadActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(2).toString(): "" %>"size="20" placeholder="Cantidad de Espacios en Construir" title="Espacios en Construcción">                    
                                     </td>
                                     
                                      
@@ -128,25 +131,44 @@
                                 <tr>
                                     <td> 
                                         <label id="labelCostoOperacion"class="labelsAddActivity">Costo de Operación $</label>
-                                        <input id="valueCostoOperacionActividad" class="form-control" name="valueCostoOperacionActividad" value="" title="Costo de Actividad" placeholder="0.00">                              
+                                        <input id="valueCostoOperacionActividad" class="form-control" name="valueCostoOperacionActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(3).toString(): "" %>" title="Costo de Actividad" placeholder="0.00">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
                                         <label id="labelResponsable"class="labelsAddActivity">Responsable</label>
-                                        <input id="valueResponsableActividad" class="form-control" name="valueResponsableActividad" value="" title="Responsable de Act." placeholder="Responsable de la Actividad">                              
+                                        <input id="valueResponsableActividad" class="form-control" name="valueResponsableActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(4).toString(): "" %>" title="Responsable de Act." placeholder="Responsable de la Actividad">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
                                         <label id="labelStatusActividad" class="labelsAddActivity">Estatus </label>
-                                        <select id="valueStatusActividad"  class="form-control" name="valueStatusActividad" >
-                                            <option value="" selected > </option>
-                                            <option value="Proceso">Proceso</option>
-                                            <option value="Completa">Completa</option>
-                                            <option value="Pausada">Cancelada</option>
+                                        <select id="valueStatusActividad"  class="form-control" name="valueStatusActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(5).toString(): "" %>">
+                                            <% String value= infoDataActivity.get(5).toString();
+                                                boolean flag1=false;
+                                                 boolean  flag2=false;
+                                                 boolean flag3=false;
+                                                 boolean flag4=false;
+                                                if(value.equals(""))
+                                                {
+                                                    flag1=true;
+                                                }else if(value.equals("Proceso"))
+                                                {
+                                                    flag2=true;
+                                                }else if(value.equals("Completada"))
+                                                {
+                                                    flag3=true;
+                                                }else if(value.equals("Cancelada"))
+                                                {
+                                                    flag4=true;
+                                                }
+                                            %>
+                                            <option value="" <%if(flag1==true) { %>selected<%}%>> </option>
+                                            <option value="Proceso" <%if(flag2==true) { %>selected<%}%>>Proceso</option>
+                                            <option value="Completada" <%if(flag3==true) { %>selected<%}%>>Completada</option>
+                                            <option value="Cancelada" <%if(flag4==true) { %>selected<%}%>>Cancelada</option>
                                         </select>
                                     </td>
                                    
@@ -154,14 +176,14 @@
                                 <tr>
                                     <td> 
                                         <label id="labelFechaInicioActividad"class="labelsAddActivity">Fecha de Inicio  </label>
-                                        <input id="valueFechaInicioActividad"  name="valueFechaInicioActividad"class="form-control" value="" title="Fecha de Inicio de la Actividad" placeholder="YYYY-MM-DD">                              
+                                        <input id="valueFechaInicioActividad"  name="valueFechaInicioActividad"class="form-control" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(6).toString(): "" %>" title="Fecha de Inicio de la Actividad" placeholder="YYYY-MM-DD">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
                                         <label id="labelFechaFinActividad"class="labelsAddActivity">Fecha de Finalización  </label>
-                                        <input id="valueFechaFinActividad"  name="valueFechaFinActividad"class="form-control" value="" title="Fecha de Finalización de la Actividad" placeholder="YYYY-MM-DD">                              
+                                        <input id="valueFechaFinActividad"  name="valueFechaFinActividad"class="form-control"value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(7).toString(): "" %>" title="Fecha de Finalización de la Actividad" placeholder="YYYY-MM-DD">                              
                                     </td>
                                    
                                 </tr>
@@ -169,7 +191,7 @@
                                  <tr>
                                     <td> 
                                         <label id="labelAvanceActividad"class="labelsAddActivity">Avance </label>
-                                        <input id="valueAvanceActividad" class="form-control"  name="valueAvanceActividad"c value="" title="Avance de la Actividad" placeholder="0.0 %">                                                                 </td>
+                                        <input id="valueAvanceActividad" class="form-control"  name="valueAvanceActividad"c value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(8).toString(): "" %>" title="Avance de la Actividad" placeholder="0.0 %">                                                                 </td>
                                    
                                 </tr>
                             </table>
@@ -178,7 +200,7 @@
                             
                             </fieldset>
                          <div id="botonEnviarDiv">
-                             <input id="addActividad" type="button" class="btn btn-default" value="Agregar Actividad" name="addActividad" onclick="enviarInfocontroller()"/>
+                             <input id="modificarActividad" type="button" class="btn btn-default" value="Modificar Actividad" name="modificarActividad" onclick="enviarInfocontroller()"/>
                            
                         </div> 
                     </form>

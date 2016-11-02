@@ -132,6 +132,12 @@ public final class controller extends HttpServlet {
                                 case "agregaEtapaDesarrollo":
                                     this.agregaEtapaDesarrollo(session, request, response, quid, out);
                                     break;
+                                case "agregaActivity":
+                                    this.agregaActividad(session, request, response, quid, out);
+                                    break;
+                                case "modificaActivity":
+                                    this.modificaActividad(session, request, response, quid, out);
+                                    break;
                             }
                             // </editor-fold>
                         } else {
@@ -310,7 +316,7 @@ public final class controller extends HttpServlet {
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
             if (this.validaFormAgregaEtapaDesarrollo(session, request, response, quid, out)) {
-                
+
                 Transporter tport = quid.insertEtapaDesarrollo(
                         Integer.parseInt(WebUtil.decode(session, request.getParameter("numeroEtapa"))),
                         request.getParameter("valueNombreEtapa"),
@@ -350,11 +356,11 @@ public final class controller extends HttpServlet {
         if (request.getParameter("valueNombreEtapa").equals("")) {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor Nombre de la Etapa.").forward(request, response);
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Nombre de la Etapa.").forward(request, response);
         } else if (request.getParameter("valueDescripcionStage").equals("")) {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
-                    + "/msg.jsp?title=Error&type=error&msg=Por Favor la descripcción de la Etapa.").forward(request, response);
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor  escriba la descripcción de la Etapa.").forward(request, response);
         } else if (!UTime.validaFecha(request.getParameter("valueFechaInicioEtapa"))) {
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
@@ -379,6 +385,107 @@ public final class controller extends HttpServlet {
             valido = true;
         }
         return valido;
+    }
+
+    private void agregaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "addActivity";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+            if (this.validaFormAgregaActividad(session, request, response, quid, out)) {
+                Transporter tport = quid.insertActividad(
+                        request.getParameter("valueNombreActividad"),
+                        request.getParameter("valueDescripccionActividad"),
+                        request.getParameter("valueCantidadActividad"),
+                        Double.parseDouble(request.getParameter("valueCostoOperacionActividad")),
+                        request.getParameter("valueResponsableActividad"),
+                        request.getParameter("valueStatusActividad"),
+                        request.getParameter("valueFechaInicioActividad"),
+                        request.getParameter("valueFechaFinActividad"),
+                        Double.parseDouble(request.getParameter("valueAvanceActividad")),
+                        UTime.calendar2aaaamd(Calendar.getInstance()),
+                        Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa")))
+                );
+                if (tport.getCode() == 0) {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msgNRedirectFull.jsp?title=Actividades&type=info&msg=Se ha Agregado una Actividad a la Etapa.&url="
+                            + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaActividad.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel") + "_param_idEtapa=" + request.getParameter("idEtapa")).forward(request, response);
+
+                } else {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error Agregar Etapa de Desarrollo.").forward(request, response);
+                }
+            }
+        } else {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url="
+                    + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaActividad.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel") + "_param_idEtapa=" + request.getParameter("idEtapa")).forward(request, response);
+
+        }
+    }
+
+    private boolean validaFormAgregaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        boolean valido = false;
+
+        if (request.getParameter("valueNombreActividad").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el Nombre de la Actividad.").forward(request, response);
+        } else if (request.getParameter("valueDescripccionActividad").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor  escriba la descripcción de la Actividad.").forward(request, response);
+        } else if (request.getParameter("valueCantidadActividad").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba la cantidad de Espacios a Construir.").forward(request, response);
+        } else if (!StringUtil.isValidDouble(request.getParameter("valueCostoOperacionActividad"))) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el costo de Operación.").forward(request, response);
+        } else if (request.getParameter("valueResponsableActividad").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el Responsable de la Actividad.").forward(request, response);
+        } else if (request.getParameter("valueStatusActividad").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor seleccione el Estatus.").forward(request, response);
+        } else if (!UTime.validaFecha(request.getParameter("valueFechaInicioActividad"))) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Correctamente la Fecha de Inicio de la Actividad.").forward(request, response);
+        } else if (!UTime.validaFecha(request.getParameter("valueFechaFinActividad"))) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba Correctamente la Fecha de Finalización de la Actividad.").forward(request, response);
+
+        } else if (!StringUtil.isValidDouble(request.getParameter("valueAvanceActividad"))) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msg.jsp?title=Error&type=error&msg=Por Favor escriba el Avance de la Actividad.").forward(request, response);
+        } else {
+            valido = true;
+        }
+        return valido;
+    }
+
+    private void modificaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "updateActivity";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+            if (this.validaFormAgregaActividad(session, request, response, quid, out)) {
+
+            }
+        } else {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url="
+                    + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaActividad.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel") + "_param_idEtapa=" + request.getParameter("idEtapa")).forward(request, response);
+
+        }
     }
 
     // </editor-fold>

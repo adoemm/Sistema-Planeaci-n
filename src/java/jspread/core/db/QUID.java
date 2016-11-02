@@ -712,10 +712,11 @@ public final class QUID {
                     + " ,A.responsable"
                     + " ,A.costoOperacion"
                     + " ,A.porcentajeAvance"
+                    + " ,A.ID_Actividad"
                     + " FROM ACTIVIDAD A"
                     + " ,ETAPA E"
                     + " WHERE A.FK_ID_Etapa=E.ID_Etapa"
-                    +" AND A.FK_ID_Etapa=?";
+                    + " AND A.FK_ID_Etapa=?";
 
             jscp = JSpreadConnectionPool.getSingleInstance();
             conn = jscp.getConnectionFromPool();
@@ -733,8 +734,62 @@ public final class QUID {
                 listAux.add(rs.getString(3));
                 listAux.add(rs.getString(4));
                 listAux.add(rs.getString(5));
+                listAux.add(rs.getString(6));
                 listToSend.add(listAux);
             }
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+    }
+
+    public final LinkedList selectDataToActivity(int idActividad) {
+
+        LinkedList listToSend = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            SQLSentence = ""
+                    + " SELECT A.nombreActividad"
+                    + ", A.descripccion"
+                    + ", A.cantidad"
+                    + ", A.costoOperacion"
+                    + ", A.responsable"
+                    + ", A.status"
+                    + ", A.fechaInicio"
+                    + ", A.fechaFin"
+                    + ", A.porcentajeAvance"
+                    + " FROM ACTIVIDAD A"
+                    + " WHERE A.ID_Actividad=?";
+            ;
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idActividad);
+            rs = pstmt.executeQuery();
+            listToSend = new LinkedList();
+            while (rs.next()) {
+                listToSend.add(rs.getString(1));
+                listToSend.add(rs.getString(2));
+                listToSend.add(rs.getString(3));
+                listToSend.add(rs.getString(4));
+                listToSend.add(rs.getString(5));
+                listToSend.add(rs.getString(6));
+                listToSend.add(rs.getString(7));
+                listToSend.add(rs.getString(8));
+                listToSend.add(rs.getString(9));
+
+            }
+
+            endConnection(jscp, conn, pstmt, rs);
         } catch (Exception ex) {
 
             endConnection(jscp, conn, pstmt, rs);
@@ -945,10 +1000,118 @@ public final class QUID {
         }
         return tport;
     }
+    //Método de insercción de Actividad de una Etapa en especifico.
+
+    public final Transporter insertActividad(
+            String nombreAct,
+            String descripccionAct,
+            String cantidadAct,
+            double costoOperacionAct,
+            String responsableAct,
+            String statusAct,
+            String fechaInicioAct,
+            String fechaFinAct,
+            double porcentajeAvanceAct,
+            String fechaActualizaciónAct,
+            int FK_ID_Etapa
+    ) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        try {
+
+            SQLSentence = ""
+                    + " INSERT INTO ACTIVIDAD ( "
+                    + " nombreActividad"
+                    + " , descripccion"
+                    + " , cantidad"
+                    + " , costoOperacion"
+                    + " , responsable"
+                    + " , status"
+                    + " , fechaInicio"
+                    + " , fechaFin"
+                    + " , porcentajeAvance"
+                    + " , fechaActualizacion"
+                    + " , FK_ID_Etapa"
+                    + ")"
+                    + " VALUES ("
+                    + " ?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " );";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, nombreAct);
+            pstmt.setString(2, descripccionAct);
+            pstmt.setString(3, cantidadAct);
+            pstmt.setDouble(4, costoOperacionAct);
+            pstmt.setString(5, responsableAct);
+            pstmt.setString(6, statusAct);
+            pstmt.setString(7, fechaInicioAct);
+            pstmt.setString(8, fechaFinAct);
+            pstmt.setDouble(9, porcentajeAvanceAct);
+            pstmt.setString(10, fechaActualizaciónAct);
+            pstmt.setInt(11, FK_ID_Etapa);
+            pstmt.executeUpdate();
+            tport = new Transporter(0, "El registro se creo correctamente");
+            endConnection(jscp, conn, pstmt);
+
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+            tport = new Transporter(1, "Error inesperado. " + ex.getMessage());
+
+        }
+        return tport;
+    }
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="UPDATE">
-    public final Transporter updateFichaTecnica(int idPlantel, int idAcademico, int idInfraestructura, String nombrePlantel, String direccion, String claveTrabajo, int anioCreacion, String telefono, String correo, String latitud, String longitud, String director, int personalAministrativo, int docentes, int matricula, String turno, String periodoEscolar, String carrerasVigentes, String carrerasLiquidadas, double superficiePredio, double superficieConstruccion, int aulasDidacticas, int laboratorios, String biblioteca, int talleresComputo, String otrosTalleres, String areaAdministrativa, String cafeteria, String salaAudio, String casetaVigilancia, String bardaPerimetral, int areasDeportivas, String fechaActualizacion
+    public final Transporter updateFichaTecnica(int idPlantel,
+            int idAcademico,
+            int idInfraestructura,
+            String nombrePlantel,
+            String direccion,
+            String claveTrabajo,
+            int anioCreacion,
+            String telefono,
+            String correo,
+            String latitud,
+            String longitud,
+            String director,
+            int personalAministrativo,
+            int docentes,
+            int matricula,
+            String turno,
+            String periodoEscolar,
+            String carrerasVigentes,
+            String carrerasLiquidadas,
+            double superficiePredio,
+            double superficieConstruccion,
+            int aulasDidacticas,
+            int laboratorios,
+            String biblioteca,
+            int talleresComputo,
+            String otrosTalleres,
+            String areaAdministrativa,
+            String cafeteria,
+            String salaAudio,
+            String casetaVigilancia,
+            String bardaPerimetral,
+            int areasDeportivas,
+            String fechaActualizacion
     ) {
         Transporter tport = null;
         JSpreadConnectionPool jscp = null;
@@ -1043,6 +1206,79 @@ public final class QUID {
         }
         return tport;
     }
+    
+     public final Transporter updateActividad(int idActividad,
+            String nombreActividad,
+            String descripccionActividad,
+            String cantidadActividad,
+            int costoOperacionActividad,
+            String responsableActividad,
+            String statusActividad,
+            String fechaInicioActividad,
+            String fechaFinActividad,
+            String avanceActividad,
+            String fechaActualizacion
+            
+    ) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        try {
+            SQLSentence = ""
+                    + "UPDATE  ACTIVIDAD SET"
+                    + " nombre = ?"
+                    + ", direccion = ?"
+                    + ", claveCentroTrabajo = ?"
+                    + ", anioCreacion = ?"
+                    + ", telefono = ?"
+                    + ", correo = ?"
+                    + ", latitud = ?"
+                    + ", longitud = ?"
+                    + ", nombreCompletoDirector = ?"
+                    + " WHERE ID_Plantel = ?;"
+                    + " UPDATE ACADEMICO SET"
+                    + " personalAdmin = ?"
+                    + ", docentes = ?"
+                    + ", matricula = ?"
+                    + ", turno = ?"
+                    + ", periodoEscolar = ?"
+                    + ", carrerasVigentes = ?"
+                    + ", carrerasLiquidadas = ?"
+                    + ", fechaActualizacion = ?"
+                    + " WHERE ID_Academico = ?;"
+                    + " UPDATE INFRAESTRUCTURA SET"
+                    + " superficiePredio = ?"
+                    + ", superficieConstruida = ?"
+                    + ", aulasDidacticas = ?"
+                    + ", laboratorios = ?"
+                    + ", biblioteca = ?"
+                    + ", talleresComputo = ?"
+                    + ", otrosTalleres = ?"
+                    + ", areasAdmin = ?"
+                    + ", cafeteria = ?"
+                    + ", salaAudio = ?"
+                    + ", casetaVigilancia = ?"
+                    + ", bardaPerimetral = ?"
+                    + ", areasDeportivas = ?"
+                    + ", fechaActualizacion = ?"
+                    + " WHERE ID_Infraestructura = ?;";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            
+            int rowCount = pstmt.executeUpdate();
+            endConnection(jscp, conn, pstmt);
+            tport = new Transporter(0, "Filas afectadas: " + rowCount);
 
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+            tport = new Transporter(1, "Error inesperado.");
+        }
+        return tport;
+    }
     //</editor-fold>
 }

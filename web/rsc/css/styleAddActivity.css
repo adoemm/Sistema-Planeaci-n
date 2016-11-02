@@ -8,3 +8,89 @@ and open the template in the editor.
     Author     : emmanuel
 */
 
+.labelsAddActivity
+{
+    margin-top: 10px
+}
+
+
+
+#valueNombreActividad
+{
+    margin-bottom: 15px;
+    width: 400px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+
+#valueDescripccionActividad
+{
+    margin-bottom: 15px;
+    width: 400px;
+    margin-left: 250px;
+    font-size: 12px
+}
+
+#valueCantidadActividad
+{
+    margin-bottom: 15px;
+    width: 400px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+#valueCostoOperacionActividad
+{
+    margin-bottom: 15px;
+    width: 130px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+
+#valueResponsableActividad
+{
+    margin-bottom: 15px;
+    width: 400px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+#valueStatusActividad
+{
+    margin-bottom: 15px;
+    width: 130px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+
+#valueFechaInicioActividad
+{
+    margin-bottom: 15px;
+    width: 130px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+#valueFechaFinActividad
+{
+    margin-bottom: 15px;
+    width: 130px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+#valueAvanceActividad
+{
+    margin-bottom: 15px;
+    width: 100px;
+    margin-left: 250px;
+    height: 30px;
+    font-size: 12px
+}
+#addActividad
+{
+    margin-left: 45%;
+}
