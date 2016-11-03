@@ -82,6 +82,8 @@
                                             <th style="text-align: center">Status</th>
                                             <th style="text-align: center">Avance %</th>
                                             <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody style="text-align: center">
@@ -127,8 +129,10 @@
             cells[3] = '<%=listAux.get(3).toString()%>';
             cells[4] = '<%=listAux.get(4).toString()%>';
             cells[5] = '<%=listAux.get(5).toString()%>';
-            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
-                        data[<%=cont%>] = t.fnAddData(cells, false);
+            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaEtapa.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Modifica Etapa" width="22" height="23" alt="Modifica Etapa"></a>';
+            cells[7] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Emblem-Documents-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
+            cells[8] = '<a href="<%=PageParameters.getParameter("mainController")%>?idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/window-close.png" title="    Eliminar Etapa" width="22" height="23" alt="Eliminar Etapa"></a>';
+    data[<%=cont%>] = t.fnAddData(cells, false);
                     <%
                             cont++;
                         }

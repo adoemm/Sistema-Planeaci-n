@@ -1,9 +1,8 @@
 <%-- 
-    Document   : modificaActividad
-    Created on : Nov 1, 2016, 12:53:12 PM
+    Document   : modificaEtapa
+    Created on : Nov 3, 2016, 12:05:29 PM
     Author     : emmanuel
 --%>
-
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
  <link href="../rsc/css/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> 
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
@@ -12,7 +11,7 @@
         if (fine) {
              
             if (request.getParameter(WebUtil.encode(session, "imix")) != null) {
-                String access4ThisPage = "updateActivity";
+                String access4ThisPage = "updateStage";
                 LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
                 if (UserUtil.isAValidUser(access4ThisPage, userAccess)) {
                     if (PageParameters.getParameter("SiteOnMaintenance").equals("true")) {
@@ -21,16 +20,14 @@
                     } else {
                        
                         int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
-                         int idEtapa= Integer.parseInt(WebUtil.decode(session,  request.getParameter("idEtapa")));
-                         int idActividad= Integer.parseInt(WebUtil.decode(session,  request.getParameter("idActividad")));
-                         LinkedList infoDataActivity= QUID.selectDataToActivity(idActividad);
-                         
+                        int idEtapa= Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa")));
+                        LinkedList infoDataStage= QUID.selectDataToStage(idEtapa);
 %>
 <!DOCTYPE html>
 
 <html lang="<%=PageParameters.getParameter("Content-Language")%>">
     <head>
-        <title>Modifica Actividad</title>
+        <title>Modificación de Etapas de Desarrollo</title>
         <jsp:include page='<%=PageParameters.getParameter("globalLibs")%>'/>        
         <jsp:include page='<%=PageParameters.getParameter("styleFormCorrections")%>'/>
         <script type="text/javascript" language="javascript" charset="utf-8">
@@ -38,28 +35,21 @@
             function noBack() {
                 window.history.forward();
             }
-            function resetForm() {
-                document.getElementById("valueNombreEtapa").value='';
-                document.getElementById("valueDescripccionEtapa").value='';
-                document.getElementById("valueFechaInicioEtapa").value='';
-                document.getElementById("valueFechaFinEtapa").value='';
-                document.getElementById("valueStatusEtapa").value='';
-                document.getElementById("valueTipoEtapa").value='';
-            }
+           
             function enviarInfocontroller() {
                 $.ajax({type: 'POST'
                     , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
                     , cache: false
                     , async: false
                     , url: '<%=PageParameters.getParameter("mainController")%>'
-                    , data: $('#modificaActividad').serialize()
+                    , data: $('#modificaEtapaDesarrollo').serialize()
                     , success: function (response) {
                         $('#wrapper').find('#divResult').html(response);
                     }});
             }
            </script>
-      
-      <link href="../rsc/css/styleAddActivity.css" rel="stylesheet" type="text/css" /> 
+      <link href="../rsc/css/styleDataSheet.css" rel="stylesheet" type="text/css" /> 
+      <link href="../rsc/css/styleAddStage.css" rel="stylesheet" type="text/css" /> 
     </head>
     <body>
          <div id="wrapper">
@@ -78,9 +68,7 @@
                             >
                             <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaEtapaDesarrollo.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>">Consulta Etapas</a>
                             >
-                             <a class="NVL" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, idEtapa)%>">Consulta Actividades</a>
-                            >
-                            <a> Modifica Actividad</a>
+                            <a> Modifica Etapa de Desarrollo</a>
                         </td>
                         <td width="36" align="right" valign="top">
                             <script language="JavaScript" src="<%=PageParameters.getParameter("jsRcs")%>/funcionDate.js" type="text/javascript"></script>
@@ -89,65 +77,58 @@
                 </table>
                 <br>
                 <br>
-                <div id="bodymodificaActividad">
-                    <form id="modificaActividad" name="modificaActividad">
-                        <input type="hidden" name="FormForm" value="modificaActivity"/>
+                <div id="bodyModificaEtapaDesarrollo">
+                    <form id="modificaEtapaDesarrollo" name="modificaEtapaDesarrollo">
+                        <input type="hidden" name="FormForm" value="modificaEtapaDesarrollo"/>
                        <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, idPlantel) %>"/>
                         <input type="hidden" name="sesion" value="<%=WebUtil.encode(session, "imix") %>"/>
                          <input type="hidden" name="idEtapa" value="<%=WebUtil.encode(session, idEtapa) %>"/>
-                         <input type="hidden" name="idActividad" value="<%=WebUtil.encode(session, idActividad) %>"/>
                         <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
                         <br>
-                        <fieldset id="fieldDatosActividad" name="fieldDatosActividad"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
-                           <legend  id="tituloActividad"  align="center">Actividad  a Modificar</legend>
+                        <fieldset id="fieldDatosEtapaDesarrollo" name="fieldDatosEtapaDesarrollo"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
+                           <legend  id="tituloEtapaDesarrollo"  align="center">Modificación de Etapa de Desarrollo</legend>
                            <br>
                           
                            
-                        <div id="divActividad" name="divActividad">
+                        <div id="divEtapaDesarrollo" name="divEtapaDesarrollo">
                             <table>
                                 
+                               
                                 <tr>
                                     <td> 
-                                        <label id="labelNombreActividad" class="labelsAddActivity">Nombre</label>
-                                        <input id="valueNombreActividad" class="form-control"  name="valueNombreActividad" title="Nombre de Actividad" placeholder="Nombre de Actividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(0).toString(): "" %>">                              
-                                    </td>
-                                   
-                                </tr>
-                                <tr>
-                                    <td> 
-                                        <label id="labelDescripccionActividad"class="labelsAddActivity">Descripcción  </label>
-                                        <textarea id="valueDescripccionActividad" class="form-control"  name="valueDescripccionActividad"  title="Descripcción de la Etapa" placeholder="Descripccion de la Etapa"><%=infoDataActivity.size()>0 ? infoDataActivity.get(1).toString(): "" %></textarea>                              
+                                        <label id="labelNombreEtapa"class="firstLabelDataSheet">Nombre de la Etapa  </label>
+                                        <input id="valueNombreEtapa" class="form-control"  name="valueNombreEtapa"class="form-control, InputDataSheet" value="<%=infoDataStage.size()>0 ? infoDataStage.get(0).toString(): "" %>" title="Nombre de la Etapa" placeholder="Escriba Nombre de la Etapa">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     
                                     <td> 
-                                        <label id="labelCantidad"class="labelsAddActivity">Construcción de Espacios</label>
-                                        <input name="valueCantidadActividad" class="form-control" id="valueCantidadActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(2).toString(): "" %>"size="20" placeholder="Cantidad de Espacios en Construir" title="Espacios en Construcción">                    
+                                        <label id="labelDescripccionEtapa"class="firstLabelDataSheet">Descripcción de la Etapa</label>
+                                        <textarea name="valueDescripcionStage" class="form-control" id="valueDescripcionStage" size="20" placeholder="Descripcción Breve de la Etapa" title="Descripcción"><%=infoDataStage.size()>0 ? infoDataStage.get(1).toString(): "" %></textarea>                    
                                     </td>
                                     
                                      
                                 </tr>
                                 <tr>
                                     <td> 
-                                        <label id="labelCostoOperacion"class="labelsAddActivity">Costo de Operación $</label>
-                                        <input id="valueCostoOperacionActividad" class="form-control" name="valueCostoOperacionActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(3).toString(): "" %>" title="Costo de Actividad" placeholder="0.00">                              
+                                        <label id="labelFechaInicioEtapa"class="firstLabelDataSheet">Fecha de Inicio  </label>
+                                        <input id="valueFechaInicioEtapa" class="form-control" name="valueFechaInicioEtapa"class="form-control" value="<%=infoDataStage.size()>0 ? infoDataStage.get(2).toString(): "" %>" title="Fecha de Inicio de la Etapa" placeholder="YYYY-MM-DD">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
-                                        <label id="labelResponsable"class="labelsAddActivity">Responsable</label>
-                                        <input id="valueResponsableActividad" class="form-control" name="valueResponsableActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(4).toString(): "" %>" title="Responsable de Act." placeholder="Responsable de la Actividad">                              
+                                        <label id="labelFechaFinEtapa"class="firstLabelDataSheet">Fecha de Fin  </label>
+                                        <input id="valueFechaFinEtapa"  name="valueFechaFinEtapa"class="form-control" value="<%=infoDataStage.size()>0 ? infoDataStage.get(3).toString(): "" %>" title="Fecha de Finalización de la Etapa" placeholder="YYYY-MM-DD">                              
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 
-                                        <label id="labelStatusActividad" class="labelsAddActivity">Estatus </label>
-                                        <select id="valueStatusActividad"  class="form-control" name="valueStatusActividad" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(5).toString(): "" %>">
-                                            <% String value= infoDataActivity.get(5).toString();
+                                        <label id="labelStatusEtapa" class="labelInfraestructura">Estatus </label>
+                                        <select id="valueStatusEtapa"  class="form-control" name="valueStatusEtapa" class="form-control, valueFirstColumnInfraestructura"   >
+                                            <% String value= infoDataStage.get(4).toString();
                                                 boolean flag1=false;
                                                  boolean  flag2=false;
                                                  boolean flag3=false;
@@ -175,24 +156,18 @@
                                    
                                 </tr>
                                 <tr>
+                                    
                                     <td> 
-                                        <label id="labelFechaInicioActividad"class="labelsAddActivity">Fecha de Inicio  </label>
-                                        <input id="valueFechaInicioActividad"  name="valueFechaInicioActividad"class="form-control" value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(6).toString(): "" %>" title="Fecha de Inicio de la Actividad" placeholder="YYYY-MM-DD">                              
+                                        <label id="labelTipoEtapa"class="firstLabelDataSheet">Tipo de Etapa</label>
+                                        <input id="valueTipoEtapa" class="form-control" name="valueTipoEtapa" class="form-control, InputDataSheet"  value="<%=infoDataStage.size()>0 ? infoDataStage.get(5).toString(): "" %>" title="Tipo de Etapa" placeholder="Equipamiento, Contrucción, etc.">                       
                                     </td>
-                                   
+                                    
+                                     
                                 </tr>
-                                <tr>
-                                    <td> 
-                                        <label id="labelFechaFinActividad"class="labelsAddActivity">Fecha de Finalización  </label>
-                                        <input id="valueFechaFinActividad"  name="valueFechaFinActividad"class="form-control"value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(7).toString(): "" %>" title="Fecha de Finalización de la Actividad" placeholder="YYYY-MM-DD">                              
-                                    </td>
-                                   
-                                </tr>
-                               
                                  <tr>
                                     <td> 
-                                        <label id="labelAvanceActividad"class="labelsAddActivity">Avance </label>
-                                        <input id="valueAvanceActividad" class="form-control"  name="valueAvanceActividad"c value="<%=infoDataActivity.size()>0 ? infoDataActivity.get(8).toString(): "" %>" title="Avance de la Actividad" placeholder="0.0 %">                                                                 </td>
+                                        <label id="labelNumeroActividades"class="firstLabelDataSheet">N° de Actividades  </label>
+                                        <input id="valueNumeroActividades" class="form-control"  name="valueNumeroActividades"class="form-control, InputDataSheet" value="<%=infoDataStage.size()>0 ? infoDataStage.get(6).toString(): "" %>"title="Número de Actividades" placeholder="N° Act. para la Etapa">                                                                 </td>
                                    
                                 </tr>
                             </table>
@@ -201,7 +176,7 @@
                             
                             </fieldset>
                          <div id="botonEnviarDiv">
-                             <input id="modificarActividad" type="button" class="btn btn-default" value="Modificar Actividad" name="modificarActividad" onclick="enviarInfocontroller()"/>
+                             <input id="updateEtapaDesarrollo" type="button" class="btn btn-default" value="Modificar Etapa" name="addEtupdateEtapaDesarrolloapaDesarrollo" onclick="enviarInfocontroller()"/>
                            
                         </div> 
                     </form>

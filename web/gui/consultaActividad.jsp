@@ -22,6 +22,8 @@
                          
                         int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")));
                         int idEtapa= Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa")));
+                        System.out.println(idPlantel);
+                        System.out.println(idEtapa);
 %>
 
 
@@ -35,6 +37,27 @@
             window.history.forward();
             function noBack() {
                 window.history.forward();
+            }
+            
+            function msgConfirm ()
+            {
+                  $.msgBox({
+                    title: "Advertencia",
+                    content: "¿Eliminar Actividad?",
+                    //info
+                    //confirm
+                    //error
+                    type: "confirm",
+                    opacity: 0.75,
+                    buttons: [{value: "SI"},{value: "NO"}],
+                    success : function (result)
+                    {
+                        if(result == 'SI'){
+                          alert('Eligio SI');   
+                        }
+                    }
+                   
+                });
             }
           
              
@@ -68,7 +91,8 @@
                 <br>
                 <br>
                 <div id="contenent_info">
-                           <form name="usuario" method="post" action="" enctype="application/x-www-form-urlencoded" id="form">
+                   
+                    <form name="usuario" method="post" action="" enctype="application/x-www-form-urlencoded" id="form">
                                <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
                         <br>
                             <fieldset>
@@ -82,6 +106,7 @@
                                             <th style="text-align: center">Responsable</th>
                                             <th style="text-align: center">Costo $</th>
                                             <th style="text-align: center">Avance %</th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -129,7 +154,8 @@
             cells[3] = '<%=listAux.get(3).toString()%>';
             cells[4] = '<%=listAux.get(4).toString()%>';
             cells[5] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, idEtapa)%>&idActividad=<%=WebUtil.encode(session, listAux.get(5))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Modifica" width="22" height="23" alt="Modifica Actividad"></a>';
-            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/agregaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Actividad"></a>';
+            cells[6] = '<a href="<%=PageParameters.getParameter("mainController")%>?idActividad=<%=WebUtil.encode(session, listAux.get(5))%>&FormForm=eliminaActivity&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, idEtapa)%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Actividad"></a>';
+            cells[7] = '<button onclick="msgConfirm();">Agregar</a>';
                         data[<%=cont%>] = t.fnAddData(cells, false);
                     <%
                             cont++;

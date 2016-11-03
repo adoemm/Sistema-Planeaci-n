@@ -20,7 +20,7 @@
                     } else {
                        
                         int idPlantel= Integer.parseInt(WebUtil.decode(session, request.getParameter(WebUtil.encode(session, "idPlantel"))));
-                        int numeroEtapa= QUID.selectNumeroEtapasDesarollo(idPlantel)+1;
+                        
 %>
 <!DOCTYPE html>
 
@@ -88,7 +88,7 @@
                         <input type="hidden" name="FormForm" value="agregaEtapaDesarrollo"/>
                        <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, idPlantel) %>"/>
                         <input type="hidden" name="sesion" value="<%=WebUtil.encode(session, "imix") %>"/>
-                         <input type="hidden" name="numeroEtapa" value="<%=WebUtil.encode(session, numeroEtapa) %>"/>
+                         
                         <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
                         <br>
                         <fieldset id="fieldDatosEtapaDesarrollo" name="fieldDatosEtapaDesarrollo"style="margin-left: 3%; margin-bottom: 5%; margin-right: 3%;">
@@ -99,13 +99,7 @@
                         <div id="divEtapaDesarrollo" name="divEtapaDesarrollo">
                             <table>
                                 
-                                <tr>
-                                    <td> 
-                                        <label id="labelNumeroEtapa"class="firstLabelDataSheet">N° Etapa  </label>
-                                        <input id="valueNumeroEtapa" class="form-control"  name="valueNumeroEtapa"class="form-control, InputDataSheet"  title="Número de la Etapa" disabled value="<%=numeroEtapa%>">                              
-                                    </td>
-                                   
-                                </tr>
+                               
                                 <tr>
                                     <td> 
                                         <label id="labelNombreEtapa"class="firstLabelDataSheet">Nombre de la Etapa  </label>
@@ -142,8 +136,8 @@
                                         <select id="valueStatusEtapa"  class="form-control" name="valueStatusEtapa" class="form-control, valueFirstColumnInfraestructura"   >
                                             <option value="" selected > </option>
                                             <option value="Proceso">Proceso</option>
-                                            <option value="Completa">Completa</option>
-                                            <option value="Pausada">Cancelada</option>
+                                            <option value="Completada">Completada</option>
+                                            <option value="Cancelada">Cancelada</option>
                                         </select>
                                     </td>
                                    

@@ -132,11 +132,17 @@ public final class controller extends HttpServlet {
                                 case "agregaEtapaDesarrollo":
                                     this.agregaEtapaDesarrollo(session, request, response, quid, out);
                                     break;
+                                case "modificaEtapaDesarrollo":
+                                    this.modificaEtapaDesarrollo(session, request, response, quid, out);
+                                    break;
                                 case "agregaActivity":
                                     this.agregaActividad(session, request, response, quid, out);
                                     break;
                                 case "modificaActivity":
                                     this.modificaActividad(session, request, response, quid, out);
+                                    break;
+                                case "eliminaActivity":
+                                    this.eliminaActividad(session, request, response, quid, out);
                                     break;
                             }
                             // </editor-fold>
@@ -316,9 +322,9 @@ public final class controller extends HttpServlet {
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
             if (this.validaFormAgregaEtapaDesarrollo(session, request, response, quid, out)) {
-
+                int numeroEtapa = quid.selectNumeroEtapasDesarollo(Integer.parseInt(WebUtil.decode(session, request.getParameter("idPlantel")))) + 1;
                 Transporter tport = quid.insertEtapaDesarrollo(
-                        Integer.parseInt(WebUtil.decode(session, request.getParameter("numeroEtapa"))),
+                        numeroEtapa,
                         request.getParameter("valueNombreEtapa"),
                         request.getParameter("valueDescripcionStage"),
                         request.getParameter("valueFechaInicioEtapa"),
@@ -338,7 +344,7 @@ public final class controller extends HttpServlet {
                 } else {
                     this.getServletConfig().getServletContext().getRequestDispatcher(
                             "" + PageParameters.getParameter("msgUtil")
-                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error Agregar Etapa de Desarrollo.").forward(request, response);
+                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error al Agregar Etapa de Desarrollo.").forward(request, response);
                 }
             }
         } else {
@@ -387,6 +393,44 @@ public final class controller extends HttpServlet {
         return valido;
     }
 
+    private void modificaEtapaDesarrollo(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "updateStage";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+            if (this.validaFormAgregaEtapaDesarrollo(session, request, response, quid, out)) {
+
+                Transporter tport = quid.updateEtapa(
+                        Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa"))),
+                        request.getParameter("valueNombreEtapa"),
+                        request.getParameter("valueDescripcionStage"),
+                        request.getParameter("valueFechaInicioEtapa"),
+                        request.getParameter("valueFechaFinEtapa"),
+                        request.getParameter("valueStatusEtapa"),
+                        request.getParameter("valueTipoEtapa"),
+                        Integer.parseInt(request.getParameter("valueNumeroActividades")),
+                        UTime.calendar2aaaamd(Calendar.getInstance())
+                );
+                if (tport.getCode() == 0) {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msgNRedirectFull.jsp?title=Etapas de Desarrollo&type=info&msg=Se ha Modificado la Etapa de Desarrollo.&url="
+                            + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaEtapaDesarrollo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel")).forward(request, response);
+
+                } else {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error al Modificar la Etapa de Desarrollo.").forward(request, response);
+                }
+            }
+        } else {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url="
+                    + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaEtapaDesarrollo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel")).forward(request, response);
+
+        }
+    }
+
     private void agregaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
         String access4Insert = "addActivity";
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
@@ -403,9 +447,12 @@ public final class controller extends HttpServlet {
                         request.getParameter("valueFechaFinActividad"),
                         Double.parseDouble(request.getParameter("valueAvanceActividad")),
                         UTime.calendar2aaaamd(Calendar.getInstance()),
-                        Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa")))
-                );
-                if (tport.getCode() == 0) {
+                        Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa"))));
+                LinkedList data = quid.selectNumberOfActivitiesAndAvance(Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa"))));
+                double avance = calculaAvanceEtapa(data, Double.parseDouble(request.getParameter("valueAvanceActividad")));
+                Transporter tport2 = quid.updateAdvanceToStage(Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa"))), avance);
+
+                if (tport.getCode() == 0 && tport2.getCode() == 0) {
                     this.getServletConfig().getServletContext().getRequestDispatcher(
                             "" + PageParameters.getParameter("msgUtil")
                             + "/msgNRedirectFull.jsp?title=Actividades&type=info&msg=Se ha Agregado una Actividad a la Etapa.&url="
@@ -473,11 +520,38 @@ public final class controller extends HttpServlet {
     }
 
     private void modificaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
-        String access4Insert = "updateActivity";
+        String access4Insert = "updateActivityy";
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
             if (this.validaFormAgregaActividad(session, request, response, quid, out)) {
 
+                Transporter tport = quid.updateActividad(
+                        Integer.parseInt(WebUtil.decode(session, request.getParameter("idActividad"))),
+                        request.getParameter("valueNombreActividad"),
+                        request.getParameter("valueDescripccionActividad"),
+                        request.getParameter("valueCantidadActividad"),
+                        Double.parseDouble(request.getParameter("valueCostoOperacionActividad")),
+                        request.getParameter("valueResponsableActividad"),
+                        request.getParameter("valueStatusActividad"),
+                        request.getParameter("valueFechaInicioActividad"),
+                        request.getParameter("valueFechaFinActividad"),
+                        Double.parseDouble(request.getParameter("valueAvanceActividad")),
+                        UTime.calendar2aaaamd(Calendar.getInstance()));
+                LinkedList data = quid.selectNumberOfActivitiesAndAvance(Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa"))));
+                double avance = calculaAvanceEtapa(data, Double.parseDouble(request.getParameter("valueAvanceActividad")));
+                Transporter tport2 = quid.updateAdvanceToStage(Integer.parseInt(WebUtil.decode(session, request.getParameter("idEtapa"))), avance);
+
+                if (tport.getCode() == 0 && tport2.getCode() == 0) {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msgNRedirectFull.jsp?title=Actividades&type=info&msg=Se ha Modificado la Actividad a la Etapa.&url="
+                            + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaActividad.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel") + "_param_idEtapa=" + request.getParameter("idEtapa")).forward(request, response);
+
+                } else {
+                    this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error al Modificar Actividad de la Etapa.").forward(request, response);
+                }
             }
         } else {
             this.getServletConfig().getServletContext().getRequestDispatcher(
@@ -486,6 +560,37 @@ public final class controller extends HttpServlet {
                     + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaActividad.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel") + "_param_idEtapa=" + request.getParameter("idEtapa")).forward(request, response);
 
         }
+    }
+
+    private void eliminaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "deleteActivityy";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+                 
+            
+         
+        } else {
+            System.out.println(request.getParameter("idPlantel"));
+            System.out.println(request.getParameter("idEtapa"));
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url="
+                    + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaActividad.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel") + "_param_idEtapa=" + request.getParameter("idEtapa")).forward(request, response);
+
+        }
+    }
+
+    //Metodo que calcula el avance de la etapa con respecto al avance de las Actividades.
+    private double calculaAvanceEtapa(LinkedList data, double advanceToActivity) {
+        int numeroActividades = Integer.parseInt(data.get(0).toString());
+        double PAT = Double.parseDouble(data.get(1).toString());
+        double PATaux = 0;
+        double PA = 0;
+        PA = 100 / numeroActividades;
+        PATaux = (advanceToActivity * PA) / 100;
+        PAT += PATaux;
+
+        return PAT;
     }
 
     // </editor-fold>
