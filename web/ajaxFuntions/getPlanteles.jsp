@@ -9,7 +9,7 @@
 
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
 <jsp:useBean id="QUIDAux" scope="page" class="jspread.core.db.QUID"/>
-
+ 
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
 <%
 
@@ -25,9 +25,9 @@
     }
 %>
 
-<div style="width: 50%; margin-left: 39%">
-    <label  style="font-size: 21px;"for="idPlantel">Plantel</label>
-    <select  name="idPlantel" id="idPlantel" style="height: 25px; margin-left: 20px; font-size: 15px" onChange="<%=onChange%>">
+<div>
+   
+    <select  class="form-control" name="idPlantel" id="idPlantel" style="height: 30px; font-size: 15px; width: 250px; margin-left: 40%" onChange="<%=onChange%>">
         <option selected=""/>
         <%
             Iterator itI = null;

@@ -177,8 +177,8 @@ public final class SystemSettings {
                     jscp.setHost("172.16.1.13");
                     jscp.setPort(1433);
                     jscp.setSchema("DBSPIC");
-                    jscp.setUser("lgplanea");
-                    jscp.setPassword("lpd8909&ball");
+                    jscp.setUser("spic");
+                    jscp.setPassword("qazX147");
                     jscp.setMAX_POOL_SIZE(5);
                     jscp.initialize();
                     System.out.println("Direccion de la base de datos: " + jscp.getDBURL());

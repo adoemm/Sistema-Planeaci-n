@@ -65,7 +65,8 @@ public final class controller extends HttpServlet {
                     response.sendRedirect(PageParameters.getParameter("SiteOnMaintenanceURL").toString());
                 } else // <editor-fold defaultstate="collapsed" desc="Realizando LogIn de usuario">
                 //si proviene de la página  de login aqui se detectara y se validara al usuario
-                 if (request.getParameter("LogInPage") != null) {
+                {
+                    if (request.getParameter("LogInPage") != null) {
                         //aqui consulta el usuario en Base de Datos.
 //                        if (request.getParameter("captcha").equals(session.getAttribute("captcha")) && request.getParameter("captcha").equalsIgnoreCase("") == false) {
                         if (true) {
@@ -114,7 +115,8 @@ public final class controller extends HttpServlet {
                         response.sendRedirect("/" + PageParameters.getParameter("appName") + PageParameters.getParameter("LogInPage"));
                         // </editor-fold> 
                     } else // <editor-fold defaultstate="collapsed" desc="Cerrando sesion">
-                     if (request.getParameter("exit") != null) {
+                    {
+                        if (request.getParameter("exit") != null) {
                             //session.invalidate();
                             this.clearNCloseSession(session, request, response, quid, out);
                             //quid.insertLog("SysLogOut", "exit", "", "", "", "");
@@ -135,6 +137,9 @@ public final class controller extends HttpServlet {
                                 case "modificaEtapaDesarrollo":
                                     this.modificaEtapaDesarrollo(session, request, response, quid, out);
                                     break;
+                                case "eliminaStage":
+                                    this.eliminaEtapa(session, request, response, quid, out);
+                                    break;
                                 case "agregaActivity":
                                     this.agregaActividad(session, request, response, quid, out);
                                     break;
@@ -149,6 +154,8 @@ public final class controller extends HttpServlet {
                         } else {
                             out.println("UPS.... Algo malo ha pasado");
                         }
+                    }
+                }
 
             } catch (Exception ex) {
                 Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -430,6 +437,35 @@ public final class controller extends HttpServlet {
 
         }
     }
+    
+    private void eliminaEtapa(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String access4Insert = "deleteStage";
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4Insert, userAccess)) {
+            Transporter tport = quid.deleteActividades(Integer.parseInt(request.getParameter("idEtapa")));
+            Transporter tport2 = quid.deleteEtapa(Integer.parseInt(request.getParameter("idEtapa")));
+            
+            if (tport.getCode() == 0 && tport2.getCode() == 0) {
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                            "" + PageParameters.getParameter("msgUtil")
+                            + "/msgNRedirectFull.jsp?title=Etapas de Desarrollo&type=info&msg=Se ha Eliminado la Etapa de Desarrollo.&url="
+                            + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaEtapaDesarrollo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel")).forward(request, response);
+
+            } else {
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error al Eliminar la Etapa.").forward(request, response);
+            }
+
+        } else {
+
+           this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url="
+                    + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaEtapaDesarrollo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel")).forward(request, response);
+
+        }
+    }
 
     private void agregaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
         String access4Insert = "addActivity";
@@ -520,7 +556,7 @@ public final class controller extends HttpServlet {
     }
 
     private void modificaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
-        String access4Insert = "updateActivityy";
+        String access4Insert = "updateActivity";
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
             if (this.validaFormAgregaActividad(session, request, response, quid, out)) {
@@ -563,15 +599,24 @@ public final class controller extends HttpServlet {
     }
 
     private void eliminaActividad(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
-        String access4Insert = "deleteActivityy";
+        String access4Insert = "deleteActivity";
         LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
         if (UserUtil.isAValidUser(access4Insert, userAccess)) {
-                 
-            
-         
+            Transporter tport = quid.deleteActividad(Integer.parseInt(request.getParameter("idActividad")));
+            if (tport.getCode() == 0) {
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msgNRedirectFull.jsp?title=Actividades&type=info&msg=Se ha Eliminado la Actividad.&url="
+                        + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/consultaActividad.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_idPlantel=" + request.getParameter("idPlantel") + "_param_idEtapa=" + request.getParameter("idEtapa")).forward(request, response);
+
+            } else {
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msg.jsp?title=Error&type=error&msg=Ocurrio un error al Eliminar la Actividad.").forward(request, response);
+            }
+
         } else {
-            System.out.println(request.getParameter("idPlantel"));
-            System.out.println(request.getParameter("idEtapa"));
+
             this.getServletConfig().getServletContext().getRequestDispatcher(
                     "" + PageParameters.getParameter("msgUtil")
                     + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted no Cuenta con el permiso para realizar esta acción.&url="

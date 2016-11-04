@@ -887,6 +887,46 @@ public final class QUID {
         return listToSend;
     }
     
+    public final boolean selectActivitiesOfStage(int idEtapa) {
+
+        boolean flag=false;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            SQLSentence = ""
+                    +" SELECT COUNT(*)"
+                    +" FROM ACTIVIDAD"
+                    +" WHERE FK_ID_Etapa=?;";
+            ;
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idEtapa);
+            rs = pstmt.executeQuery();
+            
+             if(rs.next()) {
+               int contador=Integer.parseInt(rs.getString(1));
+                 if(contador>0)
+                 {
+                     flag=true;
+                 }
+
+            }
+
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
 
@@ -1007,13 +1047,20 @@ public final class QUID {
             pstmt.setString(23, fechaActualizacion);
             pstmt.setString(24, idPlantel);
             pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
             tport = new Transporter(0, "El registro se creo correctamente");
             endConnection(jscp, conn, pstmt);
         } catch (Exception ex) {
-            endConnection(jscp, conn, pstmt);
-            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            tport = new Transporter(1, "Error inesperado. " + ex.getMessage());
-
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
         }
         return tport;
     }
@@ -1079,14 +1126,21 @@ public final class QUID {
             pstmt.setInt(10, numeroActividades);
             pstmt.setInt(11, idPlantel);
             pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
             tport = new Transporter(0, "El registro se creo correctamente");
             endConnection(jscp, conn, pstmt);
 
         } catch (Exception ex) {
-            endConnection(jscp, conn, pstmt);
-            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            tport = new Transporter(1, "Error inesperado. " + ex.getMessage());
-
+             try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
         }
         return tport;
     }
@@ -1155,14 +1209,21 @@ public final class QUID {
             pstmt.setString(10, fechaActualizaciónAct);
             pstmt.setInt(11, FK_ID_Etapa);
             pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
             tport = new Transporter(0, "El registro se creo correctamente");
             endConnection(jscp, conn, pstmt);
 
         } catch (Exception ex) {
-            endConnection(jscp, conn, pstmt);
-            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            tport = new Transporter(1, "Error inesperado. " + ex.getMessage());
-
+             try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
         }
         return tport;
     }
@@ -1286,13 +1347,21 @@ public final class QUID {
             pstmt.setString(33, fechaActualizacion);
             pstmt.setInt(34, idInfraestructura);
             int rowCount = pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
             endConnection(jscp, conn, pstmt);
             tport = new Transporter(0, "Filas afectadas: " + rowCount);
 
         } catch (Exception ex) {
-            endConnection(jscp, conn, pstmt);
-            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            tport = new Transporter(1, "Error inesperado.");
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
         }
         return tport;
     }
@@ -1340,13 +1409,21 @@ public final class QUID {
             pstmt.setInt(9, idEtapa);
 
             int rowCount = pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
             endConnection(jscp, conn, pstmt);
             tport = new Transporter(0, "Filas afectadas: " + rowCount);
 
         } catch (Exception ex) {
-            endConnection(jscp, conn, pstmt);
-            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            tport = new Transporter(1, "Error inesperado.");
+             try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
         }
         return tport;
     }
@@ -1399,13 +1476,21 @@ public final class QUID {
             pstmt.setInt(11, idActividad);
 
             int rowCount = pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
             endConnection(jscp, conn, pstmt);
             tport = new Transporter(0, "Filas afectadas: " + rowCount);
 
         } catch (Exception ex) {
-            endConnection(jscp, conn, pstmt);
-            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            tport = new Transporter(1, "Error inesperado.");
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
         }
         return tport;
     }
@@ -1431,19 +1516,142 @@ public final class QUID {
             pstmt.setDouble(1, avance);
             pstmt.setInt(2, idEtapa);
             int rowCount = pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
             endConnection(jscp, conn, pstmt);
             tport = new Transporter(0, "Filas afectadas: " + rowCount);
 
         } catch (Exception ex) {
-            endConnection(jscp, conn, pstmt);
-            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
-            tport = new Transporter(1, "Error inesperado.");
+             try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
         }
         return tport;
     }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="DELETE">
     
+      //Método que Elimina una Actividad en Especifico.
+        public final Transporter deleteActividad(int idActividad
+            
+    ) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        try {
+            SQLSentence = ""
+                    + " DELETE FROM ACTIVIDAD"
+                    + " WHERE ID_ACTIVIDAD=?;";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idActividad);
+            int rowCount = pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
+            endConnection(jscp, conn, pstmt);
+            tport = new Transporter(0, "Filas afectadas: " + rowCount);
+
+        } catch (Exception ex) {
+             try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
+        }
+        return tport;
+    }
+        
+        //Método que Elimina todas las Actividades de una Etapa en Especifico.
+        public final Transporter deleteActividades(int idEtapa
+            
+    ) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        try {
+            SQLSentence = ""
+                    + " DELETE FROM ACTIVIDAD"
+                    + " WHERE FK_ID_Etapa=?;";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idEtapa);
+            int rowCount = pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
+            endConnection(jscp, conn, pstmt);
+            tport = new Transporter(0, "Filas afectadas: " + rowCount);
+
+        } catch (Exception ex) {
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
+        }
+        return tport;
+    }
     
+        //Método que Elimina una Etapa en Especifico.
+        public final Transporter deleteEtapa(int idEtapa
+            
+    ) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        try {
+            SQLSentence = ""
+                    + " DELETE FROM ETAPA"
+                    + " WHERE ID_Etapa=?;";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setInt(1, idEtapa);
+            int rowCount = pstmt.executeUpdate();
+            conn.commit();
+            conn.setAutoCommit(true);
+            endConnection(jscp, conn, pstmt);
+            tport = new Transporter(0, "Filas afectadas: " + rowCount);
+
+        } catch (Exception ex) {
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
+        }
+        return tport;
+    }
     //</editor-fold>
 }

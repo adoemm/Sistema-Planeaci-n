@@ -36,6 +36,73 @@
             function noBack() {
                 window.history.forward();
             }
+            function enviarInfocontroller (idEtapa, flagActividades)
+            {
+                if(flagActividades ===true)
+                   {
+                        $.msgBox({
+                    title: "Advertencia",
+                    content: "Hay Actividades en esta Etapa, ¿Continuar con la Eliminación de la Etapa",
+                    //info
+                    //confirm
+                    //error
+                    type: "confirm",
+                    opacity: 0.75,
+                    buttons: [{value: "SI"},{value: "NO"}],
+                    success : function (result)
+                    {
+                        if(result === 'SI'){
+                         
+             $.ajax({type: 'POST'
+                    , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
+                    , cache: false
+                    , async: false
+                    , url: '<%=PageParameters.getParameter("mainController")%>'
+                    , data: $('#form').serialize()+'&idEtapa='+idEtapa
+                    , success: function (response) {
+                        $('#wrapper').find('#divResult').html(response);
+                    }});
+            
+            
+                        }
+                    }
+                   
+                });
+                   }else
+                   {
+                        $.msgBox({
+                    title: "Advertencia",
+                    content: "¿Eliminar Etapa?",
+                    //info
+                    //confirm
+                    //error
+                    type: "confirm",
+                    opacity: 0.75,
+                    buttons: [{value: "SI"},{value: "NO"}],
+                    success : function (result)
+                    {
+                        if(result === 'SI'){
+                         
+             $.ajax({type: 'POST'
+                    , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
+                    , cache: false
+                    , async: false
+                    , url: '<%=PageParameters.getParameter("mainController")%>'
+                    , data: $('#form').serialize()+'&idEtapa='+idEtapa
+                    , success: function (response) {
+                        $('#wrapper').find('#divResult').html(response);
+                    }});
+            
+            
+                        }
+                    }
+                   
+                });
+                   }
+                   
+                  
+               
+            }
             
              
         </script>
@@ -66,7 +133,12 @@
                 <br>
                 <br>
                 <div id="contenent_info">
-                           <form name="usuario" method="post" action="" enctype="application/x-www-form-urlencoded" id="form">
+                           <form name="form" method="post" action="" enctype="application/x-www-form-urlencoded" id="form">
+                               <input type="hidden" name="FormForm" value="eliminaStage"/>
+                               <input type="hidden" name="idPlantel" value="<%=WebUtil.encode(session, idPlantel) %>"/>
+                               <input type="hidden" name="sesion" value="<%=WebUtil.encode(session, "imix") %>"/>
+                       
+                               
                                <legend align="center" ><%=QUID.selectNombrePlantel(idPlantel) %></legend>
                         <br>
                             <fieldset>
@@ -103,6 +175,7 @@
                            </a>
                           
                             </div> 
+                               <div id="divResult"></div>
                  <div id="divFoot">
                     <jsp:include page='<%=(PageParameters.getParameter("footer"))%>' />
                 </div> 
@@ -129,10 +202,11 @@
             cells[3] = '<%=listAux.get(3).toString()%>';
             cells[4] = '<%=listAux.get(4).toString()%>';
             cells[5] = '<%=listAux.get(5).toString()%>';
-            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaEtapa.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Modifica Etapa" width="22" height="23" alt="Modifica Etapa"></a>';
-            cells[7] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Emblem-Documents-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
-            cells[8] = '<a href="<%=PageParameters.getParameter("mainController")%>?idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/window-close.png" title="    Eliminar Etapa" width="22" height="23" alt="Eliminar Etapa"></a>';
-    data[<%=cont%>] = t.fnAddData(cells, false);
+            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Emblem-Documents-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
+            cells[7] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaEtapa.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Modifica Etapa" width="22" height="23" alt="Modifica Etapa"></a>';
+            cells[8] = '<a onclick="enviarInfocontroller(<%=Integer.parseInt(listAux.get(0).toString()) %>,<%=QUID.selectActivitiesOfStage(Integer.parseInt(listAux.get(0).toString()))%>);"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Eliminar Etapa"></a>';
+            
+            data[<%=cont%>] = t.fnAddData(cells, false);
                     <%
                             cont++;
                         }

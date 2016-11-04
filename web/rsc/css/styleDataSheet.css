@@ -12,67 +12,12 @@ and open the template in the editor.
 /*
     CSS Clases de la Ficha Técnica
 */
-.InputDataSheet
+.classLabelDataSheet
 {
-    margin-left: 270px;
-    margin-bottom: 10px;
-    margin-top: 5px;
-    height: 25px;
-}
-
-.firstLabelDataSheet
-{
-    margin: 10px;
-    margin-right: 50px;
-}
-
-.labelSecondColumnDatosGenerales
-{
-    width: 120px;
     margin-top: 10px;
-
+    text-align: right;
+    margin-bottom: 15px;
 }
-
-.valuesSecondColumnDatosGenerales
-{
-    margin-left: 160px;
-    height: 25px;
-}
-.labelSecondColumnDatosAcademicos
-{
-    width: 195px;
-    margin: 10px;
-
-}
-.valuesSecondColumnDatosAcademincos
-{
-    margin-left: 230px;
-}
-
-.labelInfraestructura
-{
-    margin: 10px;
-}
-.valueFirstColumnInfraestructura, .valueSecondColumnInfraestructura, valueThirdColumnInfraestructura
-{
-    width: 100px;
-    margin-left: 270px;
-    margin-top: 5px;
-    height: 25px;
-}
-
-.valueThirdColumnInfraestructura2
-{
-    width: 100px;
-    margin-left: 200px;
-    margin-top: 5px;
-}
-.labelthirdColumnInfraestructura
-{
-    width: 166px;
-    margin-top: 10px;
-}
-
 
 
 
@@ -80,144 +25,121 @@ and open the template in the editor.
     CSS de ID de la Ficha Técnica
 */
 
-#valueNombrePlantel
+.classValueDataSheet
 {
-    width: 210px;
-}
 
-
-
-#valueDireccion
-{
-    width: 500px;
-    margin-left: 160px;
-
-}
-#labelAnioCreacion, #labelDireccion, #labelEstado, #labelCorreo, #labelLongitud
-{
-    width: 138px;
-    margin-left: 0px;
+    width: 200px;
+    font-size: 12px;
+    height: 30px;
+    margin-left: 270px;
+    margin-bottom: 15px;
     margin-top: 10px;
 }
-#valueAnioCreacion, #valueDireccion, #valueEstado, #valueCorreo, #valueLongitud
+
+
+
+#valueNombrePlantel, #valueMunicipio, #valueCCT, #valueTelefono, #valueLatitud, #valueDireccion, #valueEstado, #valueAnioCreacion, #valueCorreo, #valueLongitud, #valueDirector,
+#valuePersonalAdmin, #valueDocentes, #valueMatricula, #valueTurno, #valuePeriodoEscolar, #valueCarrerasVigentes, #valueCarrerasLiquidadas, #valueSuperficiePredio, #valueSuperficieConstruida
 {
-    margin: 5px;
-    margin-left: 170px;
+    width: 230px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    height: 30px;
+}
+
+#valueDireccion, #valueCorreo
+{
+    width: 450px;
+}
+
+#valueEstado
+{
+    width: 150px;
+}
+
+#valueAnioCreacion
+{
+    width: 70px;
+}
+
+#valueLatitud, #valueLongitud
+{
+    width: 120px;
 }
 
 #valueDirector
 {
-    width: 545px;
-    margin-left: 270px;
-}
-
-#valueMatricula
-{
-
-    width: 100px;
-    margin-left: 160px;
-}
-
-#valueCarrerasLiquidadas
-{
-    width: 300px;
-}
-
-#valuePersonalAdmin
-{
-    width: 100px;
-    margin-left: 270px;
-
-}
-#valueTurno
-{
-    margin-left: 270px;
-    width: 204px;
-}
-#labelTurno
-{
-    width: 50px;
-    margin-left: 190px;
-    margin-top: 10px;
-}
-#labelPeriodoEscolar
-{
-    width: 130px;
-    margin-left: 80px;
-}
-
-#valuePeriodoEscolar
-{
-    width: 100px;
-    margin-left: 240px;
-}
-
-#labelDocentes
-{
-    margin: 10px;
-    margin-left: 130px;
-    width: 75px;
-}
-#valueDocentes
-{
-    width: 100px;
-    margin-left: 240px;
-}
-
-#labelSalaMedios
-{
-    width: 242px;
-}
-
-#valueOtrosTalleres
-{
-    width: 200px;
-}
-
-#valueCarrerasVigentes
-{
-    width: 70%;
-}
-
-#valueCarrerasLiquidadas
-{
-    width: 70%;
-}
-
-#addDataSheet
-{
-    margin-left: 25%;
-}
-#addEtapasDesarrollo
-{
-    margin-left: 16%;
-}
-#cleanDataSheet
-{
-    margin-right: 25%;
-}
-
-#valueCafeteria, #valueBardaPerimetral
-{
-    margin-left: 199px;
-}
-
-#valueCorreo
-{
-    width:300px; 
-}
-#labelPersonalAdmin
-{
-    width: 230px;
-}
-#labelTalleresComputo
-{
-    width: 172px;
+    width: 400px;
 }
 
 #labelMatricula
 {
-    margin-left: 40px;
-    width: 95px;
+    width: 80px;
+    margin-left: 85px;
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
+#valueMatricula, #valuePeriodoEscolar, #valuePersonalAdmin, #valueDocentes, #valueAulasDidacticas, #valueSuperficieConstruida 
+{
+    width: 100px;
+    margin-left: 175px;
+}
+
+#labelPeriodoEscolar
+{
+    margin-left: 35px;
+    width: 130px;
+}
+#labelPersonalAdmin
+{
+    margin-left: -40px;
+    width: 200px;
+}
+#valueCarrerasVigentes, #valueCarrerasLiquidadas
+{
+    width: 500px;
+}
+
+#valueDocentes
+{
+    margin-left: 240px;
+}
+
+#valueSuperficiePredio, #valueLaboratorios, #valueSalaMedios, #valueAreasDeportivas
+{
+    width: 100px;
+    margin-left: 240px;
+    margin-bottom: 15px;
+
+}
+#valueOtrosTalleres
+{
+    width: 400px;
+    margin-bottom: 15px;
+}
+
+#labelSuperficieConstruida
+{
+    width: 180px;
+    margin-left: -180px;
+}
+#valueSuperficieConstruida
+{
+    margin-left: 10px;
+}
+#labelAulasDidacticas
+{
+    width: 132px;
+    margin-left: -130px;
+   
+}
+#valueAulasDidacticas
+{
+    height: 30px;
+    width: 100px;
+    margin-left: 10px;
+   
+}
+
+
 

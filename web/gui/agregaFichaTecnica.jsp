@@ -122,57 +122,57 @@
                             <table>
                                 <tr>
                                     <td> 
-                                        <label id="labelNombrePlantel"class="firstLabelDataSheet">Nombre del Plantel  </label>
-                                        <input id="valueNombrePlantel" name="valueNombrePlantel"class="form-control, InputDataSheet" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(0).toString(): "" %>" title="Nombre de Plantel">                              
+                                        <label id="labelNombrePlantel"class="classLabelDataSheet">Nombre del Plantel  </label>
+                                        <input id="valueNombrePlantel" name="valueNombrePlantel"class="classValueDataSheet, form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(0).toString(): "" %>" title="Nombre de Plantel">                              
                                     </td>
                                     <td> 
-                                        <label id="labelDireccion" class="labelSecondColumnDatosGenerales">Dirección</label>
-                                        <input id="valueDireccion" name="valueDireccion" class="form-control, InputDataSheet"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(1).toString(): "" %>" title="Dirección">                        
+                                        <label id="labelDireccion" class="classLabelDataSheet">Dirección</label>
+                                        <input id="valueDireccion" name="valueDireccion" class="classValueDataSheet, form-control"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(1).toString(): "" %>" title="Dirección">                        
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     
                                     <td> 
-                                        <label id="laberMunicipio"class="firstLabelDataSheet">Municipio</label>
-                                        <input id="valueMunicipio" name="valueMunicipio" class="form-control, InputDataSheet" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(2).toString(): "" %>" title="Municipio">                       
+                                        <label id="laberMunicipio"class="classLabelDataSheet">Municipio</label>
+                                        <input id="valueMunicipio" name="valueMunicipio" class="classValueDataSheet, form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(2).toString(): "" %>" title="Municipio">                       
                                     </td>
                                     <td> 
-                                        <label id="labelEstado" class="labelSecondColumnDatosGenerales">Estado</label>
-                                        <input id="valueEstado" name="valueEstado" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(3).toString(): "" %>" title="Estado">                            
+                                        <label id="labelEstado" class="classLabelDataSheet">Estado</label>
+                                        <input id="valueEstado" name="valueEstado" class="form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(3).toString(): "" %>" title="Estado">                            
                                     </td>
                                      
                                 </tr>
                                 <tr>
                                    
                                     <td> 
-                                        <label id="labelCCT"class="firstLabelDataSheet">C.C.T</label>
-                                        <input id="valueCCT"  name="valueCCT" class="form-control, InputDataSheet" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(5).toString(): "" %>" title="Clave de Centro de Trabajo">                          
+                                        <label id="labelCCT"class="classLabelDataSheet">C.C.T</label>
+                                        <input id="valueCCT"  name="valueCCT" class="classValueDataSheet, form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(5).toString(): "" %>" title="Clave de Centro de Trabajo">                          
                                     </td>
                                     <td> 
-                                        <label id="labelAnioCreacion" class="labelSecondColumnDatosAcademicos">Año de Creación</label>
-                                        <input id="valueAnioCreacion"  name="valueAnioCreacion" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(4).toString(): "" %>" title="Año de Creación">                     
+                                        <label id="labelAnioCreacion" class="classLabelDataSheet">Año de Creación</label>
+                                        <input id="valueAnioCreacion"  name="valueAnioCreacion" class="form-control"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(4).toString(): "" %>" title="Año de Creación">                     
                                     </td>
                                 </tr>
                                 <tr>
                                    <td> 
-                                       <label id="labelTelefono" class="firstLabelDataSheet">Teléfono</label>
-                                       <input id="valueTelefono"  name="valueTelefono" class="form-control, InputDataSheet" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(6).toString(): "" %>" title="Teléfono">                         
+                                       <label id="labelTelefono" class="classLabelDataSheet">Teléfono</label>
+                                       <input id="valueTelefono"  name="valueTelefono" class="classValueDataSheet, form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(6).toString(): "" %>" title="Teléfono">                         
                                     </td>
                                     <td> 
-                                        <label id="labelCorreo" class="labelSecondColumnDatosGenerales">Correo</label>
-                                        <input id="valueCorreo"  name="valueCorreo"class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(7).toString(): "" %>" title="Correo">                            
+                                        <label id="labelCorreo" class="classLabelDataSheet">Correo</label>
+                                        <input id="valueCorreo"  name="valueCorreo"class="form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(7).toString(): "" %>" title="Correo">                            
                                     </td>
                                 </tr>
                                 
                                 <tr>
                                     <td> 
-                                        <label  id="labelLatitud"class="firstLabelDataSheet">Latitud</label>
-                                        <input id="valueLatitud"  name="valueLatitud" class="form-control, InputDataSheet"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(8).toString(): "" %>" title="Latitud en Grados">                         
+                                        <label  id="labelLatitud"class="classLabelDataSheet">Latitud</label>
+                                        <input id="valueLatitud"  name="valueLatitud" class="classValueDataSheet, form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(8).toString(): "" %>" title="Latitud en Grados">                         
                                     </td>
                                     <td> 
-                                        <label id="labelLongitud" class="labelSecondColumnDatosGenerales">Longitud</label>
-                                        <input id="valueLongitud"  name="valueLongitud" class="form-control, InputDataSheet, valuesSecondColumnDatosGenerales"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(9).toString(): "" %>" title="Longitud en Grados">                              
+                                        <label id="labelLongitud" class="classLabelDataSheet">Longitud</label>
+                                        <input id="valueLongitud"  name="valueLongitud" class="form-control"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(9).toString(): "" %>" title="Longitud en Grados">                              
                                     </td>
                                    
                                 </tr>
@@ -187,22 +187,23 @@
                             <table>
                                 <tr>
                                     <td colspan="3"> 
-                                        <label id="labelDirector" class="firstLabelDataSheet">Director</label>
-                                        <input id="valueDirector"  name="valueDirector" class="form-control, InputDataSheet"  disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(10).toString(): "" %>" title="Nombre del Director">                              
+                                        <label id="labelDirector" class="classLabelDataSheet">Director</label>
+                                        <input id="valueDirector"  name="valueDirector" class="classValueDataSheet, form-control" disabled value="<%=dataPlantel.size()>0 ? dataPlantel.get(10).toString(): "" %>" title="Nombre del Director">                              
+                                    </td>
+                                      <td> 
+                                        <label id="labelPersonalAdmin" class="classLabelDataSheet">Personal Administrativo</label>
+                                        <input id="valuePersonalAdmin" name="valuePersonalAdmin" class="classValueDataSheet, form-control" title="Número de Personal Administrativo">                              
                                     </td>
                                 </tr>
                                 <tr>
-                                   <td> 
-                                        <label id="labelPersonalAdmin" class="firstLabelDataSheet">Personal Administrativo</label>
-                                        <input id="valuePersonalAdmin" name="valuePersonalAdmin" class="form-control, InputDataSheet" title="Número de Personal Administrativo">                              
-                                    </td>
+                                 
                                     <td> 
-                                        <label id="labelDocentes" class="">Docentes</label>
-                                        <input id="valueDocentes" name="valueDocentes" class="form-control, InputDataSheet" title="Número de Docentes">                              
+                                        <label id="labelDocentes" class="classLabelDataSheet">Docentes</label>
+                                        <input id="valueDocentes" name="valueDocentes" class="classValueDataSheet, form-control" title="Número de Docentes">                              
                                     </td>
                                      <td> 
-                                        <label id="labelMatricula" class="firstLabelDataSheet">Matrícula</label>
-                                        <input id="valueMatricula" name="valueMatricula" class="form-control, InputDataSheet" title="Cantidad de Alumnos">                              
+                                        <label id="labelMatricula" cclass="classLabelDataSheet">Matrícula</label>
+                                        <input id="valueMatricula" name="valueMatricula" class="classValueDataSheet, form-control" title="Cantidad de Alumnos">                              
                                     </td>
                                 </tr>
                                 <tr>
@@ -210,8 +211,8 @@
                                     
                                    
                                      <td> 
-                                        <label id="labelTurno" class="firstLabelDataSheet">Turno </label>
-                                        <select id="valueTurno" name="valueTurno" class="form-control, valueFirstColumnInfraestructura" >
+                                        <label id="labelTurno" class="classLabelDataSheet">Turno </label>
+                                        <select id="valueTurno" name="valueTurno" class="form-control" >
                                             <option value="" selected > </option>
                                             <option value="Matutino">Matutino</option>
                                             <option value="Vespertino">Vespertino</option>
@@ -219,23 +220,23 @@
                                         </select>
                                     </td>
                                     <td colspan="2"> 
-                                        <label id="labelPeriodoEscolar" class="labelSecondColumnDatosAcademicos">Periodo Escolar</label>
-                                        <input id="valuePeriodoEscolar"  name="valuePeriodoEscolar" class="form-control, InputDataSheet" title="Periodo Escolar">                              
+                                        <label id="labelPeriodoEscolar" class="classLabelDataSheet">Periodo Escolar</label>
+                                        <input id="valuePeriodoEscolar"  name="valuePeriodoEscolar" class="form-control" title="Periodo Escolar">                              
                                     </td>  
                                     
                                 </tr>
                                 <tr>
                                     <td  colspan="2"> 
-                                        <label id="labelCarrerasVigentes" class="firstLabelDataSheet">Carreras Vigentes</label>
-                                        <input id="valueCarrerasVigentes" name="valueCarrerasVigentes" class="form-control, InputDataSheet" title="Describir Carreras del Plantel">                              
+                                        <label id="labelCarrerasVigentes" class="classLabelDataSheet">Carreras Vigentes</label>
+                                        <input id="valueCarrerasVigentes" name="valueCarrerasVigentes" class="form-control" title="Describir Carreras del Plantel">                              
                                     </td>
                                     
                                                           
                                 </tr>
                                 <tr>
                                     <td  colspan="2"> 
-                                        <label id="labelCarrerasLiquidadas" class="firstLabelDataSheet">Carreras Liquidadas</label>
-                                        <input id="valueCarrerasLiquidadas" name="valueCarrerasLiquidadas" class="form-control, InputDataSheet" title="Describir Carreras en Liquidación">                              
+                                        <label id="labelCarrerasLiquidadas" class="classLabelDataSheet">Carreras Liquidadas</label>
+                                        <input id="valueCarrerasLiquidadas" name="valueCarrerasLiquidadas" class="form-control" title="Describir Carreras en Liquidación">                              
                                     </td>
                                 </tr>
                                
@@ -249,55 +250,55 @@
                             <table>
                                  <tr style="height: 40px">
                                     <td> 
-                                        <label id="labelSuperficiePredio" class="firstLabelDataSheet">Superficie del Predio </label>
-                                        <input id="valueSuperficiePredio" name="valueSuperficiePredio" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Cantidad de Superficie">                              
+                                        <label id="labelSuperficiePredio" class="classLabelDataSheet">Superficie del Predio </label>
+                                        <input id="valueSuperficiePredio" name="valueSuperficiePredio" class="form-control" title="Cantidad de Superficie">                              
                                     </td>
                                    <td> 
-                                        <label id="labelSuperficieConstruida" class="labelInfraestructura">Superficie Construida </label>
-                                        <input id="valueSuperficieConstruida" name="valueSuperficieConstruida" class="form-control, InputDataSheet, valueSecondColumnInfraestructura" title="Cantidad de Superficie Construida">                              
+                                        <label id="labelSuperficieConstruida" class="classLabelDataSheet">Superficie Construida </label>
+                                        <input id="valueSuperficieConstruida" name="valueSuperficieConstruida" class="form-control" title="Cantidad de Superficie Construida">                              
                                     </td>
                                     <td> 
-                                        <label id="labelAulasDidacticas" class="labelInfraestructura, labelthirdColumnInfraestructura">Aulas Didacticas</label>
-                                        <input id="valueAulasDidacticas"  name="valueAulasDidacticas" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2" title="Número de Aulas Didacticas">                              
+                                        <label id="labelAulasDidacticas" class="classLabelDataSheet">Aulas Didacticas</label>
+                                        <input id="valueAulasDidacticas"  name="valueAulasDidacticas" class="form-control" title="Número de Aulas Didacticas">                              
                                     </td>
                                     
                                 </tr>
                                 <tr style="height: 40px">
                                     
                                     <td> 
-                                        <label id="labelLaboratorios" class="firstLabelDataSheet">Laboratorios </label>
-                                        <input id="valueLaboratorios"  name="valueLaboratorios" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Número de Laboratorios">                              
+                                        <label id="labelLaboratorios" class="classLabelDataSheet">Laboratorios </label>
+                                        <input id="valueLaboratorios"  name="valueLaboratorios" class="form-control" title="Número de Laboratorios">                              
                                     </td>
                                      <td> 
-                                        <label id="labelBiblioteca" class="labelInfraestructura">Biblioteca </label>
-                                        <select id="valueBiblioteca" name="valueBiblioteca" class="form-control, valueFirstColumnInfraestructura" >
+                                        <label id="labelBiblioteca" class="classLabelDataSheet">Biblioteca </label>
+                                        <select id="valueBiblioteca" name="valueBiblioteca" class="form-control" >
                                             <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>
                                     </td>
                                     <td> 
-                                        <label id="labelTalleresComputo" class="labelInfraestructura, labelthirdColumnInfraestructura">Talleres de Cómputo</label>
-                                        <input id="valueTalleresComputo"  name="valueTalleresComputo" class="form-control, InputDataSheet, valueThirdColumnInfraestructura, valueThirdColumnInfraestructura2" title="Número de Talleres de Cómputo">                              
+                                        <label id="labelTalleresComputo" class="classLabelDataSheet">Talleres de Cómputo</label>
+                                        <input id="valueTalleresComputo"  name="valueTalleresComputo" class="form-control" title="Número de Talleres de Cómputo">                              
                                     </td>
                                 </tr>
                                  <tr style="height: 40px">
                                     
                                     <td> 
-                                        <label id="labelOtrosTalleres" class="firstLabelDataSheet">Otros Talleres</label>
-                                        <input id="valueOtrosTalleres"  name="valueOtrosTalleres" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Describir si hay mas Talleres">                              
+                                        <label id="labelOtrosTalleres" class="classLabelDataSheet">Otros Talleres</label>
+                                        <input id="valueOtrosTalleres"  name="valueOtrosTalleres" class="form-control" title="Describir si hay mas Talleres">                              
                                     </td>
                                     <td> 
-                                        <label id="labelAreaAdministrativa" class="labelInfraestructura">Area Administrativa</label>
-                                        <select id="valueAreaAdministrativa" name="valueAreaAdministrativa" class="form-control, valueFirstColumnInfraestructura">
+                                        <label id="labelAreaAdministrativa" class="classLabelDataSheet">Area Administrativa</label>
+                                        <select id="valueAreaAdministrativa" name="valueAreaAdministrativa" class="form-control">
                                             <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>
                                     </td>
                                     <td> 
-                                        <label id="labelCafeteria" class="labelInfraestructura, labelthirdColumnInfraestructura">Cafetería</label>
-                                       <select id="valueCafeteria" name="valueCafeteria" class="form-control, valueFirstColumnInfraestructura">
+                                        <label id="labelCafeteria" class="classLabelDataSheet">Cafetería</label>
+                                       <select id="valueCafeteria" name="valueCafeteria" class="form-control">
                                             <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
@@ -308,24 +309,24 @@
                                 
                                 <tr>
                                     <td> 
-                                        <label id="labelSalaMedios" class="firstLabelDataSheet">Sala de Medios o AudioVisual</label>
-                                          <select id="valueSalaMedios" name="valueSalaMedios" class="form-control, valueFirstColumnInfraestructura">
+                                        <label id="labelSalaMedios" class="classLabelDataSheet">S. Medios o AudioVisual</label>
+                                          <select id="valueSalaMedios" name="valueSalaMedios" class="form-control">
                                             <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>                                  
                                     </td>
                                     <td> 
-                                        <label id="labelCaseta" class="labelInfraestructura">Caseta de Vigilancia</label>
-                                        <select id="valueCaseta" name="valueCaseta" class="form-control, valueFirstColumnInfraestructura">
+                                        <label id="labelCaseta" class="classLabelDataSheet">Caseta de Vigilancia</label>
+                                        <select id="valueCaseta" name="valueCaseta" class="form-control">
                                             <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>                            
                                     </td> 
                                      <td> 
-                                        <label id="labelBardaPerimetral" class="labelInfraestructura, labelthirdColumnInfraestructura">Barda Perimetral</label>
-                                        <select id="valueBardaPerimetral" name="valueBardaPerimetral" class="form-control, valueFirstColumnInfraestructura">
+                                        <label id="labelBardaPerimetral" class="classLabelDataSheet">Barda Perimetral</label>
+                                        <select id="valueBardaPerimetral" name="valueBardaPerimetral" class="form-control">
                                             <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
@@ -337,8 +338,8 @@
                                     
                                    
                                     <td >
-                                        <label id="labelAreasDeportivas" class="firstLabelDataSheet">Areas Deportivas</label>
-                                        <input id="valueAreasDeportivas"  name="valueAreasDeportivas" class="form-control, InputDataSheet, valueFirstColumnInfraestructura" title="Numero de Áreas">
+                                        <label id="labelAreasDeportivas" class="classLabelDataSheet">Areas Deportivas</label>
+                                        <input id="valueAreasDeportivas"  name="valueAreasDeportivas" class="form-control" title="Numero de Áreas">
                                     </td>
                                 </tr>
                                 <tr>

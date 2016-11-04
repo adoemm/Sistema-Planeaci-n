@@ -17,7 +17,7 @@
                 existeFicha = QUID.getFichaTecnica(idPlantel);
                 if (existeFicha != true) {
 %>
-<button type="button" onclick="enviarInfoToAgregaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-left: 45%; margin-top: 10px;">Agregar Ficha Técnica</button>
+<button type="button" onclick="enviarInfoToAgregaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-left: 43%; margin-top: 10px;">Agregar Ficha Técnica</button>
 <%
 } else {
 %>
