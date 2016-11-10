@@ -110,7 +110,7 @@ and open the template in the editor.
     width: 100px;
     margin-left: 240px;
     margin-bottom: 15px;
-
+    height: 30px;
 }
 #valueOtrosTalleres
 {
@@ -129,17 +129,106 @@ and open the template in the editor.
 }
 #labelAulasDidacticas
 {
-    width: 132px;
-    margin-left: -130px;
-   
+    width: 136px;
+    margin-left: 155px;
+    margin-top: -6px;
+
 }
 #valueAulasDidacticas
 {
     height: 30px;
     width: 100px;
+    margin-left: 310px;
+    margin-top: -15px;
+
+}
+#labelBiblioteca
+{
+    margin-left: -230px;
+    margin-top: -6px;
+
+}
+#valueBiblioteca
+{
     margin-left: 10px;
-   
+    margin-top: -15px;
+    width: 100px;
+    height: 30px;
 }
 
+#labelTalleresComputo
+{
+    margin-left: 60px;
+    margin-top: -6px;
 
 
+}
+#valueTalleresComputo
+{
+    height: 30px;
+    margin-left: 310px;
+    width: 100px;
+    margin-top: -15px;
+}
+
+#valueCafeteria
+{
+    height: 30px;
+    width: 100px;
+}
+#labelSalaMedios
+{
+    margin-left: -228px;
+    margin-top: 20px;
+}
+
+#valueSalaMedios
+{
+    height: 30px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+#valueAreaAdministrativa
+{
+    height: 30px;
+    width: 100px;
+    margin-left: 420px;
+}
+#labelAreaAdministrativa
+{
+    margin-left: 170px;
+}
+
+#labelCaseta
+{
+    margin-left: 60px;
+    margin-top: 10px;
+}
+#valueCaseta
+{
+    height: 30px;
+    width: 100px;
+    margin-left: 310px;
+}
+#valueBardaPerimetral
+{
+    height: 30px;
+    width: 100px;
+}
+#labelAreasDeportivas
+{
+    margin-left: -230px;
+    margin-top: 20px;
+}
+#valueAreasDeportivas
+{
+    height: 30px;
+    width: 100px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#addDataSheet
+{
+    margin-left: 30%;
+}

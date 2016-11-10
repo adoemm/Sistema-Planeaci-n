@@ -32,6 +32,7 @@
         <script type="text/javascript">
             setTimeout("document.location=document.location", 1795000);
         </script>
+        
     </head>
     <body onload="">
         <div id="wrapper">
@@ -81,7 +82,7 @@
                             </tr>
                             <tr>
                                 <td align="center">
-                                    <input type="submit" name="login" id="login" value="Entrar" style="height: 27px; width:100%" tabindex="4">
+                                    <input type="submit" name="login" id="login" value="Entrar" style="height: 27px; width:100%" tabindex="4" class="form-control">
                                 </td>
                             </tr>
                         </table>

@@ -927,6 +927,8 @@ public final class QUID {
         }
         return flag;
     }
+    
+    
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
 

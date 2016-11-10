@@ -7,11 +7,6 @@
 <%@page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java"%>
  <link href="../rsc/css/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> 
 <%@ include file="/gui/pageComponents/globalSettings.jsp"%>
-
-
-
-
-
 <%    try {
         if (fine) {
             if (request.getParameter(WebUtil.encode(session, "imix")) != null) {
@@ -258,8 +253,8 @@
                                         <input id="valueSuperficieConstruida" name="valueSuperficieConstruida" class="form-control" title="Cantidad de Superficie Construida">                              
                                     </td>
                                     <td> 
-                                        <label id="labelAulasDidacticas" class="classLabelDataSheet">Aulas Didacticas</label>
-                                        <input id="valueAulasDidacticas"  name="valueAulasDidacticas" class="form-control" title="Número de Aulas Didacticas">                              
+                                        <label id="labelAulasDidacticas" class="classLabelDataSheet">Aulas Didácticas</label>
+                                        <input id="valueAulasDidacticas"  name="valueAulasDidacticas" class="form-control" title="Número de Aulas Didácticas">                              
                                     </td>
                                     
                                 </tr>
@@ -278,7 +273,7 @@
                                         </select>
                                     </td>
                                     <td> 
-                                        <label id="labelTalleresComputo" class="classLabelDataSheet">Talleres de Cómputo</label>
+                                        <label id="labelTalleresComputo">Talleres de Cómputo</label>
                                         <input id="valueTalleresComputo"  name="valueTalleresComputo" class="form-control" title="Número de Talleres de Cómputo">                              
                                     </td>
                                 </tr>
@@ -288,14 +283,20 @@
                                         <label id="labelOtrosTalleres" class="classLabelDataSheet">Otros Talleres</label>
                                         <input id="valueOtrosTalleres"  name="valueOtrosTalleres" class="form-control" title="Describir si hay mas Talleres">                              
                                     </td>
-                                    <td> 
-                                        <label id="labelAreaAdministrativa" class="classLabelDataSheet">Area Administrativa</label>
+                                    <td colspan="2"> 
+                                        <label id="labelAreaAdministrativa" class="classLabelDataSheet">Área Administrativa</label>
                                         <select id="valueAreaAdministrativa" name="valueAreaAdministrativa" class="form-control">
                                             <option value="" selected > </option>
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select>
                                     </td>
+                                    
+                                    </td>
+                                    
+                                </tr>
+                                
+                                <tr>
                                     <td> 
                                         <label id="labelCafeteria" class="classLabelDataSheet">Cafetería</label>
                                        <select id="valueCafeteria" name="valueCafeteria" class="form-control">
@@ -303,11 +304,6 @@
                                             <option value="Si">Si</option>
                                             <option value="No">No</option>
                                         </select> 
-                                    </td>
-                                    
-                                </tr>
-                                
-                                <tr>
                                     <td> 
                                         <label id="labelSalaMedios" class="classLabelDataSheet">S. Medios o AudioVisual</label>
                                           <select id="valueSalaMedios" name="valueSalaMedios" class="form-control">
@@ -324,7 +320,10 @@
                                             <option value="No">No</option>
                                         </select>                            
                                     </td> 
-                                     <td> 
+                                     
+                                </tr>
+                                 <tr style="height: 40px">
+                                      <td> 
                                         <label id="labelBardaPerimetral" class="classLabelDataSheet">Barda Perimetral</label>
                                         <select id="valueBardaPerimetral" name="valueBardaPerimetral" class="form-control">
                                             <option value="" selected > </option>
@@ -332,15 +331,11 @@
                                             <option value="No">No</option>
                                         </select>    
                                     </td>
-                                </tr>
-                                 <tr style="height: 40px">
-                                    
-                                    
-                                   
-                                    <td >
+                                    <td>
                                         <label id="labelAreasDeportivas" class="classLabelDataSheet">Areas Deportivas</label>
                                         <input id="valueAreasDeportivas"  name="valueAreasDeportivas" class="form-control" title="Numero de Áreas">
                                     </td>
+                                    
                                 </tr>
                                 <tr>
                                     

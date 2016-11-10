@@ -68,6 +68,12 @@
                     form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaEtapaDesarrollo.jsp';
                     form.submit();
             }
+            function enviarInfoToImpresionFichaTecnica(form) {
+                    
+                    form.action='<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/prints/impresionFichaTecnica.jsp';
+                    form.submit();
+            }
+            
         </script>
         
     </head>
