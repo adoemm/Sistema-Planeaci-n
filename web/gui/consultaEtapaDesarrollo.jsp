@@ -103,6 +103,16 @@
                   
                
             }
+            function popupArchivos(idObjeto) {
+                newwindow = window.open(
+                        '<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/Insert_ObjetoArchivo.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idObjeto=' + idObjeto + '&nombreObjeto=<%=WebUtil.encode(session, "ETAPA")%>&FormFrom=file4Etapa'
+                        , 'Archivos'
+                        , 'width=' + (screen.availWidth).toString() + ',height=' + (screen.availHeight).toString() + ',toolbar=0,menubar=0,resizable=1,scrollbars=1,status=1,location=0,directories=0,top=50'
+                        );
+                if (window.focus) {
+                    newwindow.focus();
+                }
+            }
             
              
         </script>
@@ -202,7 +212,7 @@
             cells[3] = '<%=listAux.get(3).toString()%>';
             cells[4] = '<%=listAux.get(4).toString()%>';
             cells[5] = '<%=listAux.get(5).toString()%>';
-            cells[6] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/consultaActividad.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Emblem-Documents-64.png" title="Actividades" width="22" height="23" alt="Actividad"></a>';
+            cells[6] = '<img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Mail-Attachment-64.png" onclick="popupArchivos(\'<%=WebUtil.encode(session, listAux.get(0))%>\');"  title="Actividades" width="22" height="23" alt="Archivos" O>';
             cells[7] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaEtapa.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Modifica Etapa" width="22" height="23" alt="Modifica Etapa"></a>';
             cells[8] = '<a onclick="enviarInfocontroller(<%=Integer.parseInt(listAux.get(0).toString()) %>,<%=QUID.selectActivitiesOfStage(Integer.parseInt(listAux.get(0).toString()))%>);"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Eliminar Etapa"></a>';
             

@@ -23,7 +23,7 @@
 %>
 <button type="button" onclick="enviarInfoToModificaFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-top: 2%; margin-left: 10%; margin-right: 7%;">Modificar Ficha Técnica</button>
 <button type="button" onclick="enviarInfoToConsultaEtapaDesarrollo(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-top: 2%; margin-left: 10%; margin-right: 7%;">Etapas de Desarrollo</button>
-<a><button type="button" onclick="enviarInfoToImpresionFichaTecnica(document.getElementById('selectPlantel'))" class="btn btn-default" style="margin-top: 2%; margin-left: 10%;" target="_blank">Imprimir Ficha Técnica</button></a>
+<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/prints/impresionFichaTecnica.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=request.getParameter("idPlantel")%>" target="_blank"><button type="button" class="btn btn-default" style="margin-top: 2%; margin-left: 10%;">Imprimir Ficha Técnica</button></a>
 
 <%
     }
