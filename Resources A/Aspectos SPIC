@@ -26,6 +26,8 @@ Permisos:
 	12.- Agregar Actividad de Etapa de Desarrollo de Plantel. (addActivity) (Permiso)
 	13.- Modificar Actividad de Etapa de Desarrollo de Plantel. (updateActivity) (Permiso)
 	14.- Eliminar Actividad de Etapa de Desarrollo de Plantel. (deleteActivity) (Permiso)
+	15.- Administra Archivos de las Etapas de Desarrollo de Plantel. (filesStage) (Permiso)
+	
 	
 
 

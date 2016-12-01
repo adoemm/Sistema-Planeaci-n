@@ -929,6 +929,181 @@ public final class QUID {
     }
     
     
+    //Obtiene los archivos de las etapas.
+    public final LinkedList select_ObjetoArchivo(String nombreObjeto, String FK_ID_Objeto, String FK_ID_Plantel, boolean publicAccess, boolean seeAll) {
+        LinkedList listToSend = new LinkedList();
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = ""
+                    + " SELECT "
+                    + " A.ID_Archivo"
+                    + " , A.descripcion"
+                    + " , A.extension"
+                    + " , A.fechaActualizacion"
+                    + " , CASE WHEN A.keywords IS NULL THEN ' ' ELSE A.keywords END"
+                    + " , CASE WHEN A.tamanio IS NULL THEN ' ' ELSE (A.tamanio/1048576) END"
+                    + " , A.nombreArchivo"
+                    + " , OA.ID_Objeto_Archivo"
+                    + " , TA.nombreTipo"
+                    + " , A.tipoAcceso"
+                    + " FROM"
+                    + " ARCHIVO AS A"
+                    + " , TIPO_ARCHIVO AS TA"
+                    + " , OBJETO_ARCHIVO AS OA"
+                    + " WHERE"
+                    + " A.FK_ID_Tipo_Archivo = TA.ID_Tipo_Archivo"
+                    + " AND OA.FK_ID_Archivo = A.ID_Archivo"
+                    + " AND OA.FK_ID_Objeto = ?"
+                    + " AND OA.nombreObjeto = ?";
+
+            if (!seeAll) {
+                if (publicAccess) {
+                    SQLSentence += " AND ( A.FK_ID_Plantel = ?"
+                            + " OR A.tipoAcceso = 'PUBLICO' )";
+                } else {
+                    SQLSentence += " AND A.FK_ID_Plantel = ?";
+                }
+            }
+            String idModelo = "-1";
+         
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, FK_ID_Objeto);
+            pstmt.setString(2, nombreObjeto);
+            if (!seeAll) {
+                pstmt.setString(3, FK_ID_Plantel);
+                if (nombreObjeto.equalsIgnoreCase("BIEN")) {
+                    pstmt.setString(4, idModelo);
+                    pstmt.setString(5, "MODELO");
+                    pstmt.setString(6, FK_ID_Plantel);
+                }
+            } else if (nombreObjeto.equalsIgnoreCase("BIEN")) {
+                pstmt.setString(3, idModelo);
+                pstmt.setString(4, "MODELO");
+            }
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                LinkedList aux = new LinkedList();
+                aux.add(rs.getString(1));
+                aux.add(rs.getString(2));
+                aux.add(rs.getString(3));
+                aux.add(rs.getString(4));
+                aux.add(rs.getString(5));
+                aux.add(rs.getString(6));
+                aux.add(rs.getString(7));
+                aux.add(rs.getString(8));
+                aux.add(rs.getString(9));
+                aux.add(rs.getString(10));
+                listToSend.add(aux);
+            }
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+    }
+      //Obtiene el tipo de Archivo
+      public final LinkedList select_Tipo_Archivo() {
+        LinkedList listToSend = new LinkedList();
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = " SELECT "
+                    + " ID_Tipo_Archivo"
+                    + " ,nombreTipo"
+                    + " FROM TIPO_ARCHIVO";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+
+            pstmt.setQueryTimeout(statementTimeOut);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                LinkedList aux = new LinkedList();
+                aux.add(rs.getString(1));
+                aux.add(rs.getString(2));
+                listToSend.add(aux);
+            }
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+    }
+      //Trae la información de un archivo por id
+      public final LinkedList select_Archivo(String ID_Archivo) {
+        LinkedList listToSend = new LinkedList();
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = " "
+                    + " SELECT"
+                    + " A.nombreArchivo"
+                    + " , A.descripcion"
+                    + " , A.ubicacionFisica"
+                    + " , A.extension"
+                    + " , A.fechaActualizacion"
+                    + " , A.FK_ID_Tipo_Archivo"
+                    + " , CASE WHEN A.tamanio IS NULL THEN ' ' ELSE (A.tamanio/1048576) END"
+                    + " , A.keywords"
+                    + " , A.hashName"
+                    + " , A.FK_ID_Plantel"
+                    + " , TA.nombreTipo"
+                    + " , A.tipoAcceso"
+                    + " , A.FK_ID_Plantel"
+                    + " FROM"
+                    + " ARCHIVO AS A"
+                    + " , TIPO_ARCHIVO AS TA"
+                    + " WHERE "
+                    + " A.FK_ID_Tipo_Archivo=TA.ID_Tipo_Archivo"
+                    + " AND A.ID_Archivo = ?";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setString(1, ID_Archivo);
+            pstmt.setQueryTimeout(statementTimeOut);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                listToSend.add(rs.getString(1));
+                listToSend.add(rs.getString(2));
+                listToSend.add(rs.getString(3));
+                listToSend.add(rs.getString(4));
+                listToSend.add(rs.getString(5));
+                listToSend.add(rs.getString(6));
+                listToSend.add(rs.getString(7));
+                listToSend.add(rs.getString(8));
+                listToSend.add(rs.getString(9));
+                listToSend.add(rs.getString(10));
+                listToSend.add(rs.getString(11));
+                listToSend.add(rs.getString(12));
+                listToSend.add(rs.getString(13));
+            }
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listToSend;
+    }
+    
+    
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
 
@@ -1227,6 +1402,119 @@ public final class QUID {
                 tport = new Transporter(1, "Error inesperado." + ex.getMessage());
             }
         }
+        return tport;
+    }
+    
+      public final Transporter insertArchivo4Objeto(
+            String FK_ID_Objeto,
+            String nombreObjeto,
+            String FK_ID_Tipo_Archivo,
+            String nombreArchivo,
+            String descripcion,
+            String ubicacionFisica,
+            String extension,
+            String fechaActualizacion,
+            long tamanio,
+            String tipoAcceso,
+            String keywords,
+            String hashName,
+            String FK_ID_Plantel) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String id_inserted = "";
+        try {
+            SQLSentence = ""
+                    + "INSERT INTO ARCHIVO ( "
+                    + " FK_ID_Tipo_Archivo"
+                    + " ,nombreArchivo"
+                    + " ,descripcion"
+                    + " ,ubicacionFisica"
+                    + " ,extension"
+                    + " ,fechaActualizacion"
+                    + " ,tamanio"
+                    + " ,tipoAcceso"
+                    + " ,keywords"
+                    + " ,hashName"
+                    + " ,FK_ID_Plantel"
+                    + ") VALUES ("
+                    + " ?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " ,?"
+                    + " )";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            conn.setAutoCommit(false);
+            pstmt = conn.prepareStatement(SQLSentence, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, FK_ID_Tipo_Archivo);
+            pstmt.setString(2, nombreArchivo);
+            pstmt.setString(3, descripcion);
+            pstmt.setString(4, ubicacionFisica);
+            pstmt.setString(5, extension);
+            pstmt.setString(6, fechaActualizacion);
+            pstmt.setLong(7, tamanio);
+            pstmt.setString(8, tipoAcceso);
+            pstmt.setString(9, keywords);
+            pstmt.setString(10, hashName);
+            pstmt.setString(11, FK_ID_Plantel);
+            int rowCount = pstmt.executeUpdate();
+            rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                id_inserted = rs.getString(1);
+                this.insertObjetoArchivo(FK_ID_Objeto, id_inserted, nombreObjeto, conn);
+            }
+            conn.commit();
+            conn.setAutoCommit(true);
+            endConnection(jscp, conn, pstmt);
+            tport = new Transporter(0, "Filas afectadas: " + rowCount);
+        } catch (Exception ex) {
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
+        }
+        return tport;
+    }
+
+    public final Transporter insertObjetoArchivo(String FK_ID_Objeto, String FK_ID_Archivo, String nombreObjeto, Connection conn) throws SQLException {
+        Transporter tport = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        SQLSentence = ""
+                + " INSERT INTO OBJETO_ARCHIVO"
+                + " ( nombreObjeto"
+                + " , FK_ID_Objeto"
+                + " , FK_ID_Archivo)"
+                + " VALUES"
+                + " ( ?"
+                + " , ?"
+                + " , ?)";
+
+        pstmt = conn.prepareStatement(SQLSentence);
+        pstmt.setQueryTimeout(statementTimeOut);
+        pstmt.setString(1, nombreObjeto);
+        pstmt.setString(2, FK_ID_Objeto);
+        pstmt.setString(3, FK_ID_Archivo);
+        int rowCount = pstmt.executeUpdate();
+        endConnection(pstmt);
+        tport = new Transporter(0, "Filas afectadas: " + rowCount);
         return tport;
     }
 

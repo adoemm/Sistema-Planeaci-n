@@ -212,9 +212,9 @@
             cells[3] = '<%=listAux.get(3).toString()%>';
             cells[4] = '<%=listAux.get(4).toString()%>';
             cells[5] = '<%=listAux.get(5).toString()%>';
-            cells[6] = '<img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Mail-Attachment-64.png" onclick="popupArchivos(\'<%=WebUtil.encode(session, listAux.get(0))%>\');"  title="Actividades" width="22" height="23" alt="Archivos" O>';
+            cells[6] = '<button style="background: transparent; border: 0px;"> <img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Mail-Attachment-64.png" onclick="popupArchivos(\'<%=WebUtil.encode(session, listAux.get(0))%>\');"  title="Actividades" width="22" height="23" alt="Archivos" O></button>';
             cells[7] = '<a href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/modificaEtapa.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idPlantel=<%=WebUtil.encode(session, idPlantel)%>&idEtapa=<%=WebUtil.encode(session, listAux.get(0))%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Accessories-Text-Editor-64.png" title="Modifica Etapa" width="22" height="23" alt="Modifica Etapa"></a>';
-            cells[8] = '<a onclick="enviarInfocontroller(<%=Integer.parseInt(listAux.get(0).toString()) %>,<%=QUID.selectActivitiesOfStage(Integer.parseInt(listAux.get(0).toString()))%>);"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Eliminar Etapa"></a>';
+            cells[8] = '<button style="background: transparent; border: 0px;"> <a onclick="enviarInfocontroller(<%=Integer.parseInt(listAux.get(0).toString()) %>,<%=QUID.selectActivitiesOfStage(Integer.parseInt(listAux.get(0).toString()))%>);"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Eliminar Etapa"></a></button> ';
             
             data[<%=cont%>] = t.fnAddData(cells, false);
                     <%

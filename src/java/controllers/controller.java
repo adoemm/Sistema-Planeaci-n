@@ -5,12 +5,15 @@
  */
 package controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Parameter;
 import java.util.Calendar;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -20,13 +23,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import jspread.core.db.QUID;
 import jspread.core.models.Transporter;
+import jspread.core.util.FileUtil;
 import jspread.core.util.PageParameters;
 import jspread.core.util.SessionUtil;
 import jspread.core.util.StringUtil;
+import jspread.core.util.SystemUtil;
 import jspread.core.util.UTime;
 import jspread.core.util.UserUtil;
 import jspread.core.util.WebUtil;
-import systemSettings.SystemSettings;
+import jspread.core.util.security.JHash;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletRequestContext;
 
 /**
  *
@@ -151,6 +160,9 @@ public final class controller extends HttpServlet {
                                     break;
                             }
                             // </editor-fold>
+                           } else if (ServletFileUpload.isMultipartContent(new ServletRequestContext(request))) {
+                            this.subirArchivo(session, request, response, quid, out);
+                           
                         } else {
                             out.println("UPS.... Algo malo ha pasado");
                         }
@@ -637,6 +649,149 @@ public final class controller extends HttpServlet {
 
         return PAT;
     }
+    
+    private void subirArchivo(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        String FormFrom = "";
+        if (ServletFileUpload.isMultipartContent(new ServletRequestContext(request))) {
+            System.out.println("Tamaño del archivo: " + request.getContentLength());
+            if (PageParameters.getParameter("fileSizeLimited").equals("1")
+                    && (request.getContentLength() == -1//Este valor aparece cuando se desconoce el tamano
+                    || request.getContentLength() > Integer.parseInt(PageParameters.getParameter("maxSizeToUpload")))) {
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msgNBack.jsp?title=Error&type=error&msg=El tamaño máximo del archivo es de " + StringUtil.formatDouble1Decimals(Double.parseDouble(PageParameters.getParameter("maxSizeToUpload")) / 1048576) + " MBytes.").forward(request, response);
+            } else {    
+                
+                ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
+                List items = upload.parseRequest(request);
+                Iterator i = items.iterator();
+                LinkedList filesToUpload = new LinkedList();
+                HashMap parameters = new HashMap();
+                while (i.hasNext()) {
+                    FileItem item = (FileItem) i.next();
+                    if (item.isFormField()) {
+                        if (item.getFieldName().equalsIgnoreCase("FormFrom")) {
+                            FormFrom = item.getString();
+                        } else {
+                            parameters.put(item.getFieldName(), item.getString());
+                        }
+                    } else {
+                        filesToUpload.add(item);
+                    }
+                }
+                switch (FormFrom) {
+                    
+                    case "insertObjetoArchivo":
+                        this.insertarObjetoArchivo(session, request, response, quid, out, parameters, filesToUpload, FormFrom);
+                        break;
+                }
+            }
+        }
+    }
+    
+    private void insertarObjetoArchivo(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out, HashMap parameters, LinkedList filesToUpload, String FormFrom) throws Exception {
+        if (parameters.get("idTipoArchivo") == null || parameters.get("idTipoArchivo").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirect.jsp?title=Error&type=error&msg=Seleccione el tipo de archivo.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                    + "_param_nombreObjeto=" + parameters.get("nombreObjeto") + "_param_idObjeto=" + parameters.get("idObjeto")).forward(request, response);
+        } else if (parameters.get("nombreArchivo") == null || parameters.get("nombreArchivo").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirect.jsp?title=Error&type=error&msg=Escriba el nombre del archivo.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                    + "_param_nombreObjeto=" + parameters.get("nombreObjeto") + "_param_idObjeto=" + parameters.get("idObjeto")).forward(request, response);
+        } else if (parameters.get("descripcion") == null
+                || parameters.get("descripcion").toString().trim().equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirect.jsp?title=Error&type=error&msg=Escriba una descripción.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                    + "_param_nombreObjeto=" + parameters.get("nombreObjeto") + "_param_idObjeto=" + parameters.get("idObjeto")).forward(request, response);
+        } else if (parameters.get("tipoAcceso").equals("")) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirect.jsp?title=Error&type=error&msg=Seleccione el tipo de acceso para el archivo.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                    + "_param_nombreObjeto=" + parameters.get("nombreObjeto") + "_param_idObjeto=" + parameters.get("idObjeto")).forward(request, response);
+        } else if (filesToUpload.isEmpty()) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirect.jsp?title=Error&type=error&msg=No ha seleccionado ningún archivo.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                    + "_param_nombreObjeto=" + parameters.get("nombreObjeto") + "_param_idObjeto=" + parameters.get("idObjeto")).forward(request, response);
+        } else if (!filesToUpload.isEmpty()) {
+            String idObjeto = WebUtil.decode(session, parameters.get("idObjeto").toString());
+            String fechaActualizacion = UTime.calendar2SQLDateFormat(Calendar.getInstance());
+            String descripcion = WebUtil.decode(session, parameters.get("descripcion").toString());
+            String ubicacionFisica = PageParameters.getParameter("folderDocs");
+            String idTipoArchivo = WebUtil.decode(session, parameters.get("idTipoArchivo").toString());
+            String nombreObjeto = WebUtil.decode(session, parameters.get("nombreObjeto").toString());
+            String keyWords = parameters.get("keywords").toString();
+            String nombreArchivo = parameters.get("nombreArchivo").toString();
+            String FK_ID_Plantel = session.getAttribute("FK_ID_Plantel").toString();
+            
+            //File verifyFolder = new File(PageParameters.getParameter("folderDocs"));
+            File verifyFolder = new File(ubicacionFisica);
+            if (!verifyFolder.exists()) {
+                verifyFolder.mkdirs();
+            }
+            int sucess = 0;
+            for (int i = 0; i < filesToUpload.size(); i++) {
+                FileItem itemToUpload = null;
+                itemToUpload = (FileItem) filesToUpload.get(i);
+
+                String extension = FileUtil.getExtension(itemToUpload.getName());
+                String hashName = JHash.getFileDigest(itemToUpload.get(), "MD5") + extension;
+
+                long tamanio = itemToUpload.getSize();
+
+                if (this.validarDocumentExtension(session, request, response, quid, out, extension)) {
+                    File fileToWrite = new File(ubicacionFisica, hashName);
+                    Transporter tport = quid.insertArchivo4Objeto(
+                            idObjeto,
+                            nombreObjeto,
+                            idTipoArchivo,
+                            nombreArchivo,
+                            descripcion,
+                            ubicacionFisica,
+                            extension,
+                            fechaActualizacion,
+                            tamanio,
+                            WebUtil.decode(session, parameters.get("tipoAcceso").toString()),
+                            keyWords,
+                            hashName,
+                            FK_ID_Plantel);
+                    if (tport.getCode() == 0) {
+                        if (!fileToWrite.exists()) {
+                            itemToUpload.write(fileToWrite);
+                        }
+                        sucess += 1;
+                    }
+                } else {
+                    sucess = -1;
+                }
+            }
+            if (sucess != -1) {
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msgNRedirect.jsp?title=Operación Exitosa&type=info&msg=Se han guardado " + sucess + " de " + filesToUpload.size() + " archivos.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                        + "_param_nombreObjeto=" + parameters.get("nombreObjeto") + "_param_idObjeto=" + parameters.get("idObjeto")).forward(request, response);
+            }
+
+        }
+
+    }
+    
+    private boolean validarDocumentExtension(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out, String extension) throws Exception {
+        boolean valido = false;
+        if (!SystemUtil.isSystemAllowedExtension(extension)) {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirect.jsp?title=Error&type=error&msg=Tipo de archivo no valido.&url=" + PageParameters.getParameter("mainController") + "?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis()) + "_param_exit=1").forward(request, response);
+        } else {
+            valido = true;
+        }
+        return valido;
+    }
+
+    
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods.">
@@ -644,6 +799,7 @@ public final class controller extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
+           
             processRequest(request, response);
         } catch (Exception ex) {
             Logger.getLogger(controller.class.getName()).log(Level.SEVERE, null, ex);

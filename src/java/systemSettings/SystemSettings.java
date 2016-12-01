@@ -151,16 +151,16 @@ public final class SystemSettings {
                 PageParameters.addParameter("leyendaoficio", "2016. Año del Centenario de la instalación del Congreso Constituyente.");
                 PageParameters.addParameter("revision", "1");
 //            PageParameters.addParameter("folderDocs", "c:\\sibien_Files\\files\\");//carpeta donde el sistema guarda archivos, sino existe se crea automaticamente 
-//            PageParameters.addParameter("folderDocs", "/home/v10x/sibien_Files/");//carpeta donde el sistema guarda archivos, sino existe se crea automaticamente 
+            PageParameters.addParameter("folderDocs", "/home/v10x/sibien_Files/files/");//carpeta donde el sistema guarda archivos, sino existe se crea automaticamente 
 //            PageParameters.addParameter("folderLogs", "c:\\sibien_Files\\log\\");
-//            PageParameters.addParameter("maxSizeToUpload", "130971520");//en bytes (115MB)
+            PageParameters.addParameter("maxSizeToUpload", "130971520");//en bytes (115MB)
 //            PageParameters.addParameter("deleteFileOnModifyBD", "1");//Elimina los archivos adjuntos en el servidor
 //            Indica con que extensiones trabaja el sistema banned o permited, si es baned el sistema permite subir cualquier extension que no este baneada
 //             si el parametro es permited, el sistema permite solo las extensiones permitidas indcadas en la clase SystemUtil
 //            PageParameters.addParameter("workExtensions", "banned");
 //            PageParameters.addParameter("workExtensions", "permited");
-//            PageParameters.addParameter("timeOutToUploadFile", "0");// tiempo de espera para poder subir un archivo en milis (11min)
-//            PageParameters.addParameter("fileSizeLimited", "1");//Indica si se limita el tamaño de los archivos que son subidos al servidor 1=si 0=no
+            PageParameters.addParameter("timeOutToUploadFile", "0");// tiempo de espera para poder subir un archivo en milis (11min)
+            PageParameters.addParameter("fileSizeLimited", "1");//Indica si se limita el tamaño de los archivos que son subidos al servidor 1=si 0=no
 //            PageParameters.addParameter("inicioAnioContable", "2015-01-01");
 //            PageParameters.addParameter("finAnioContable", "2015-12-31");
                 PageParameters.addParameter("testDBLabel", "");

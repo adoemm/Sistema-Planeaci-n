@@ -91,7 +91,7 @@
                         , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
                         , cache: false
                         , async: true
-                        , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFunctions")%>/getArchivos.jsp"
+                        , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFuntions")%>/getArchivos.jsp"
                         , data: '<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&FormFrom=<%=request.getParameter("FormFrom")%>&mainID=' + mainID
                         , success: function (response) {
                             $('#wrapper').find('#divDocumentos').html(response);
@@ -142,7 +142,7 @@
                             , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
                             , cache: false
                             , async: true
-                            , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFunctions")%>/getEncodeParam.jsp"
+                            , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFuntions")%>/getEncodeParam.jsp"
                             , data: '<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&param=' + document.getElementById('descripcion').value
                             , success: function (response) {
                                 valor = response.toString();
@@ -207,7 +207,7 @@
                     , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
                     , cache: false
                     , async: false
-                    , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFunctions")%>/getEncodeParam.jsp"
+                    , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFuntions")%>/getEncodeParam.jsp"
                     , data: '<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&param=' + document.getElementById('descripcion').value
                     , success: function (response) {
                         $('#wrapper').find('#divDesc').html(response.toString());
@@ -221,7 +221,9 @@
                 xhr.upload.addEventListener("error", uploadFailed, false);
                 xhr.upload.addEventListener("abort", uploadCanceled, false);
                 document.getElementById('status').innerHTML = "Enviando";
+                
                 xhr.open("POST", "<%=PageParameters.getParameter("mainController")%>", true);
+                
             <%
                 if (Integer.parseInt(PageParameters.getParameter("timeOutToUploadFile").toString()) > 0) {
             %>
@@ -246,6 +248,9 @@
                     flag = 1;
                     result3 = testConection();
                     if (result3 === 1) {
+                        for (var i = 0; i < fd.length; i++) {
+                            alert(fd.);
+                               }
                         startTestConecction();
                         xhr.send(fd);
                     }
@@ -296,6 +301,7 @@
             function cancelarUpload() {
                 xhr.abort();
             }
+            
 
             window.history.forward();
             function noBack() {
@@ -318,7 +324,7 @@
                         , contentType: 'application/x-www-form-urlencoded;charset=utf-8'
                         , cache: false
                         , async: true
-                        , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFunctions")%>/getDetalles4Archivo.jsp"
+                        , url: "<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("ajaxFuntions")%>/getDetalles4Archivo.jsp"
                         , data: '<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idArchivo=' + idArchivo
                         , success: function (response) {
                             $('#wrapper').find('#divDetallesArchivo').html(response);
@@ -362,9 +368,9 @@
                     </table>
                     <br>
                     <br>
-                    <div id="contenent_info" >
-                        <form name="usuario" method="post" action="" enctype="application/x-www-form-urlencoded" id="form">
-                            <fieldset>
+                    <div >
+                        
+                            <fieldset style="border: #DDD 1px solid;"/>
                                 <legend>Archivos</legend>
                                 <div style="text-align: right;">
                                 <img src="<%=PageParameters.getParameter("imgRsc")%>/icons/window-close.png" onclick="window.close();" title="Cerrar esta ventana" width="28" height="28" alt="Cerrar esta ventana">
@@ -410,18 +416,22 @@
                                     </thead>
                                 </table>
                             </fieldset>
-                        </form>
+                        
                     </div> 
+                                <br>
                     <div class="form-container" width="100%"> 
                         <input type="button" value="Adjuntar Archivo" onclick="openDialogBox('floatBoxAdjuntar');">
                         <div id="overlay" class="overlay" ></div>
-                        <div id="floatBoxAdjuntar" class="floatBox">
-                            <div class="closeButton2" onclick="closeDialogBox('floatBoxAdjuntar');"></div>
+                        <div id="floatBoxAdjuntar" class="floatBox" style="margin-top: 5%;">
+                            <div  onclick="closeDialogBox('floatBoxAdjuntar');">
+                                <img src="/SPIC/rsc/img/icons/window-close.png" onclick="window.close();" title="Cerrar esta ventana" width="28" height="28" alt="Cerrar esta ventana"
+                                     style="margin-left: 90%;margin-top: 2%;margin-bottom: -25px;">
+                            </div>
                             <div>
-                                <form name="filetoUpload" id="filetoUpload" enctype="multipart/form-data" method="post" action="">
+                                <form name="filetoUpload" id="filetoUpload" enctype="multipart/form-data" method="post" action="" style="border: 0px">
                                     <input type="hidden" name="idObjeto" id="idObjeto" value="<%=request.getParameter("idObjeto")%>">
                                     <input type="hidden" name="FormFrom" id="FormFrom" value="insertObjetoArchivo">
-                                    <fieldset style="border-radius: 10px;">
+                                    <fieldset style="border: #DDD 1px solid;">
                                         <legend style="text-align: left;">Adjuntar Archivo</legend>  
                                         <div>
                                             <div style="text-align: left;">
@@ -429,7 +439,7 @@
                                                 <select name="idTipoArchivo" id="idTipoArchivo">
                                                     <option value=""></option>
                                                     <%
-                                                        Iterator t = /*QUID.select_Tipo_Archivo().iterator();*/ null;
+                                                        Iterator t = QUID.select_Tipo_Archivo().iterator();
                                                         while (t.hasNext()) {
                                                             LinkedList datos = datos = (LinkedList) t.next();
                                                     %>
@@ -500,7 +510,6 @@
                                             <div style=" text-align: right;">
                                                 <input type="button" onclick="uploadFile();
                                                         return false;" value="Guardar" name="enviar" id="enviar">
-                                                <input type="button" id="cancelar" name="cancelar" value="Cancelar" onclick="cancelarUpload();">
                                                 <input align="left"type="button" value="Cerrar" name="subirDespues" id="subirDespues" onclick="closeDialogBox('floatBoxAdjuntar');"/>        
                                             </div>
                                         </div>
