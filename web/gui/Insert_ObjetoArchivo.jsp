@@ -249,7 +249,7 @@
                     result3 = testConection();
                     if (result3 === 1) {
                         for (var i = 0; i < fd.length; i++) {
-                            alert(fd.);
+                                    
                                }
                         startTestConecction();
                         xhr.send(fd);
@@ -431,6 +431,7 @@
                                 <form name="filetoUpload" id="filetoUpload" enctype="multipart/form-data" method="post" action="" style="border: 0px">
                                     <input type="hidden" name="idObjeto" id="idObjeto" value="<%=request.getParameter("idObjeto")%>">
                                     <input type="hidden" name="FormFrom" id="FormFrom" value="insertObjetoArchivo">
+                                    <input type="hidden" name="tipoAcceso" id="tipoAcceso" value="<%=WebUtil.encode(session, "PUBLICO")%>">
                                     <fieldset style="border: #DDD 1px solid;">
                                         <legend style="text-align: left;">Adjuntar Archivo</legend>  
                                         <div>
@@ -454,19 +455,21 @@
                                                 <input type="text" name="nombreArchivo" id="nombreArchivo" style="margin-left: 52px;">
                                             </div>
                                             <div style="text-align: left;">
-                                                <label for="descripcion">*Descripción</label>
+                                                <label for="descripcion">Descripción</label>
                                                 <textarea name="descripcion" id="descripcion" cols="40" rows="5" style="resize:none"></textarea>
                                             </div>
-                                            <div  style="text-align: left;">
+                                            <!--
+                                                <div  style="text-align: left;">
                                                 <label for="tipoAcceso">*Tipo de Accesso</label>    
+                                                
                                                 <select name="tipoAcceso" id="tipoAcceso" style="margin-left: 73px;">
                                                     <option value=""></option>
                                                     <option value="<%=WebUtil.encode(session, "PRIVADO")%>">Privado</option>
                                                     <option value="<%=WebUtil.encode(session, "PUBLICO")%>">Público</option>
                                                 </select>
-                                            </div>    
+                                            </div>    <-->
                                             <div  style="text-align: left;">
-                                                <label for="keywords">*Keywords (separadas por ,)</label>
+                                                <label for="keywords">Keywords (separadas por ,)</label>
                                                 <input type="text" name="keywords" id="keywords">
                                             </div>
                                         </div>
@@ -556,7 +559,7 @@
                         cells[6] = '<%=listAux.get(3).toString().replaceAll("'", "&#39;")%>';
                         cells[7] = '<img src="<%=PageParameters.getParameter("imgRsc")%>/icons/<%=SystemUtil.getMymeTypeIcon(listAux.get(2).toString())%>" title="Detalles" width="22" height="23" alt="Detalles" onclick="getDetallesArchivo(\'<%=WebUtil.encode(session, listAux.get(0))%>\');">';
                         cells[8] = '<a target="_blank" href="<%=PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui")%>/DescargaArchivo.jsp?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idArchivo=<%=WebUtil.encode(session, listAux.get(0))%>&see=<%=WebUtil.encode(session, "1")%>&hash=<%=WebUtil.encode(session, "si")%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Go-Down-64.png" title="Descargar" width="22" height="23" alt="Descargar"></a>';
-                        cells[9] = '<a href="<%=PageParameters.getParameter("mainController")%>?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idArchivo=<%=WebUtil.encode(session, listAux.get(0))%>&FormFrom=deleteObjetoArchivo&idObjetoArchivo=<%=WebUtil.encode(session, listAux.get(7))%>&idObjeto=<%=request.getParameter("idObjeto")%>&nombreObjeto=<%=request.getParameter("nombreObjeto")%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Eliminar"></a>';
+                        cells[9] = '<a href="<%=PageParameters.getParameter("mainController")%>?<%=WebUtil.encode(session, "imix")%>=<%=WebUtil.encode(session, UTime.getTimeMilis())%>&idArchivo=<%=WebUtil.encode(session, listAux.get(0))%>&FormForm=deleteObjetoArchivo&idObjetoArchivo=<%=WebUtil.encode(session, listAux.get(7))%>&idObjeto=<%=request.getParameter("idObjeto")%>&nombreObjeto=<%=request.getParameter("nombreObjeto")%>"><img src="<%=PageParameters.getParameter("imgRsc")%>/icons/Gnome-Process-Stop-64.png" title="Eliminar" width="22" height="23" alt="Eliminar"></a>';
                         data[<%=cont%>] = t.fnAddData(cells, false);
                     <%
                             cont++;

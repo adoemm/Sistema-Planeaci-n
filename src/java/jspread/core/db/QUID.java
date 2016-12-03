@@ -1103,7 +1103,41 @@ public final class QUID {
         return listToSend;
     }
     
-    
+        public final int select_CountArchivo4Objeto(String FK_ID_Archivo, String FK_ID_Objeto) {
+
+        int count = -1;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            SQLSentence = ""
+                    + " SELECT "
+                    + " COUNT(*)"
+                    + " FROM"
+                    + " OBJETO_ARCHIVO AS OA"
+                    + " WHERE"
+                    + " OA.FK_ID_Archivo = ?"
+                    + " AND OA.FK_ID_Objeto <> ?";
+
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, FK_ID_Archivo);
+            pstmt.setString(2, FK_ID_Objeto);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            endConnection(jscp, conn, pstmt, rs);
+        } catch (Exception ex) {
+            endConnection(jscp, conn, pstmt, rs);
+            Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
     //</editor-fold> 
     //<editor-fold defaultstate="collapsed" desc="INSERT">
 
@@ -1930,6 +1964,50 @@ public final class QUID {
             endConnection(jscp, conn, pstmt);
             tport = new Transporter(0, "Filas afectadas: " + rowCount);
 
+        } catch (Exception ex) {
+            try {
+                conn.rollback();
+                endConnection(jscp, conn, pstmt);
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            } catch (SQLException ex1) {
+                Logger.getLogger(QUID.class.getName()).log(Level.SEVERE, null, ex1);
+                tport = new Transporter(1, "Error inesperado." + ex.getMessage());
+            }
+        }
+        return tport;
+    }
+        //Elimina los registros de las tablas OBJETO_ARCHIVO y ARCHIVO.
+        public final Transporter deleteObjetoArchivo_Archivo(
+            String ID_ObjetoArchivo,
+            String ID_Archivo,
+            Boolean deleteArchivo) {
+        Transporter tport = null;
+        JSpreadConnectionPool jscp = null;
+        Connection conn = null;
+        String SQLSentence = null;
+        PreparedStatement pstmt = null;
+        int filas_afectadas = -1;
+        try {
+            SQLSentence = ""
+                    + " DELETE FROM OBJETO_ARCHIVO"
+                    + " WHERE ID_Objeto_Archivo = ?;"
+                    + " DELETE FROM ARCHIVO"
+                    + " WHERE ID_Archivo = ?;"
+                    + "";
+            jscp = JSpreadConnectionPool.getSingleInstance();
+            conn = jscp.getConnectionFromPool();
+            conn.setAutoCommit(false);
+            pstmt = conn.prepareStatement(SQLSentence);
+            pstmt.setQueryTimeout(statementTimeOut);
+            pstmt.setString(1, ID_ObjetoArchivo);
+            pstmt.setString(2, ID_Archivo);
+            filas_afectadas = pstmt.executeUpdate();
+           
+            conn.commit();
+            conn.setAutoCommit(true);
+            endConnection(jscp, conn, pstmt);
+            tport = new Transporter(0, "El registro se elimino correctamente.");
         } catch (Exception ex) {
             try {
                 conn.rollback();

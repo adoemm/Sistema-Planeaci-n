@@ -158,6 +158,9 @@ public final class controller extends HttpServlet {
                                 case "eliminaActivity":
                                     this.eliminaActividad(session, request, response, quid, out);
                                     break;
+                                    case "deleteObjetoArchivo":
+                                    this.deleteObjetoArchivo(session, request, response, quid, out);
+                                    break;
                             }
                             // </editor-fold>
                            } else if (ServletFileUpload.isMultipartContent(new ServletRequestContext(request))) {
@@ -754,7 +757,7 @@ public final class controller extends HttpServlet {
                             extension,
                             fechaActualizacion,
                             tamanio,
-                            WebUtil.decode(session, parameters.get("tipoAcceso").toString()),
+                            WebUtil.decode(session, parameters.get("tipoAcceso").toString()).toLowerCase(),
                             keyWords,
                             hashName,
                             FK_ID_Plantel);
@@ -789,6 +792,61 @@ public final class controller extends HttpServlet {
             valido = true;
         }
         return valido;
+    }
+    
+     private void deleteObjetoArchivo(HttpSession session, HttpServletRequest request, HttpServletResponse response, QUID quid, PrintWriter out) throws Exception {
+        LinkedList<String> access4ThisPage = new LinkedList();
+        access4ThisPage.add("deletefiless");
+        LinkedList documento = quid.select_Archivo(WebUtil.decode(session, request.getParameter("idArchivo")));
+        LinkedList<String> userAccess = (LinkedList<String>) session.getAttribute("userAccess");
+        if (UserUtil.isAValidUser(access4ThisPage, userAccess)
+                ) {
+
+            boolean deleteArchivo = quid.select_CountArchivo4Objeto(
+                    WebUtil.decode(session, request.getParameter("idArchivo")),
+                    WebUtil.decode(session, request.getParameter("idObjeto"))) == 0;
+
+            Transporter tport = quid.deleteObjetoArchivo_Archivo(
+                    WebUtil.decode(session, request.getParameter("idObjetoArchivo")),
+                    WebUtil.decode(session, request.getParameter("idArchivo")),
+                    deleteArchivo);
+            if (tport.getCode() == 0) {
+                if (PageParameters.getParameter("deleteFileOnModifyBD").equals("1")) {
+                    borrarDocumentoDeDisco(documento.get(2).toString(), documento.get(8).toString());
+                }
+                System.out.println("Nombre de Objeto: "+ WebUtil.decode(session,request.getParameter("nombreObjeto")));
+                System.out.println("id de Objeto: " + WebUtil.decode(session,request.getParameter("idObjeto")));
+                System.out.println("Ruta: "+ PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                        + "&nombreObjeto=" + request.getParameter("nombreObjeto")
+                        + "&idObjeto=" + request.getParameter("idObjeto"));
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msgNRedirectFull.jsp?title=Operación Exitosa&type=info&msg=El registro se elimino correctamente.&url=" +PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                        + "_param_nombreObjeto=" + request.getParameter("nombreObjeto")
+                        + "_param_idObjeto=" + request.getParameter("idObjeto")).forward(request, response);
+            } else {
+                this.getServletConfig().getServletContext().getRequestDispatcher(
+                        "" + PageParameters.getParameter("msgUtil")
+                        + "/msgNRedirectFull.jsp?title=Error&type=error&msg=El registro no se pudo borrar.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                        + "_param_nombreObjeto=" + request.getParameter("nombreObjeto")
+                        + "_param_idObjeto=" + request.getParameter("idObjeto")).forward(request, response);
+            }
+        } else {
+            this.getServletConfig().getServletContext().getRequestDispatcher(
+                    "" + PageParameters.getParameter("msgUtil")
+                    + "/msgNRedirectFull.jsp?title=Error&type=error&msg=Usted NO cuenta con el permiso para realizar esta acción.&url=" + PageParameters.getParameter("mainContext") + PageParameters.getParameter("gui") + "/Insert_ObjetoArchivo.jsp?" + WebUtil.encode(session, "imix") + "=" + WebUtil.encode(session, UTime.getTimeMilis())
+                    + "_param_nombreObjeto=" + request.getParameter("nombreObjeto")
+                    + "_param_idObjeto=" + request.getParameter("idObjeto")).forward(request, response);
+        }
+    }
+     
+      private int borrarDocumentoDeDisco(String path, String fileName) {
+        int result = 1;
+        File archivo = new File(path + fileName);
+        if (archivo.delete()) {
+            result = 0;
+        }
+        return result;
     }
 
     

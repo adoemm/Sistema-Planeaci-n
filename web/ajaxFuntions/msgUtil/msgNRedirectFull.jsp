@@ -14,7 +14,9 @@
                     type: "<%=request.getParameter("type")%>",
                     opacity: 0.75,
                     beforeClose: function() {
+                        alert(window.location.href);
                         window.location.href = '<%out.print(request.getParameter("url").replaceAll("_param_", "&"));%>';
+                       
                     }
                 });
           
