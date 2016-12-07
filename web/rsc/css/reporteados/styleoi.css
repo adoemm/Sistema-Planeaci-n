@@ -1,5 +1,5 @@
 /* CSS Document */
- <style type="text/css">
+
 html, body
 {
    height: 100%;
@@ -29,8 +29,7 @@ body
    background-color: #FFFFFF;
    color: #000000;
 }
-</style>
-<style type="text/css">
+
 a
 {
    color: #F0F0F0;
@@ -50,10 +49,8 @@ a:hover
    color: #715D5D;
    text-decoration: underline;
 }
-</style>
-<style type="text/css">
+
 #Image1
 {
    border: 0px #000000 solid;
 }
-</style>
