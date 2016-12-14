@@ -173,12 +173,23 @@ public final class SystemSettings {
                     jscp.setClassforname("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                     jscp.setProtocol("jdbc");
                     jscp.setDBMS("sqlserver");
-                    PageParameters.addParameter("DBDir", "172.16.1.2");
-                    jscp.setHost("172.16.1.2");
+                    //Acceso a servidor remoto.
+                    PageParameters.addParameter("DBDir", "172.16.1.3");
+                    jscp.setHost("172.16.1.3");
                     jscp.setPort(1433);
                     jscp.setSchema("DBSPIC");
                     jscp.setUser("toor");
-                    jscp.setPassword("A12345");
+                    jscp.setPassword("xyz9345&mlo");
+                    //Acceso a servidor Local.
+//                    PageParameters.addParameter("DBDir", "172.16.1.2");
+//                    jscp.setHost("172.16.1.2");
+//                    jscp.setPort(1433);
+//                    jscp.setSchema("DBSPIC");
+//                    jscp.setUser("toor");
+//                    jscp.setPassword("A12345");
+
+
+
                     jscp.setMAX_POOL_SIZE(5);
                     jscp.initialize();
                     System.out.println("Direccion de la base de datos: " + jscp.getDBURL());
