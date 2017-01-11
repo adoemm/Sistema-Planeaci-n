@@ -193,7 +193,7 @@ public final class SystemSettings {
                     jscp.setMAX_POOL_SIZE(5);
                     jscp.initialize();
                     System.out.println("Direccion de la base de datos: " + jscp.getDBURL());
-                } catch (Exception ex) {
+                           } catch (Exception ex) {
                     DBError(ex);
                 }
                 isBurning = true;
