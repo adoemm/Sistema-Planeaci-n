@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jspread.core.db.JSpreadConnectionPool;
 import jspread.core.util.PageParameters;
-
 /**
  *
  * @author emmanuel
